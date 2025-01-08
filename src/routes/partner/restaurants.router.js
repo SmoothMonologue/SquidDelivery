@@ -1,9 +1,7 @@
 import express from 'express';
 
-const restaurantsRouter = express.Router();
+const restaurantRouter = express.Router();
 
-restaurantsRouter.post('/', (req, res) => {
+restaurantRouter.post('/', (req, res) => {});
 
-});
-
-export default restaurantsRouter;
+export default restaurantRouter;

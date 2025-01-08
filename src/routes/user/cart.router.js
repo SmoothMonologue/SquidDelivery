@@ -1,9 +1,7 @@
-import express from 'express'; 
+import express from 'express';
 
 const cartsRouter = express.Router();
 
-cartsRouter.post('/', (req, res) => {
-  
-});
+cartsRouter.post('/', (req, res) => {});
 
 export default cartsRouter;
