@@ -1,14 +1,14 @@
-import express from "express";
-import usersRouter from "./routes/users.router.js";
+import express from 'express';
+import apiRouter from './routers/index.js';
+import { SERVER_PORT } from './constants/env.constant.js';
 
 const app = express();
-const PORT = 3000;
 
 app.use(express.json());
 
 // postsRoutes를 /api/posts Path에 연결
-app.use("/api/users", usersRouter);
+app.use('/api', apiRouter);
 
-app.listen(PORT, () => {
-  console.log(PORT, "포트로 서버가 열렸어요!");
+app.listen(SERVER_PORT, () => {
+  console.log(`${SERVER_PORT}포트로 서버가 실행되었습니다.`);
 });
