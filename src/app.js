@@ -1,4 +1,4 @@
-import express from "express";
+import express from 'express';
 import apiRouter from './routers/index.js';
 import { SERVER_PORT } from './constants/env.constant.js';
 
