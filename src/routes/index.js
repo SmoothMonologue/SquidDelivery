@@ -6,7 +6,7 @@ import partnerRouter from './partner.router.js';
 const apiRouter = express.Router();
 
 apiRouter.use('/auth', authRouter);
-apiRouter.use('/users', usersRouter);
-apiRouter.use('/partners', partnersRouter);
+apiRouter.use('/users', userRouter);
+apiRouter.use('/partners', partnerRouter);
 
 export default apiRouter;
