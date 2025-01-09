@@ -33,6 +33,7 @@ model Restaurant {
   partnerId       Int      @unique
   restaurantName  String   @unique
   keyword         String?
+  starRating      Int?
   Partner         Partner  @relation(fields: [partnerId], references: [id])
   Review          Review[]
   Menu            Menu[]
@@ -88,12 +89,13 @@ model Review {
   userId    Int
   restaurantId Int
   orderId   Int      @unique
+  restaurantsId Int
   image     String?
   content   String?
   starRating Int
   createdAt DateTime @default(now())
   Order     Order     @relation(fields: [orderId], references: [id])
-  Restaurant Restaurant @relation(fields: [restaurantId], references: [id])
+  Restaurant Restaurant @relation(fields: [restaurantsId], references: [id])
   Comment   Comment[]
   @@map("Review")
 }
