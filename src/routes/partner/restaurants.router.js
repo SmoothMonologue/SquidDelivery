@@ -5,7 +5,7 @@ const prisma = new PrismaClient(); // Prisma Client 인스턴스 생성
 const restaurantsRouter = express.Router();
 
 // Create a new restaurant (C) - 새로운 레스토랑 생성
-restaurantsRouter.post('/', async (req, res) => {
+restaurantsRouter.post('/restaurants', async (req, res) => {
     const { partnerId, restaurantName, keyword } = req.body; // 요청 본문에서 필요한 데이터 추출
     try {
         // Prisma를 사용해 새로운 레스토랑 생성
@@ -23,7 +23,7 @@ restaurantsRouter.post('/', async (req, res) => {
 });
 
 // Get all restaurants (R) - 모든 레스토랑 조회
-restaurantsRouter.get('/', async (req, res) => {
+restaurantsRouter.get('/restaurants', async (req, res) => {
     try {
         // Prisma를 사용해 모든 레스토랑 조회
         const restaurants = await prisma.restaurant.findMany({
@@ -39,7 +39,7 @@ restaurantsRouter.get('/', async (req, res) => {
 });
 
 // Get a restaurant by ID (R) - 특정 ID의 레스토랑 조회
-restaurantsRouter.get('/:id', async (req, res) => {
+restaurantsRouter.get('/restaurants/:restaurantsid', async (req, res) => {
     try {
         const restaurant = await prisma.restaurant.findUnique({
             where: { id: parseInt(req.params.id, 10) }, // URL 파라미터에서 ID를 정수로 변환
@@ -58,7 +58,7 @@ restaurantsRouter.get('/:id', async (req, res) => {
 });
 
 // Update a restaurant (U) - 특정 ID의 레스토랑 데이터 수정
-restaurantsRouter.put('/:id', async (req, res) => {
+restaurantsRouter.put('/restaurants/:restaurantsid', async (req, res) => {
     const { restaurantName, keyword } = req.body; // 요청 본문에서 업데이트할 데이터 추출
     try {
         // Prisma를 사용해 레스토랑 데이터 업데이트
@@ -76,7 +76,7 @@ restaurantsRouter.put('/:id', async (req, res) => {
 });
 
 // Delete a restaurant (D) - 특정 ID의 레스토랑 삭제
-restaurantsRouter.delete('/:id', async (req, res) => {
+restaurantsRouter.delete('/restaurants/:restaurantsid', async (req, res) => {
     try {
         // Prisma를 사용해 레스토랑 삭제
         await prisma.restaurant.delete({
