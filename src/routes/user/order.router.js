@@ -38,18 +38,27 @@ ordersRouter.post('/', authorization, async (req, res) => {
 //주문 취소 (사용자)
 ordersRouter.post('/:orderId/status', authorization, async (req, res) => {
   const { orderId } = req.params;
+  const userId = req.user;
   try {
     const order = await prisma.$transaction(async (tx) => {
       //결제취소 api
 
       return await tx.order.update({
-        where: { id: +orderId },
+        where: { id: +orderId, userId: +userId },
         data: { status: '주문 취소' },
       });
     });
 
     if (!order) {
       return res.status(404).json({ message: '주문을 찾을 수 없습니다.' });
+    }
+
+    const orderStatus = await tx.order.findUnique({
+      where: { id: +orderId, userId: +userId },
+      select: { status: true },
+    });
+    if (orderStatus.status !== '주문 요청') {
+      return res.status(400).json({ message: '조리 중 입니다(취소 불가)' });
     }
 
     return res.status(200).json({ message: '주문이 취소되었습니다.', order });
