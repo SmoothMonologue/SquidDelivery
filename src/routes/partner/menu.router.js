@@ -45,7 +45,7 @@ menuRouter.get('/users/restaurants/:restauranstId/menu', async (req, res) => {
   } catch (error) {
     // 데이터베이스 작업 중 오류가 발생하면 에러를 로그로 출력하고, 클라이언트에 에러 메시지를 반환합니다.
     console.error(error);
-    res.status(401).send('메뉴를 불러오는 중 오류가 발생했습니다.');
+    res.status(500).send('메뉴를 불러오는 중 오류가 발생했습니다.');
   }
 });
 
@@ -64,14 +64,15 @@ menuRouter.get('/partners/restaurants/:restaurantId/menu', async (req, res) => {
   } catch (error) {
     // 데이터베이스 작업 중 오류가 발생하면 에러를 로그로 출력하고, 클라이언트에 에러 메시지를 반환합니다.
     console.error(error);
-    res.status(401).send('메뉴를 불러오는 중 오류가 발생했습니다.');
+    res.status(500).send('메뉴를 불러오는 중 오류가 발생했습니다.');
   }
 });
 // 메뉴 수정(사장님용)
 menuRouter.put('/partners/menu/:menuId', async (req, res) => {
   const { menuId } = req.params; // URL 경로에서 'menuId'를 추출합니다.
   const { name, price, spicyLevel } = req.body; // 요청 본문에서 수정할 데이터를 추출합니다.
-
+  // if문으로 메뉴나 가격이 없을때의 경우만들기
+  // price가 0보다 작을때의 오류도 만들기
   try {
     // Prisma를 사용하여 'menuId'에 해당하는 메뉴 데이터를 업데이트합니다.
     const updatedMenu = await prisma.menu.update({
@@ -84,7 +85,7 @@ menuRouter.put('/partners/menu/:menuId', async (req, res) => {
   } catch (error) {
     // 데이터베이스 작업 중 오류가 발생하면 에러를 로그로 출력하고, 클라이언트에 에러 메시지를 반환합니다.
     console.error(error);
-    res.status(401).send('메뉴 수정 중 오류가 발생했습니다.');
+    res.status(500).send('메뉴 수정 중 오류가 발생했습니다.');
   }
 });
 // 메뉴 삭제(사장님용)
@@ -98,11 +99,11 @@ menuRouter.delete('/partners/menu/:menuId', async (req, res) => {
     });
 
     // 삭제 성공 메시지를 클라이언트에 반환합니다.
-    res.status(201).send(`메뉴 ${menuId}가 삭제되었습니다.`);
+    res.status(200).send(`메뉴 ${menuId}가 삭제되었습니다.`);
   } catch (error) {
     // 데이터베이스 작업 중 오류가 발생하면 에러를 로그로 출력하고, 클라이언트에 에러 메시지를 반환합니다.
     console.error(error);
-    res.status(401).send('메뉴 삭제 중 오류가 발생했습니다.');
+    res.status(500).send('메뉴 삭제 중 오류가 발생했습니다.');
   }
 });
 
