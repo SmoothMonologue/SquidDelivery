@@ -1,5 +1,4 @@
 import { MIN_PASSWORD_LENGTH } from './auth.constant.js';
-import { MIN_RESUME_LENGTH } from './resume.constant.js';
 
 export const MESSAGES = {
   AUTH: {
@@ -41,32 +40,45 @@ export const MESSAGES = {
       SUCCEED: '내 정보 조회에 성공했습니다.',
     },
   },
-  RESUMES: {
+  REVIEWS: {
     COMMON: {
-      TITLE: {
-        REQUIRED: '제목을 입력해 주세요.',
-      },
-      CONTENT: {
-        REQUIRED: '자기소개를 입력해 주세요.',
-        MIN_LENGTH: `자기소개는 ${MIN_RESUME_LENGTH}자 이상 작성해야 합니다.`,
-      },
-      NOT_FOUND: '이력서가 존재하지 않습니다.',
+      NOT_FOUND: '리뷰를 찾을 수 없습니다.',
+      ALREADY_EXISTS: '이미 리뷰가 작성되었습니다.',
+      NOT_AUTHORIZED: '자신이 작성한 리뷰만 수정/삭제할 수 있습니다.'
     },
     CREATE: {
-      SUCCEED: '이력서 생성에 성공했습니다.',
+      SUCCEED: '리뷰 작성에 성공했습니다.',
+      FAILED: '리뷰 작성에 실패했습니다.',
     },
     READ_LIST: {
-      SUCCEED: '이력서 목록 조회에 성공했습니다.',
-    },
-    READ_DETAIL: {
-      SUCCEED: '이력서 상세 조회에 성공했습니다.',
+      SUCCEED: '리뷰 목록 조회에 성공했습니다.',
+      FAILED: '리뷰 목록 조회에 실패했습니다.'
     },
     UPDATE: {
-      SUCCEED: '이력서 수정에 성공했습니다.',
-      NO_BODY_DATA: '수정 할 정보를 입력해 주세요.',
+      SUCCEED: '리뷰 수정에 성공했습니다.',
+      FAILED: '리뷰 수정에 실패했습니다.'
     },
     DELETE: {
-      SUCCEED: '이력서 삭제에 성공했습니다.',
+      SUCCEED: '리뷰 삭제에 성공했습니다.',
+      FAILED: '리뷰 삭제에 실패했습니다.'
+    }
+  },
+  COMMENTS: {
+    COMMON: {
+      NOT_FOUND: '댓글을 찾을 수 없습니다.',
+      NOT_AUTHORIZED: '자신의 레스토랑 리뷰에만 댓글을 작성할 수 있습니다.',
     },
+    CREATE: {
+      SUCCEED: '댓글 작성에 성공했습니다.',
+      FAILED: '댓글 작성에 실패했습니다.',
+    },
+    UPDATE: {
+      SUCCEED: '댓글 수정에 성공했습니다.',
+      FAILED: '댓글 수정에 실패했습니다.',
+    },
+    DELETE: {
+      SUCCEED: '댓글 삭제에 성공했습니다.',
+      FAILED: '댓글 삭제에 실패했습니다.',
+    }
   },
 };

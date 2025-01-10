@@ -1,12 +1,12 @@
 import express from 'express';
-import apiRouter from './routers/index.js';
+import apiRouter from './routes/index.js';
 import { SERVER_PORT } from './constants/env.constant.js';
 
 const app = express();
 
 app.use(express.json());
 
-// postsRoutes를 /api/posts Path에 연결
+
 app.use('/api', apiRouter);
 
 app.listen(SERVER_PORT, () => {
