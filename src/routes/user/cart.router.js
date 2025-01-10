@@ -102,4 +102,51 @@ cartsRouter.get('/', authorization, async (req, res) => {
   }
 });
 
+//장바구니 삭제
+cartsRouter.delete('/:cartId', authorization, async (req, res) => {
+  try {
+    const cartId = req.params.cartId;
+    //사용자의 카트인지 검증 필요
+
+    const { menuId } = req.body;
+    const usingCart = await prisma.cart.findUnique({
+      where: {
+        id: Number(cartId),
+      },
+    });
+    const chosenMenu = await prisma.menu.findUnique({
+      where: {
+        id: Number(menuId),
+      },
+      select: {
+        name: true,
+        price: true,
+      },
+    });
+    //존재하지 않는 카트일 경우 리턴
+
+    await prisma.cart.delete({
+      where: {
+        id: Number(cartId),
+      },
+    });
+
+    //   const newMenuOfCart = await prisma.menuCart.create({
+    //     data: {
+    //       cartId: Number(cartId),
+    //       menuId: Number(menuId),
+    //     },
+    //   });
+
+    return res.status(HTTP_STATUS.CREATED).json({
+      message: MESSAGES.COMMENTS.CREATE.SUCCEED,
+      //data: newMenuOfCart,
+    });
+  } catch (err) {
+    return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+      message: MESSAGES.COMMENTS.CREATE.FAILED,
+    });
+  }
+});
+
 export default cartsRouter;
