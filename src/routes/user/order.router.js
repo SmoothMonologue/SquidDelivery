@@ -15,6 +15,10 @@ ordersRouter.post('/', authorization, async (req, res) => {
       return res.status(404).json({ message: '장바구니를 찾을 수 없습니다.' });
     }
 
+    const priceSum = cart.menuInfo.price.reduce((prev, current) => prev + current, 0); //장바구니 가격 합계
+    const menuNames = cart.menuInfo.name; // 장바구니에서 메뉴 이름 배열 가져오기
+    const menuName = menuNames.join(', '); // 배열을 문자열로 변환
+
     const order = await prisma.$transaction(async (tx) => {
       //결제api
 
@@ -22,9 +26,9 @@ ordersRouter.post('/', authorization, async (req, res) => {
         data: {
           userId: +userId,
           cartId: cart.id,
-          priceSum: cart.menuInfo.price, //수정필요
+          priceSum: priceSum,
           status: '주문 요청',
-          munuName, //수정필요
+          menuName: menuName,
         },
       });
     });
