@@ -1,14 +1,16 @@
-import express from "express";
-import apiRouter from './routers/index.js';
+import express from 'express';
+import apiRouter from './routes/index.js';
+import { SERVER_PORT } from './constants/env.constant.js';
+import { errorHandler } from './middlewares/error-handler.middleware.js';
 
 const app = express();
-const PORT = 3001;
 
 app.use(express.json());
 
-// postsRoutes를 /api/posts Path에 연결
 app.use('/api', apiRouter);
 
-app.listen(PORT, () => {
-  console.log(PORT, "포트로 서버가 열렸어요!");
+app.use(errorHandler);
+
+app.listen(SERVER_PORT, () => {
+  console.log(`${SERVER_PORT}포트로 서버가 실행되었습니다.`);
 });
