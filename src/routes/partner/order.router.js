@@ -33,8 +33,8 @@ ordersRouter.get('/', authorization, async (req, res) => {
       },
     });
     return res.status(200).json({ data: order });
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+    console.log(error);
     return res.status(500).json({ message: '서버 오류가 발생했습니다.' });
   }
 });
@@ -70,8 +70,8 @@ ordersRouter.get('/:orderId', authorization, async (req, res) => {
       },
     });
     return res.status(200).json({ data: order });
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+    console.log(error);
     return res.status(500).json({ message: '서버 오류가 발생했습니다.' });
   }
 });
@@ -108,8 +108,8 @@ ordersRouter.patch('/:orderId/status', authorization, async (req, res) => {
       },
     });
     return res.status(200).json({ message: '주문이 접수되었습니다.', order });
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+    console.log(error);
     return res.status(500).json({ message: '주문 접수 중 오류가 발생했습니다.' });
   }
 });
@@ -147,8 +147,8 @@ ordersRouter.post('/:orderId/status', authorization, async (req, res) => {
     }
 
     return res.status(200).json({ message: '주문이 취소되었습니다.' });
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+    console.log(error);
     return res.status(500).json({ message: '주문 취소 중 오류가 발생했습니다.' });
   }
 });
