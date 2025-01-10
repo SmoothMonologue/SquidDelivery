@@ -68,7 +68,7 @@ menuRouter.get('/partners/restaurants/:restaurantId/menu', async (req, res) => {
   }
 });
 // 메뉴 수정(사장님용)
-menuRouter.put('/partners/menu/:menuId', async (req, res) => {
+menuRouter.patch('/partners/menu/:menuId', async (req, res) => {
   const { menuId } = req.params; // URL 경로에서 'menuId'를 추출합니다.
   const { name, price, spicyLevel } = req.body; // 요청 본문에서 수정할 데이터를 추출합니다.
   // if문으로 메뉴나 가격이 없을때의 경우만들기
