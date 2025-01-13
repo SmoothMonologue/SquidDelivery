@@ -22,7 +22,7 @@ cartsRouter.post('/', authorization, async (req, res) => {
       message: MESSAGES.CARTS.CREATE.SUCCEED,
       data: newCart,
     });
-  } catch (err) {
+  } catch (error) {
     return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
       message: MESSAGES.CARTS.CREATE.FAILED,
     });
@@ -81,7 +81,7 @@ cartsRouter.post('/:cartId', authorization, async (req, res) => {
       message: MESSAGES.CARTS.UPDATE.SUCCEED,
       data: newMenuOfCart,
     });
-  } catch (err) {
+  } catch (error) {
     return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
       message: MESSAGES.COMMENTS.UPDATE.FAILED,
     });
@@ -107,7 +107,7 @@ cartsRouter.get('/', authorization, async (req, res) => {
       message: MESSAGES.CARTS.COMMON.SUCCEED,
       data: usingCart,
     });
-  } catch (err) {
+  } catch (error) {
     return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
       message: MESSAGES.CARTS.COMMON.NOT_FOUND,
     });
@@ -144,7 +144,7 @@ cartsRouter.delete('/:cartId', authorization, async (req, res) => {
     return res.status(HTTP_STATUS.OK).json({
       message: MESSAGES.CARTS.DELETE.SUCCEED,
     });
-  } catch (err) {
+  } catch (error) {
     return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
       message: MESSAGES.CARTS.DELETE.FAILED,
     });
