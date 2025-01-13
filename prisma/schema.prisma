@@ -1,10 +1,12 @@
 generator client {
   provider = "prisma-client-js"
 }
+
 datasource db {
   provider = "mysql" // 사용 중인 데이터베이스 종류
   url      = env("DATABASE_URL")
 }
+
 model User {
   id        Int      @id @default(autoincrement())
   name      String
@@ -15,107 +17,129 @@ model User {
   updatedAt DateTime @updatedAt
   cash      Int      @default(1000000) // 디폴트 값 100만
   Order     Order[]
+
   @@map("User")
 }
+
 model Partner {
-  id        Int      @id @default(autoincrement())
-  name      String
-  email     String   @unique
-  password  String
-  cash      Int      @default(10000)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  Restaurant Restaurant?
-  Comment    Comment[]
+  id             Int         @id @default(autoincrement())
+  name           String
+  email          String      @unique
+  password       String
+  businessNumber String      @unique
+  phoneNumber    String
+  cash           Int         @default(10000)
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+  Restaurant     Restaurant?
+  Comment        Comment[]
+
   @@map("Partner")
 }
+
 model Restaurant {
-  id              Int      @id @default(autoincrement())
-  partnerId       Int      @unique
-  restaurantName  String   @unique
-  keyword         String?
-  starRating      Int?
-  Partner         Partner  @relation(fields: [partnerId], references: [id])
-  Review          Review[]
-  Menu            Menu[]
-  Cart            Cart[]
+  id             Int      @id @default(autoincrement())
+  partnerId      Int      @unique
+  restaurantName String   @unique
+  keyword        String?
+  starRating     Int?
+  Partner        Partner  @relation(fields: [partnerId], references: [id])
+  Review         Review[]
+  Menu           Menu[]
+  Cart           Cart[]
+
   @@map("Restaurant")
 }
+
 model Menu {
-  id          Int      @id @default(autoincrement())
+  id           Int        @id @default(autoincrement())
   restaurantId Int
-  name        String
-  price       Int
-  spicyLevel  Int?
-  Restaurant  Restaurant @relation(fields: [restaurantId], references: [id])
-  MenuCart    MenuCart[]
+  name         String
+  price        Int
+  spicyLevel   Int?
+  Restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  MenuCart     MenuCart[]
+
   @@map("Menu")
 }
+
 model Cart {
-  id          Int      @id @default(autoincrement())
-  userId      Int
+  id           Int        @id @default(autoincrement())
+  userId       Int
   restaurantId Int
-  createdAt   DateTime @default(now())
-  menuInfo    Json
-  Restaurant  Restaurant @relation(fields: [restaurantId], references: [id])
-  MenuCart    MenuCart[]
-  Order       Order?
+  createdAt    DateTime   @default(now())
+  menuInfo     Json
+  Restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  MenuCart     MenuCart[]
+  Order        Order?
+
   @@map("Cart")
 }
+
 model Order {
-  id        Int       @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   userId    Int
-  cartId    Int       @unique
+  cartId    Int      @unique
   priceSum  Int
   status    String
   menuName  Json
-  createdAt DateTime  @default(now())
-  User      User      @relation(fields: [userId], references: [id])
-  Cart      Cart      @relation(fields: [cartId], references: [id])
+  createdAt DateTime @default(now())
+  User      User     @relation(fields: [userId], references: [id])
+  Cart      Cart     @relation(fields: [cartId], references: [id])
   Payment   Payment?
   Review    Review?
+
   @@map("Order")
 }
+
 model Payment {
   id        Int      @id @default(autoincrement())
-  orderId   Int      @unique  
+  orderId   Int      @unique
   createdAt DateTime @default(now())
   method    String
   Order     Order    @relation(fields: [orderId], references: [id])
+
   @@map("Payment")
 }
+
 // 테이블 정리 완료
 model Review {
-  id        Int      @id @default(autoincrement())
-  userId    Int
-  restaurantId Int
-  orderId   Int      @unique
+  id            Int        @id @default(autoincrement())
+  userId        Int
+  restaurantId  Int
+  orderId       Int        @unique
   restaurantsId Int
-  image     String?
-  content   String?
-  starRating Int
-  createdAt DateTime @default(now())
-  Order     Order     @relation(fields: [orderId], references: [id])
-  Restaurant Restaurant @relation(fields: [restaurantsId], references: [id])
-  Comment   Comment[]
+  image         String?
+  content       String?
+  starRating    Int
+  createdAt     DateTime   @default(now())
+  Order         Order      @relation(fields: [orderId], references: [id])
+  Restaurant    Restaurant @relation(fields: [restaurantsId], references: [id])
+  Comment       Comment[]
+
+  @@unique([userId, restaurantId])
   @@map("Review")
 }
+
 // 테이블 정리 완료
 model Comment {
   id        Int      @id @default(autoincrement())
-  partnerId Int      @unique
+  partnerId Int
   reviewId  Int      @unique
   comment   String
   createdAt DateTime @default(now())
-  Partner   Partner   @relation(fields: [partnerId], references: [id])
-  Review    Review    @relation(fields: [reviewId], references: [id])
+  Partner   Partner  @relation(fields: [partnerId], references: [id])
+  Review    Review   @relation(fields: [reviewId], references: [id])
+
   @@map("Comment")
 }
+
 model MenuCart {
-  id       Int  @id @default(autoincrement())
-  menuId   Int
-  cartId   Int
-  Menu     Menu @relation(fields: [menuId], references: [id])
-  Cart     Cart @relation(fields: [cartId], references: [id])
+  id     Int  @id @default(autoincrement())
+  menuId Int
+  cartId Int
+  Menu   Menu @relation(fields: [menuId], references: [id])
+  Cart   Cart @relation(fields: [cartId], references: [id])
+
   @@map("MenuCart")
 }

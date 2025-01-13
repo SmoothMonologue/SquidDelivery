@@ -1,7 +1,13 @@
 import express from 'express';
+import { authorization } from '../../middlewares/auth.middleware.js';
+import PartnerRestaurantController from '../../controllers/partner/partner.restaurants.controller.js';
 
-const restaurantRouter = express.Router();
+const router = express.Router();
 
-restaurantRouter.post('/', (req, res) => {});
+// 파트너 전용 레스토랑 라우트
+router.post('/', authorization, PartnerRestaurantController.createRestaurant);
+router.get('/:partnerId', authorization, PartnerRestaurantController.getRestaurants);
+router.put('/:restaurantsId', authorization, PartnerRestaurantController.updateRestaurant);
+router.delete('/:restaurantsId', authorization, PartnerRestaurantController.deleteRestaurant);
 
-export default restaurantRouter;
+export default router;

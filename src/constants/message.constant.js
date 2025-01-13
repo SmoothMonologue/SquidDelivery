@@ -86,4 +86,10 @@ export const MESSAGES = {
       FAILED: '댓글 삭제에 실패했습니다.',
     },
   },
+  RESTAURANTS: {
+    NOT_FOUND: '업장을 찾을 수 없습니다.',
+    CREATED: '업장이 성공적으로 생성되었습니다.',
+    UPDATED: '업장이 성공적으로 수정되었습니다.',
+    DELETED: '업장이 성공적으로 삭제되었습니다.',
+  },
 };
