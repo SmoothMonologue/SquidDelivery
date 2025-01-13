@@ -1,5 +1,5 @@
-import { HTTP_STATUS } from '../constants/http-status.constant.js';
-import { MESSAGES } from '../constants/message.constant.js';
+import { HTTP_STATUS } from '../../constants/http-status.constant.js';
+import { MESSAGES } from '../../constants/message.constant.js';
 
 /**
  * CommentService
@@ -52,7 +52,7 @@ class CommentService {
   // 댓글 수정 서비스
   updateComment = async ({ commentId, restaurantId, content }) => {
     // 댓글 존재 여부 및 권한 확인
-    const comment = await this.commentRepository.findCommentByReviewId(reviewId);
+    const comment = await this.commentRepository.findCommentById(commentId);
     if (!comment) {
       const error = new Error(MESSAGES.COMMENTS.COMMON.NOT_FOUND);
       error.status = HTTP_STATUS.NOT_FOUND;
@@ -80,7 +80,7 @@ class CommentService {
   // 댓글 삭제 서비스
   deleteComment = async ({ commentId, restaurantId }) => {
     // 댓글 존재 여부 및 권한 확인
-    const comment = await this.commentRepository.findCommentByReviewId(reviewId);
+    const comment = await this.commentRepository.findCommentById(commentId);
     if (!comment) {
       const error = new Error(MESSAGES.COMMENTS.COMMON.NOT_FOUND);
       error.status = HTTP_STATUS.NOT_FOUND;
