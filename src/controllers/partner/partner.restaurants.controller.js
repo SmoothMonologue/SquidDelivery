@@ -1,4 +1,4 @@
-import PartnerRestaurantService from '../services/partner.restaurant.service.js';
+import PartnerRestaurantService from '../../services/partner/partner.restaurants.service.js';
 
 class PartnerRestaurantController {
   // 업장 등록
@@ -32,7 +32,7 @@ class PartnerRestaurantController {
       );
       res.status(200).json({ message: '업장 정보가 수정되었습니다.', data: updatedRestaurant });
     } catch (error) {
-      if (error.message.includes('not found')) {
+      if (error.message.includes('업장이 존재하지않습니다.')) {
         res.status(404).json({ message: '업장이 존재하지 않습니다.' });
       } else {
         next(error);
@@ -46,7 +46,7 @@ class PartnerRestaurantController {
       await PartnerRestaurantService.deleteRestaurant(req.params.restaurantsId);
       res.status(200).json({ message: '업장이 삭제되었습니다.' });
     } catch (error) {
-      if (error.message.includes('not found')) {
+      if (error.message.includes('업장이 존재하지않습니다.')) {
         res.status(404).json({ message: '업장이 존재하지 않습니다.' });
       } else {
         next(error);

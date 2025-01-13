@@ -1,4 +1,4 @@
-import UserRestaurantService from '../services/user.restaurant.service.js';
+import UserRestaurantService from '../../services/user/user.restaurants.service.js';
 
 class UserRestaurantController {
   async getAllRestaurants(req, res, next) {
