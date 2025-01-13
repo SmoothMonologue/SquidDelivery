@@ -2,7 +2,7 @@ import express from 'express';
 import restaurantRouter from './partner/restaurants.router.js';
 import menuRouter from './partner/menu.router.js';
 import reviewRouter from './partner/review.router.js';
-import ordersRouter from './partner/order.router.js';
+import ordersRouter from './partner/orders.router.js';
 
 const partnerRouter = express.Router();
 
