@@ -1,6 +1,8 @@
-import { prisma } from '../../utils/prisma/index.js';
+import { PrismaClient } from '@prisma/client';
 import { HTTP_STATUS } from '../../constants/http-status.constant.js';
 import { MESSAGES } from '../../constants/message.constant.js';
+
+const prisma = new PrismaClient();
 
 class UserRepository {
   #orm;

@@ -1,7 +1,7 @@
 import express from 'express';
 import CommentController from '../../controllers/partner/comments.controller.js';
-import CommentService from '../../services/comment.service.js';
-import commentRepository from '../../repositories/comment.repository.js';
+import CommentService from '../../services/partner/comment.service.js';
+import commentRepository from '../../repositories/partner/comment.repository.js';
 
 const commentRouter = express.Router();
 const commentController = new CommentController(new CommentService(commentRepository));
