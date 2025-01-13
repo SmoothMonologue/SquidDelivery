@@ -2,7 +2,11 @@ import UserRestaurantRepository from '../repositories/user.restaurant.repository
 
 class UserRestaurantService {
   async getAllRestaurants() {
-    return UserRestaurantRepository.findAllRestaurants();
+    const restaurants = await UserRestaurantRepository.findAllRestaurants();
+    if (!restaurants || restaurants.length === 0) {
+      throw new Error('등록된 업장이 없습니다.');
+    }
+    return restaurants;
   }
 }
 

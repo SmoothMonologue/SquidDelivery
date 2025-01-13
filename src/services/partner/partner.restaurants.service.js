@@ -6,11 +6,19 @@ class PartnerRestaurantService {
   }
 
   async updateRestaurant(id, data) {
+    const restaurant = await PartnerRestaurantRepository.findRestaurantById(id);
+    if (!restaurant) {
+      throw new Error('업장이 존재하지 않습니다.');
+    }
     return PartnerRestaurantRepository.updateRestaurant(id, data);
   }
 
   async deleteRestaurant(id) {
-    await PartnerRestaurantRepository.deleteRestaurant(id);
+    const restaurant = await PartnerRestaurantRepository.findRestaurantById(id);
+    if (!restaurant) {
+      throw new Error('업장이 존재하지 않습니다.');
+    }
+    return PartnerRestaurantRepository.deleteRestaurant(id);
   }
 
   async getRestaurantsByPartner(partnerId) {
