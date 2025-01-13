@@ -26,7 +26,7 @@ class UserRepository {
   signInUser = async ({ email, password }) => {
     const user = await this.#orm.user.findUnique({ where: { email } });
 
-    if (!partner) {
+    if (!user) {
       return {
         status: HTTP_STATUS.NOT_FOUND,
         message: MESSAGES.AUTH.SIGN_IN.FAILED,
