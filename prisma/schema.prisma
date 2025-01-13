@@ -115,13 +115,14 @@ model Review {
   Restaurant    Restaurant @relation(fields: [restaurantsId], references: [id])
   Comment       Comment[]
 
+  @@unique([userId, restaurantId])
   @@map("Review")
 }
 
 // 테이블 정리 완료
 model Comment {
   id        Int      @id @default(autoincrement())
-  partnerId Int      @unique
+  partnerId Int
   reviewId  Int      @unique
   comment   String
   createdAt DateTime @default(now())
