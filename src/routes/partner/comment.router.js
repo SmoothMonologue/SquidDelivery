@@ -1,5 +1,5 @@
 import express from 'express';
-import CommentController from '../../controllers/restaurant/comments.controller.js';
+import CommentController from '../../controllers/partner/comments.controller.js';
 import CommentService from '../../services/comment.service.js';
 import commentRepository from '../../repositories/comment.repository.js';
 
