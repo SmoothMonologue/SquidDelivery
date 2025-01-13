@@ -44,7 +44,7 @@ export const MESSAGES = {
     COMMON: {
       NOT_FOUND: '리뷰를 찾을 수 없습니다.',
       ALREADY_EXISTS: '이미 리뷰가 작성되었습니다.',
-      NOT_AUTHORIZED: '자신이 작성한 리뷰만 수정/삭제할 수 있습니다.'
+      NOT_AUTHORIZED: '자신이 작성한 리뷰만 수정/삭제할 수 있습니다.',
     },
     CREATE: {
       SUCCEED: '리뷰 작성에 성공했습니다.',
@@ -52,16 +52,16 @@ export const MESSAGES = {
     },
     READ_LIST: {
       SUCCEED: '리뷰 목록 조회에 성공했습니다.',
-      FAILED: '리뷰 목록 조회에 실패했습니다.'
+      FAILED: '리뷰 목록 조회에 실패했습니다.',
     },
     UPDATE: {
       SUCCEED: '리뷰 수정에 성공했습니다.',
-      FAILED: '리뷰 수정에 실패했습니다.'
+      FAILED: '리뷰 수정에 실패했습니다.',
     },
     DELETE: {
       SUCCEED: '리뷰 삭제에 성공했습니다.',
-      FAILED: '리뷰 삭제에 실패했습니다.'
-    }
+      FAILED: '리뷰 삭제에 실패했습니다.',
+    },
   },
   COMMENTS: {
     COMMON: {
@@ -79,6 +79,25 @@ export const MESSAGES = {
     DELETE: {
       SUCCEED: '댓글 삭제에 성공했습니다.',
       FAILED: '댓글 삭제에 실패했습니다.',
-    }
+    },
+  },
+  CARTS: {
+    COMMON: {
+      SUCCEED: '장바구니 조회에 성공했습니다.',
+      NOT_FOUND: '장바구니를 찾을 수 없습니다.',
+      NOT_AUTHORIZED: '자신의 장바구니만 접근할 수 있습니다.',
+    },
+    CREATE: {
+      SUCCEED: '장바구니를 추가했습니다.',
+      FAILED: '장바구니 추가에 실패했습니다.',
+    },
+    UPDATE: {
+      SUCCEED: '메뉴 추가에 성공했습니다.',
+      FAILED: '메뉴 추가에 실패했습니다.',
+    },
+    DELETE: {
+      SUCCEED: '장바구니를 삭제했습니다.',
+      FAILED: '장바구니 삭제에 실패했습니다.',
+    },
   },
 };

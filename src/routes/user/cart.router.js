@@ -14,17 +14,17 @@ cartsRouter.post('/', authorization, async (req, res) => {
       data: {
         userId: Number(userId),
         restaurantId: Number(restaurantId),
-        menuInfo: '',
+        menuInfo: [],
       },
     });
 
     return res.status(HTTP_STATUS.CREATED).json({
-      message: MESSAGES.COMMENTS.CREATE.SUCCEED,
+      message: MESSAGES.CARTS.CREATE.SUCCEED,
       data: newCart,
     });
   } catch (err) {
     return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-      message: MESSAGES.COMMENTS.CREATE.FAILED,
+      message: MESSAGES.CARTS.CREATE.FAILED,
     });
   }
 });
@@ -33,8 +33,6 @@ cartsRouter.post('/', authorization, async (req, res) => {
 cartsRouter.post('/:cartId', authorization, async (req, res) => {
   try {
     const cartId = req.params.cartId;
-    //사용자의 카트인지 검증 필요
-
     const { menuId } = req.body;
     const usingCart = await prisma.cart.findUnique({
       where: {
@@ -50,10 +48,19 @@ cartsRouter.post('/:cartId', authorization, async (req, res) => {
         price: true,
       },
     });
-    //존재하지 않는 카트일 경우 리턴
+    //카트 존재 여부, 로그인한 사용자의 카트인지 검증
+    if (!usingCart) {
+      return res.status(HTTP_STATUS.NOT_FOUND).json({
+        message: MESSAGES.CARTS.COMMON.NOT_FOUND,
+      });
+    } else if (usingCart.userId !== Number(userId)) {
+      return res.status(HTTP_STATUS.FORBIDDEN).json({
+        message: MESSAGES.CARTS.COMMON.NOT_AUTHORIZED,
+      });
+    }
 
     let infoOfChosenMenu = usingCart.menuInfo;
-    infoOfChosenMenu += `메뉴: ${chosenMenu.name}, 가격: ${chosenMenu.price}, `;
+    infoOfChosenMenu.push(chosenMenu);
     await prisma.cart.update({
       where: {
         id: Number(cartId),
@@ -70,13 +77,13 @@ cartsRouter.post('/:cartId', authorization, async (req, res) => {
       },
     });
 
-    return res.status(HTTP_STATUS.CREATED).json({
-      message: MESSAGES.COMMENTS.CREATE.SUCCEED,
+    return res.status(HTTP_STATUS.OK).json({
+      message: MESSAGES.CARTS.UPDATE.SUCCEED,
       data: newMenuOfCart,
     });
   } catch (err) {
     return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-      message: MESSAGES.COMMENTS.CREATE.FAILED,
+      message: MESSAGES.COMMENTS.UPDATE.FAILED,
     });
   }
 });
@@ -90,14 +97,19 @@ cartsRouter.get('/', authorization, async (req, res) => {
         userId: Number(userId),
       },
     });
+    if (!usingCart) {
+      return res.status(HTTP_STATUS.NOT_FOUND).json({
+        message: MESSAGES.CARTS.COMMON.NOT_FOUND,
+      });
+    }
 
-    return res.status(HTTP_STATUS.CREATED).json({
-      message: MESSAGES.COMMENTS.CREATE.SUCCEED,
+    return res.status(HTTP_STATUS.OK).json({
+      message: MESSAGES.CARTS.COMMON.SUCCEED,
       data: usingCart,
     });
   } catch (err) {
     return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-      message: MESSAGES.COMMENTS.CREATE.FAILED,
+      message: MESSAGES.CARTS.COMMON.NOT_FOUND,
     });
   }
 });
@@ -106,24 +118,22 @@ cartsRouter.get('/', authorization, async (req, res) => {
 cartsRouter.delete('/:cartId', authorization, async (req, res) => {
   try {
     const cartId = req.params.cartId;
-    //사용자의 카트인지 검증 필요
-
-    const { menuId } = req.body;
     const usingCart = await prisma.cart.findUnique({
       where: {
         id: Number(cartId),
       },
     });
-    const chosenMenu = await prisma.menu.findUnique({
-      where: {
-        id: Number(menuId),
-      },
-      select: {
-        name: true,
-        price: true,
-      },
-    });
-    //존재하지 않는 카트일 경우 리턴
+
+    //카트 존재 여부, 로그인한 사용자의 카트인지 검증
+    if (!usingCart) {
+      return res.status(HTTP_STATUS.NOT_FOUND).json({
+        message: MESSAGES.CARTS.COMMON.NOT_FOUND,
+      });
+    } else if (usingCart.userId !== Number(userId)) {
+      return res.status(HTTP_STATUS.FORBIDDEN).json({
+        message: MESSAGES.CARTS.COMMON.NOT_AUTHORIZED,
+      });
+    }
 
     await prisma.cart.delete({
       where: {
@@ -131,20 +141,12 @@ cartsRouter.delete('/:cartId', authorization, async (req, res) => {
       },
     });
 
-    //   const newMenuOfCart = await prisma.menuCart.create({
-    //     data: {
-    //       cartId: Number(cartId),
-    //       menuId: Number(menuId),
-    //     },
-    //   });
-
-    return res.status(HTTP_STATUS.CREATED).json({
-      message: MESSAGES.COMMENTS.CREATE.SUCCEED,
-      //data: newMenuOfCart,
+    return res.status(HTTP_STATUS.OK).json({
+      message: MESSAGES.CARTS.DELETE.SUCCEED,
     });
   } catch (err) {
     return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-      message: MESSAGES.COMMENTS.CREATE.FAILED,
+      message: MESSAGES.CARTS.DELETE.FAILED,
     });
   }
 });
