@@ -28,6 +28,12 @@ class cartService {
   };
 
   //장바구니에 메뉴 추가
+  addMenu = async ({ cartId, menuId }) => {
+    let infoOfChosenMenu = usingCart(cartId).menuInfo;
+    infoOfChosenMenu.push(chosenMenu(menuId));
+
+    return await this.#repository.addMenu({ cartId, infoOfChosenMenu });
+  };
   newMenuOfCart = async (menuCartData) => {
     return await this.#repository.newMenuOfCart(menuCartData);
   };

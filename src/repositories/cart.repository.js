@@ -49,6 +49,18 @@ class cartRepository {
     });
   };
 
+  //
+  addMenu = async ({ cartId, infoOfChosenMenu }) => {
+    return await this.#orm.cart.update({
+      where: {
+        id: Number(cartId),
+      },
+      data: {
+        menuInfo: infoOfChosenMenu,
+      },
+    });
+  };
+
   //장바구니에 메뉴 추가
   newMenuOfCart = async ({ cartId, menuId }) => {
     return await this.#orm.menuCart.create({
