@@ -20,7 +20,7 @@ class Menucontrollerpartner {
   // 메뉴 목록 조회(소비자/사장님 공용)
   getRestaurantMenus = async (req, res) => {
     try {
-      // console.log(req.params);
+      console.log(req.params);
       const menus = await this.#service.restaurantIdMenu({ restaurantId: req.params.restaurantId });
       res.status(200).json(menus);
     } catch (error) {

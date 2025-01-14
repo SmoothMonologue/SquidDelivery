@@ -44,6 +44,18 @@ class CommentRepository {
     });
   };
 
+  // 모든 댓글 조회 (리뷰 포함, 최신순 정렬)
+  findAllComments = async () => {
+    return this.prisma.comment.findMany({
+      include: {
+        Review: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+  };
+
   // 댓글 수정
   updateComment = async (commentId, updateData) => {
     return this.prisma.comment.update({
