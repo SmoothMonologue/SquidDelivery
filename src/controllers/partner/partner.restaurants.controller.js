@@ -32,23 +32,27 @@ class PartnerRestaurantController {
   // 업장 수정
   async updateRestaurant(req, res, next) {
     try {
-      const { restaurantId } = req.params;
-      if (!req.user || !req.user.id) {
-        throw new Error(RESTAURANT_MESSAGES.NO_PERMISSION);
-      }
-      const partnerId = req.user.id;
+      const { restaurantsId } = req.params; // URL에서 전달된 restaurantId
+      const partnerId = req.partner.id; // 인증된 파트너 ID
 
-      await PartnerRestaurantService.verifyRestaurantOwnership(restaurantId, partnerId);
+      // 디버깅 로그 추가
+      console.log('Received restaurantId:', restaurantsId);
+      console.log('Type of restaurantId:', typeof restaurantsId);
 
+      // 소유권 검증
+      await PartnerRestaurantService.verifyRestaurantOwnership(+restaurantsId, partnerId);
+
+      // 업장 수정
       const updatedRestaurant = await PartnerRestaurantService.updateRestaurant(
-        restaurantId,
+        parseInt(+restaurantsId),
         req.body,
       );
-      res.status(HTTP_STATUS.OK).json({
+      res.status(200).json({
         message: MESSAGES.RESTAURANTS.UPDATE.SUCCEED,
         data: updatedRestaurant,
       });
     } catch (error) {
+      console.error('Error in updateRestaurant:', error);
       next(error);
     }
   }
