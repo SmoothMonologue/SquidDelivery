@@ -28,7 +28,7 @@ class UserRestaurantRepository {
           {
             keyword: {
               contains: keyword, // 키워드 부분 일치하는 데이터 조회
-              mode: 'insensitive', // 대소문자 구분 없이
+              // mode: 'insensitive', // 대소문자 구분 없이
             },
           },
           {
@@ -39,7 +39,7 @@ class UserRestaurantRepository {
                 name: {
                   // 메뉴이름 데이터
                   contains: keyword, //키워드 부분 일부 일치하는 데이터 조회
-                  mode: 'insensitive',
+                  // mode: 'insensitive',
                 },
               },
             },
