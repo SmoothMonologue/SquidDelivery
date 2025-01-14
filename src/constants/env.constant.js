@@ -1,4 +1,4 @@
-// dotenv 모듈을 사용하여 .env 파일에 정의된 환경변수를 불러온다. 
+// dotenv 모듈을 사용하여 .env 파일에 정의된 환경변수를 불러온다.
 // 이코드를 통해 .env 파일에 설정된 변수들이 process.env 객체에 추가된다
 import 'dotenv/config';
 
@@ -6,4 +6,6 @@ import 'dotenv/config';
 export const SERVER_PORT = process.env.SERVER_PORT;
 
 // 액세스토큰을 생성하고 검증하는데 사용되는 비밀키를 정의하여 해당 상수를 내보내 준다.
-export const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
+export const ACCESS_PARTNER_TOKEN_SECRET = process.env.ACCESS_PARTNER_TOKEN_SECRET;
+
+export const ACCESS_USER_TOKEN_SECRET = process.env.ACCESS_USER_TOKEN_SECRET;

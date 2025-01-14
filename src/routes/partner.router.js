@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import partnerRestaurantRouter from './partner/partner.restaurants.router.js';
+import partnerRestaurantRouter from './partner/partner.router.js';
 import menuRouter from './partner/menu.router.js';
 import ordersRouter from './partner/orders.router.js';
 import commentRouter from './partner/comment.router.js';

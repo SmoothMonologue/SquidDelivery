@@ -30,12 +30,12 @@ class AuthController {
       }
       res.status(HTTP_STATUS.OK).json(partner.data);
     } else {
-      const user = await this.#service.signInuser({ email, password });
-      if (user.headers) {
-        Object.entries(user.headers).forEach(([key, value]) => {
-          res.setHeader(key, value);
-        });
+      const user = await this.#service.signInUser({ email, password });
+      const { accessToken } = user.data;
+      if (accessToken) {
+        res.setHeader('Authorization', `Bearer ${accessToken}`);
       }
+      res.status(HTTP_STATUS.OK).json(user.data);
     }
   };
 

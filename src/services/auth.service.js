@@ -3,7 +3,10 @@ import partnerRepository from '../repositories/partner/partner.repository.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { HASH_SALT_ROUNDS, ACCESS_TOKEN_EXPIRES_IN } from '../constants/auth.constant.js';
-import { ACCESS_TOKEN_SECRET } from '../constants/env.constant.js';
+import {
+  ACCESS_PARTNER_TOKEN_SECRET,
+  ACCESS_USER_TOKEN_SECRET,
+} from '../constants/env.constant.js';
 import { MESSAGES } from '../constants/message.constant.js';
 
 class AuthService {
@@ -46,7 +49,7 @@ class AuthService {
 
     const payload = { id: partner.id };
 
-    const accessToken = jwt.sign(payload, ACCESS_TOKEN_SECRET, {
+    const accessToken = jwt.sign(payload, ACCESS_PARTNER_TOKEN_SECRET, {
       expiresIn: ACCESS_TOKEN_EXPIRES_IN,
     });
     return { data: { accessToken } };
@@ -70,7 +73,7 @@ class AuthService {
 
     const payload = { id: user.id };
 
-    const accessToken = jwt.sign(payload, ACCESS_TOKEN_SECRET, {
+    const accessToken = jwt.sign(payload, ACCESS_USER_TOKEN_SECRET, {
       expiresIn: ACCESS_TOKEN_EXPIRES_IN,
     });
     return { data: { accessToken } };
