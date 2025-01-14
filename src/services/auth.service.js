@@ -1,7 +1,10 @@
 import userRepository from '../repositories/user/user.repository.js';
 import partnerRepository from '../repositories/partner/partner.repository.js';
 import bcrypt from 'bcrypt';
-import { HASH_SALT_ROUNDS } from '../constants/auth.constant.js';
+import jwt from 'jsonwebtoken';
+import { HASH_SALT_ROUNDS, ACCESS_TOKEN_EXPIRES_IN } from '../constants/auth.constant.js';
+import { ACCESS_TOKEN_SECRET } from '../constants/env.constant.js';
+import { MESSAGES } from '../constants/message.constant.js';
 
 class AuthService {
   #userRepository;
@@ -24,26 +27,71 @@ class AuthService {
     return this.#partnerRepository.createPartner({ name, email, password: hashedPassword });
   };
 
-  signInUser = async ({ email, password }) => {
-    const user = await this.#userRepository.signInUser({ email, password });
-    if (!user) {
-      return {
-        status: HTTP_STATUS.NOT_FOUND,
-        message: MESSAGES.AUTH.SIGN_IN.FAILED,
-      };
-    }
-    return { email: user.email, password: user.password };
-  };
-
-  signInPartner = async ({ email, password }) => {
-    const partner = await this.#partnerRepository.signInPartner({ email, password });
+  signInPartner = async (partnerData) => {
+    const partner = await this.#partnerRepository.signInPartner({ email: partnerData.email });
     if (!partner) {
       return {
-        status: HTTP_STATUS.NOT_FOUND,
-        message: MESSAGES.AUTH.SIGN_IN.FAILED,
+        status: HTTP_STATUS.UNAUTHORIZED,
+        message: MESSAGES.AUTH.COMMON.UNAUTHORIZED,
       };
     }
-    return { email: partner.email, password: partner.password };
+
+    const isPasswordMatched = bcrypt.compareSync(partnerData.password, partner.password);
+    if (!isPasswordMatched) {
+      return {
+        status: HTTP_STATUS.UNAUTHORIZED,
+        message: MESSAGES.AUTH.COMMON.UNAUTHORIZED,
+      };
+    }
+
+    const payload = { id: partner.id };
+
+    const accessToken = jwt.sign(payload, ACCESS_TOKEN_SECRET, {
+      expiresIn: ACCESS_TOKEN_EXPIRES_IN,
+    });
+    return { data: { accessToken } };
+  };
+
+  signInUser = async (userData) => {
+    const user = await this.#userRepository.signInUser({ email: userData.email });
+    const isPasswordMatched = bcrypt.compareSync(userData.password, user.password);
+
+    if (!isPasswordMatched) {
+      return {
+        status: HTTP_STATUS.UNAUTHORIZED,
+        message: MESSAGES.AUTH.COMMON.UNAUTHORIZED,
+      };
+    }
+
+    const payload = { id: user.id };
+
+    const accessToken = jwt.sign(payload, ACCESS_TOKEN_SECRET, {
+      expiresIn: ACCESS_TOKEN_EXPIRES_IN,
+    });
+    return { data: { accessToken } };
+  };
+
+  signOut = async (authorization) => {
+    if (!authorization) {
+      return {
+        status: HTTP_STATUS.UNAUTHORIZED,
+        message: MESSAGES.AUTH.COMMON.JWT.NO_TOKEN,
+      };
+    }
+
+    const [tokenType, token] = authorization.split(' ');
+    if (!token || tokenType !== 'Bearer') {
+      return {
+        status: HTTP_STATUS.UNAUTHORIZED,
+        message: MESSAGES.AUTH.COMMON.JWT.INVALID,
+      };
+    }
+
+    jwt.verify(token, ACCESS_TOKEN_SECRET);
+    return {
+      status: HTTP_STATUS.OK,
+      message: MESSAGES.AUTH.COMMON.SIGN_OUT.SUCCEED,
+    };
   };
 }
 

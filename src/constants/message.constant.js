@@ -31,6 +31,9 @@ export const MESSAGES = {
         NO_USER: '인증 정보와 일치하는 사용자가 없습니다.',
         INVALID: '인증 정보가 유효하지 않습니다.',
       },
+      CATCH_BOX: {
+        INVALID_FORMAT: '캐치박스는 문자열로 입력되어야 합니다.',
+      },
     },
     SIGN_UP: {
       SUCCEED: '회원가입에 성공했습니다.',
@@ -38,6 +41,9 @@ export const MESSAGES = {
     SIGN_IN: {
       SUCCEED: '로그인에 성공했습니다.',
       FAILED: '로그인에 실패했습니다.',
+    },
+    SIGN_OUT: {
+      SUCCEED: '로그아웃에 성공했습니다.',
     },
   },
   USERS: {
@@ -112,6 +118,26 @@ export const MESSAGES = {
     READ_LIST: {
       SUCCEED: '업장 목록 조회에 성공했습니다.',
       FAILED: '업장 목록 조회에 실패했습니다.',
+    },
+  },
+
+  CARTS: {
+    COMMON: {
+      SUCCEED: '장바구니 조회에 성공했습니다.',
+      NOT_FOUND: '장바구니를 찾을 수 없습니다.',
+      NOT_AUTHORIZED: '자신의 장바구니만 접근할 수 있습니다.',
+    },
+    CREATE: {
+      SUCCEED: '장바구니를 추가했습니다.',
+      FAILED: '장바구니 추가에 실패했습니다.',
+    },
+    UPDATE: {
+      SUCCEED: '메뉴 추가에 성공했습니다.',
+      FAILED: '메뉴 추가에 실패했습니다.',
+    },
+    DELETE: {
+      SUCCEED: '장바구니를 삭제했습니다.',
+      FAILED: '장바구니 삭제에 실패했습니다.',
     },
   },
 };
