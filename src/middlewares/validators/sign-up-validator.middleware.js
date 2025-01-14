@@ -16,10 +16,10 @@ const schema = Joi.object({
       'string.min': MESSAGES.AUTH.COMMON.PASSWORD.MIN_LENGTH,
       'string.pattern.base': MESSAGES.AUTH.COMMON.PASSWORD.PATTERN,
     }),
-  // passwordConfirm: Joi.string().required().valid(Joi.ref('password')).messages({
-  //   'any.required': MESSAGES.AUTH.COMMON.PASSWORD_CONFIRM.REQURIED,
-  //   'any.only': MESSAGES.AUTH.COMMON.PASSWORD_CONFIRM.NOT_MACHTED_WITH_PASSWORD,
-  // }),
+  passwordConfirm: Joi.string().required().valid(Joi.ref('password')).messages({
+    'any.required': MESSAGES.AUTH.COMMON.PASSWORD_CONFIRM.REQURIED,
+    'any.only': MESSAGES.AUTH.COMMON.PASSWORD_CONFIRM.NOT_MACHTED_WITH_PASSWORD,
+  }),
   name: Joi.string().required().messages({
     'any.required': MESSAGES.AUTH.COMMON.NAME.REQURIED,
   }),
