@@ -1,22 +1,16 @@
-import restaurantService from '../../services/partner/restaurant.service.js';
+import PartnerRestaurantService from '../../services/partner/partner.restaurants.service.js';
 import { HTTP_STATUS } from '../../constants/http-status.constant.js';
+import { RESTAURANT_MESSAGES } from '../../constants/message.constant.js';
+import { MESSAGES } from '../../constants/message.constant.js';
 
 class PartnerRestaurantController {
   // 업장 등록
   async createRestaurant(req, res, next) {
     try {
-      const partnerId = req.partner.id;
-      const { restaurantName, keyword, starRating } = req.body;
-      
-      const restaurant = await restaurantService.createRestaurant(partnerId, {
-        restaurantName,
-        keyword,
-        starRating: starRating || 0
-      });
-
-      res.status(HTTP_STATUS.CREATED).json({ 
-        message: '업장 등록에 성공했습니다.', 
-        data: restaurant 
+      const restaurant = await PartnerRestaurantService.createRestaurant(req.body);
+      res.status(HTTP_STATUS.CREATED).json({
+        message: MESSAGES.RESTAURANTS.CREATE.SUCCEED,
+        data: restaurant,
       });
     } catch (error) {
       next(error);
@@ -26,7 +20,9 @@ class PartnerRestaurantController {
   // 업장 목록 조회 (사장님용)
   async getRestaurants(req, res, next) {
     try {
-      const restaurants = await restaurantService.getRestaurantsByPartner(req.partner.id);
+      const restaurants = await PartnerRestaurantService.getRestaurantsByPartner(
+        req.params.partnerId,
+      );
       res.status(HTTP_STATUS.OK).json({ data: restaurants });
     } catch (error) {
       next(error);
@@ -36,13 +32,21 @@ class PartnerRestaurantController {
   // 업장 수정
   async updateRestaurant(req, res, next) {
     try {
-      const updatedRestaurant = await restaurantService.updateRestaurant(
-        req.params.restaurantsId,
+      const { restaurantId } = req.params;
+      if (!req.user || !req.user.id) {
+        throw new Error(RESTAURANT_MESSAGES.NO_PERMISSION);
+      }
+      const partnerId = req.user.id;
+
+      await PartnerRestaurantService.verifyRestaurantOwnership(restaurantId, partnerId);
+
+      const updatedRestaurant = await PartnerRestaurantService.updateRestaurant(
+        restaurantId,
         req.body,
       );
-      res.status(HTTP_STATUS.OK).json({ 
-        message: '업장 정보가 수정되었습니다.', 
-        data: updatedRestaurant 
+      res.status(HTTP_STATUS.OK).json({
+        message: MESSAGES.RESTAURANTS.UPDATE.SUCCEED,
+        data: updatedRestaurant,
       });
     } catch (error) {
       next(error);
@@ -52,9 +56,14 @@ class PartnerRestaurantController {
   // 업장 삭제
   async deleteRestaurant(req, res, next) {
     try {
-      await restaurantService.deleteRestaurant(req.params.restaurantsId);
-      res.status(HTTP_STATUS.OK).json({ 
-        message: '업장이 삭제되었습니다.' 
+      const { restaurantId } = req.params;
+      const partnerId = req.user.id;
+
+      await PartnerRestaurantService.verifyRestaurantOwnership(restaurantId, partnerId);
+
+      await PartnerRestaurantService.deleteRestaurant(restaurantId);
+      res.status(HTTP_STATUS.OK).json({
+        message: MESSAGES.RESTAURANTS.DELETE.SUCCEED,
       });
     } catch (error) {
       next(error);

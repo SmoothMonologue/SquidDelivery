@@ -15,21 +15,24 @@ class ReviewRepository {
   findOrderById = async (orderId) => {
     return this.prisma.order.findUnique({
       where: { id: orderId },
-      include: { Cart: true }
+      include: { Cart: true },
     });
   };
 
   // 주문에 대한 리뷰 존재 여부 확인
   findReviewByOrderId = async (orderId) => {
     return this.prisma.review.findUnique({
-      where: { orderId }
+      where: {
+        orderId,
+        restaurantId: restaurant.id,
+      },
     });
   };
 
   // 새로운 리뷰 생성
   createReview = async (reviewData) => {
     return this.prisma.review.create({
-      data: reviewData
+      data: reviewData,
     });
   };
 
@@ -37,18 +40,18 @@ class ReviewRepository {
   findAllReviews = async () => {
     return this.prisma.review.findMany({
       include: {
-        Comment: true
+        Comment: true,
       },
       orderBy: {
-        createdAt: 'desc'
-      }
+        createdAt: 'desc',
+      },
     });
   };
 
   // 특정 리뷰 조회
   findReviewById = async (reviewId) => {
     return this.prisma.review.findUnique({
-      where: { id: Number(reviewId) }
+      where: { id: Number(reviewId) },
     });
   };
 
@@ -56,14 +59,14 @@ class ReviewRepository {
   updateReview = async (reviewId, updateData) => {
     return this.prisma.review.update({
       where: { id: Number(reviewId) },
-      data: updateData
+      data: updateData,
     });
   };
 
   // 리뷰 삭제
   deleteReview = async (reviewId) => {
     return this.prisma.review.delete({
-      where: { id: Number(reviewId) }
+      where: { id: Number(reviewId) },
     });
   };
 }

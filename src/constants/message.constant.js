@@ -50,6 +50,7 @@ export const MESSAGES = {
       NOT_FOUND: '리뷰를 찾을 수 없습니다.',
       ALREADY_EXISTS: '이미 리뷰가 작성되었습니다.',
       NOT_AUTHORIZED: '자신이 작성한 리뷰만 수정/삭제할 수 있습니다.',
+      INVALID_STAR_RATING: '별점은 1-5 사이의 값이어야 합니다.',
     },
     CREATE: {
       SUCCEED: '리뷰 작성에 성공했습니다.',
@@ -87,9 +88,32 @@ export const MESSAGES = {
     },
   },
   RESTAURANTS: {
-    NOT_FOUND: '업장을 찾을 수 없습니다.',
-    CREATED: '업장이 성공적으로 생성되었습니다.',
-    UPDATED: '업장이 성공적으로 수정되었습니다.',
-    DELETED: '업장이 성공적으로 삭제되었습니다.',
+    COMMON: {
+      NOT_FOUND: '업장이 존재하지 않습니다.',
+      NO_PERMISSION: '해당 업장에 대한 권한이 없습니다.',
+      REQUIRED_FIELDS: '필수 정보가 누락되었습니다.',
+    },
+    CREATE: {
+      SUCCEED: '업장 등록에 성공했습니다.',
+      FAILED: '업장 등록에 실패했습니다.',
+    },
+    UPDATE: {
+      SUCCEED: '업장 정보가 수정되었습니다.',
+      FAILED: '업장 수정에 실패했습니다.',
+    },
+    DELETE: {
+      SUCCEED: '업장이 삭제되었습니다.',
+      FAILED: '업장 삭제에 실패했습니다.',
+      ERROR: '레스토랑 삭제 중 오류가 발생했습니다.',
+    },
+    TRANSACTION: {
+      ERROR: '데이터 처리 중 오류가 발생했습니다.',
+    },
+    READ_LIST: {
+      SUCCEED: '업장 목록 조회에 성공했습니다.',
+      FAILED: '업장 목록 조회에 실패했습니다.',
+    },
   },
 };
+
+export const RESTAURANT_MESSAGES = MESSAGES.RESTAURANTS;
