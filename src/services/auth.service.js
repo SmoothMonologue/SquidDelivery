@@ -54,8 +54,13 @@ class AuthService {
 
   signInUser = async (userData) => {
     const user = await this.#userRepository.signInUser({ email: userData.email });
+    if (!user) {
+      return {
+        status: HTTP_STATUS.UNAUTHORIZED,
+        message: MESSAGES.AUTH.COMMON.UNAUTHORIZED,
+      };
+    }
     const isPasswordMatched = bcrypt.compareSync(userData.password, user.password);
-
     if (!isPasswordMatched) {
       return {
         status: HTTP_STATUS.UNAUTHORIZED,

@@ -22,7 +22,7 @@ class AuthController {
   signIn = async (req, res) => {
     const { email, password, catchBox } = req.body;
 
-    if (Boolean(catchBox)) {
+    if (catchBox) {
       const partner = await this.#service.signInPartner({ email, password });
       const { accessToken } = partner.data;
       if (accessToken) {
@@ -30,8 +30,12 @@ class AuthController {
       }
       res.status(HTTP_STATUS.OK).json(partner.data);
     } else {
-      const user = await this.#service.signInUser({ email, password });
-      res.status(HTTP_STATUS.CREATED).json(user);
+      const user = await this.#service.signInuser({ email, password });
+      if (user.headers) {
+        Object.entries(user.headers).forEach(([key, value]) => {
+          res.setHeader(key, value);
+        });
+      }
     }
   };
 

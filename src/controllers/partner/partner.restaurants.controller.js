@@ -1,4 +1,4 @@
-import PartnerRestaurantService from '../../services/partner/partner.restaurants.service.js';
+import partnerRestaurantService from '../../services/partner/partner.restaurants.service.js';
 import { HTTP_STATUS } from '../../constants/http-status.constant.js';
 import { RESTAURANT_MESSAGES } from '../../constants/message.constant.js';
 import { MESSAGES } from '../../constants/message.constant.js';
@@ -7,8 +7,8 @@ class PartnerRestaurantController {
   // 업장 등록
   async createRestaurant(req, res, next) {
     try {
-      const{id} = req.partner
-      const restaurant = await PartnerRestaurantService.createRestaurant(req.body,id);
+      const { id } = req.partner;
+      const restaurant = await PartnerRestaurantService.createRestaurant(req.body, id);
       res.status(HTTP_STATUS.CREATED).json({
         message: MESSAGES.RESTAURANTS.CREATE.SUCCEED,
         data: restaurant,
@@ -21,10 +21,8 @@ class PartnerRestaurantController {
   // 업장 목록 조회 (사장님용)
   async getRestaurants(req, res, next) {
     try {
-      const{id} = req.partner
-      const restaurants = await PartnerRestaurantService.getRestaurantsByPartner(
-        id
-      );
+      const { id } = req.partner;
+      const restaurants = await PartnerRestaurantService.getRestaurantsByPartner(id);
       res.status(HTTP_STATUS.OK).json({ data: restaurants });
     } catch (error) {
       next(error);
@@ -73,4 +71,4 @@ class PartnerRestaurantController {
   }
 }
 
-export default new PartnerRestaurantController();
+export default new PartnerRestaurantController(partnerRestaurantService);
