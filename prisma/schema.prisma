@@ -112,15 +112,15 @@ model Payment {
 model Review {
   id           Int      @id @default(autoincrement())
   userId       Int
+  restaurantId Int
   orderId      Int        @unique
   image        String?
   content      String?
   starRating   Int
   createdAt    DateTime   @default(now())
-  restaurantId Int
-  Comment      Comment?
   Order        Order      @relation(fields: [orderId], references: [id])
   Restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  Comment      Comment[]
 
   @@unique([userId, restaurantId])
   @@map("Review")
@@ -132,8 +132,8 @@ model Comment {
   reviewId  Int      @unique
   comment   String
   createdAt DateTime @default(now())
-  Review    Review   @relation(fields: [reviewId], references: [id])
   Partner   Partner  @relation(fields: [partnerId], references: [id])
+  Review    Review   @relation(fields: [reviewId], references: [id])
 
   @@map("Comment")
 }

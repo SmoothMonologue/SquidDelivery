@@ -1,5 +1,5 @@
 import { HTTP_STATUS } from '../../constants/http-status.constant.js';
-
+import commentService from '../../services/partner/comment.service.js';
 /**
  * CommentController
  * HTTP 요청/응답 처리를 담당하는 계층
@@ -14,17 +14,17 @@ class CommentController {
   createComment = async (req, res, next) => {
     try {
       const { reviewId, content } = req.body;
-      const restaurantId = req.restaurant.id;  // 인증 미들웨어에서 설정된 레스토랑 정보
+      const restaurantId = req.restaurant.id; // 인증 미들웨어에서 설정된 레스토랑 정보
 
       const result = await this.commentService.createComment({
         restaurantId,
         reviewId,
-        content
+        content,
       });
 
       return res.status(HTTP_STATUS.CREATED).json(result);
     } catch (error) {
-      next(error);  // 에러 처리 미들웨어로 전달
+      next(error); // 에러 처리 미들웨어로 전달
     }
   };
 
@@ -38,7 +38,7 @@ class CommentController {
       const result = await this.commentService.updateComment({
         commentId: Number(commentId),
         restaurantId,
-        content
+        content,
       });
 
       return res.status(HTTP_STATUS.OK).json(result);
@@ -55,7 +55,7 @@ class CommentController {
 
       const result = await this.commentService.deleteComment({
         commentId: Number(commentId),
-        restaurantId
+        restaurantId,
       });
 
       return res.status(HTTP_STATUS.OK).json(result);
