@@ -1,6 +1,6 @@
 import express from 'express';
 import ReviewController from '../../controllers/user/reviews.controller.js';
-import ReviewService from '../../services/review.service.js';
+import ReviewService from '../../services/user/review.service.js';
 import reviewRepository from '../../repositories/review.repository.js';
 
 const reviewRouter = express.Router();
