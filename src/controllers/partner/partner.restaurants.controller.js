@@ -72,3 +72,4 @@ class PartnerRestaurantController {
 }
 
 export default new PartnerRestaurantController();
+
