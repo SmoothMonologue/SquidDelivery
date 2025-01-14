@@ -22,13 +22,19 @@ class AuthController {
   signIn = async (req, res) => {
     const { email, password, catchBox } = req.body;
 
-    if (catchBox) {
+    if (Boolean(catchBox)) {
       const partner = await this.#service.signInPartner({ email, password });
       res.status(HTTP_STATUS.CREATED).json(partner);
     } else {
       const user = await this.#service.signInUser({ email, password });
       res.status(HTTP_STATUS.CREATED).json(user);
     }
+  };
+
+  signOut = async (req, res) => {
+    const { authorization } = req.headers;
+    const user = await this.#service.signOutUser({ authorization });
+    res.status(HTTP_STATUS.CREATED).json();
   };
 }
 

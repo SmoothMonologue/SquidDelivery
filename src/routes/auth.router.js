@@ -9,6 +9,8 @@ authRouter.post('/users/sign-up', signUpValidator, authController.userSignUp);
 
 authRouter.post('/partners/sign-up', signUpValidator, authController.partnerSignUp);
 
-authRouter.post('/users/sign-in', signInValidator, authController.signIn);
+authRouter.post('/sign-in', signInValidator, authController.signIn);
+
+authRouter.post('/sign-out', authController.signOut);
 
 export default authRouter;
