@@ -3,52 +3,50 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql" // 사용 중인 데이터베이스 종류
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  name      String
-  email     String   @unique
-  password  String
-  interest  String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  cash      Int      @default(1000000) // 디폴트 값 100만
-  Order     Order[]
+  id          Int      @id @default(autoincrement())
+  name        String
+  email       String   @unique
+  password    String
+  phoneNumber String?
+  interest    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  cash        Int      @default(1000000)
+  Order       Order[]
 
   @@map("User")
 }
 
 model Partner {
-  id             Int         @id @default(autoincrement())
-  name           String
-  email          String      @unique
-  password       String
-  businessNumber String?     @unique
-  phoneNumber    String?
-  cash           Int         @default(10000)
-  createdAt      DateTime    @default(now())
-  updatedAt      DateTime    @updatedAt
-  Restaurant     Restaurant?
-  Comment        Comment[]
+  id          Int         @id @default(autoincrement())
+  name        String
+  email       String      @unique
+  password    String
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  cash        Int         @default(10000)
+  phoneNumber String?
+  Restaurant  Restaurant?
 
   @@map("Partner")
 }
 
 model Restaurant {
-  id             Int      @id @default(autoincrement())
-  partnerId      Int      @unique
-  restaurantName String   @unique
+  id             Int     @id @default(autoincrement())
+  partnerId      Int     @unique
+  restaurantName String  @unique
   keyword        String?
   starRating     Int?
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  Partner        Partner  @relation(fields: [partnerId], references: [id])
-  Review         Review[]
-  Menu           Menu[]
+  businessNumber String? @unique
+  number         String?
   Cart           Cart[]
+  Menu           Menu[]
+  Partner        Partner @relation(fields: [partnerId], references: [id])
 
   @@map("Restaurant")
 }
@@ -62,6 +60,7 @@ model Menu {
   Restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
   MenuCart     MenuCart[]
 
+  @@index([restaurantId], map: "Menu_restaurantId_fkey")
   @@map("Menu")
 }
 
@@ -75,6 +74,7 @@ model Cart {
   MenuCart     MenuCart[]
   Order        Order?
 
+  @@index([restaurantId], map: "Cart_restaurantId_fkey")
   @@map("Cart")
 }
 
@@ -86,11 +86,12 @@ model Order {
   status    String
   menuName  Json
   createdAt DateTime @default(now())
-  User      User     @relation(fields: [userId], references: [id])
   Cart      Cart     @relation(fields: [cartId], references: [id])
+  User      User     @relation(fields: [userId], references: [id])
   Payment   Payment?
   Review    Review?
 
+  @@index([userId], map: "Order_userId_fkey")
   @@map("Order")
 }
 
@@ -104,32 +105,28 @@ model Payment {
   @@map("Payment")
 }
 
-// 테이블 정리 완료
 model Review {
-  id           Int        @id @default(autoincrement())
+  id           Int      @id @default(autoincrement())
   userId       Int
-  restaurantId Int
-  orderId      Int        @unique
+  orderId      Int      @unique
   image        String?
   content      String?
   starRating   Int
-  createdAt    DateTime   @default(now())
-  Order        Order      @relation(fields: [orderId], references: [id])
-  Restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
-  Comment      Comment[]
+  createdAt    DateTime @default(now())
+  restaurantId Int
+  Comment      Comment?
+  Order        Order    @relation(fields: [orderId], references: [id])
 
   @@unique([userId, restaurantId])
   @@map("Review")
 }
 
-// 테이블 정리 완료
 model Comment {
   id        Int      @id @default(autoincrement())
   partnerId Int
   reviewId  Int      @unique
   comment   String
   createdAt DateTime @default(now())
-  Partner   Partner  @relation(fields: [partnerId], references: [id])
   Review    Review   @relation(fields: [reviewId], references: [id])
 
   @@map("Comment")
@@ -139,8 +136,10 @@ model MenuCart {
   id     Int  @id @default(autoincrement())
   menuId Int
   cartId Int
-  Menu   Menu @relation(fields: [menuId], references: [id])
   Cart   Cart @relation(fields: [cartId], references: [id])
+  Menu   Menu @relation(fields: [menuId], references: [id])
 
+  @@index([cartId], map: "MenuCart_cartId_fkey")
+  @@index([menuId], map: "MenuCart_menuId_fkey")
   @@map("MenuCart")
 }
