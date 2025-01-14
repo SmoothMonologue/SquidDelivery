@@ -1,5 +1,5 @@
-import { prisma } from '../utils/prisma/index.js';
 import { RESTAURANT_MESSAGES } from '../../constants/message.constant.js';
+import { prisma } from '../../utils/prisma/index.js';
 
 class UserRestaurantRepository {
   async findAllRestaurants() {
