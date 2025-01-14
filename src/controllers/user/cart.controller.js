@@ -12,9 +12,9 @@ class cartController {
   //새로운 장바구니 추가
   createCart = async (req, res) => {
     try {
-      //const userId = req.user.id;
+      const userId = req.user.id;
       //왠지 밑에 걸로 하면 안 될 것 같은 직감,  되면 말고.
-      const { userId, restaurantId } = req.body;
+      const { restaurantId } = req.body;
       //const restaurantId = req.body.restaurantId;
       const newCart = await this.#service.createCart({ userId, restaurantId });
 
