@@ -1,6 +1,8 @@
-import { prisma } from '../../utils/prisma/index.js';
+import { PrismaClient } from '@prisma/client';
 import { HTTP_STATUS } from '../../constants/http-status.constant.js';
 import { MESSAGES } from '../../constants/message.constant.js';
+
+const prisma = new PrismaClient();
 
 class UserRepository {
   #orm;
@@ -26,7 +28,7 @@ class UserRepository {
   signInUser = async ({ email, password }) => {
     const user = await this.#orm.user.findUnique({ where: { email } });
 
-    if (!partner) {
+    if (!user) {
       return {
         status: HTTP_STATUS.NOT_FOUND,
         message: MESSAGES.AUTH.SIGN_IN.FAILED,
