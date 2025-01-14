@@ -12,6 +12,8 @@ class PartnerRestaurantRepository {
         ...requiredFields,
         keyword: data.keyword,
         starRating: data.starRating,
+        businessNumber: data.businessNumber,
+        number: data.number,
       },
     });
   }
@@ -21,7 +23,16 @@ class PartnerRestaurantRepository {
     if (!restaurant) {
       throw new Error(RESTAURANT_MESSAGES.NOT_FOUND);
     }
-    return prisma.restaurant.update({ where: { id }, data });
+    return prisma.restaurant.update({
+      where: { id },
+      data: {
+        restaurantName: data.restaurantName,
+        keyword: data.keyword,
+        starRating: data.starRating,
+        businessNumber: data.businessNumber,
+        number: data.number,
+      },
+    });
   }
 
   async deleteRestaurant(id) {

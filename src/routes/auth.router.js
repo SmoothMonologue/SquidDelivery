@@ -7,7 +7,7 @@ const authRouter = express.Router();
 
 authRouter.post('/users/sign-up', signUpValidator, authController.userSignUp);
 
-authRouter.post('/partners/sign-up', signUpValidator, authController.partnerSignUp);
+authRouter.post('/partners/sign-up', authController.partnerSignUp);
 
 authRouter.post('/users/sign-in', signInValidator, authController.signIn);
 
