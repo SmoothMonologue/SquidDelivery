@@ -32,7 +32,10 @@ class Menucontrollerpartner {
   // 메뉴 수정(사장님용)
   updateMenu = async (req, res) => {
     try {
-      const updatedMenu = await this.#service.updateMenu(req.params.menuId, req.body);
+      const updatedMenu = await this.#service.updateMenu({
+        menuId: req.params.menuId,
+        data: req.body,
+      });
       res.status(200).json(updatedMenu);
     } catch (error) {
       console.error(error.message);
@@ -43,7 +46,7 @@ class Menucontrollerpartner {
   // 메뉴 삭제(사장님용)
   deleteMenu = async (req, res) => {
     try {
-      await this.#service.deleteMenu(req.params.menuId);
+      await this.#service.deleteMenu({ menuId: req.params.menuId });
       res.status(200).send(`메뉴 ${req.params.menuId}가 삭제되었습니다.`);
     } catch (error) {
       console.error(error.message);

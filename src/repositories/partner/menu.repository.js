@@ -10,9 +10,9 @@ class Menurepository {
     const menu = await this.#orm.menu.create({
       data: {
         name,
-        price,
-        spicyLevel,
-        restaurantId,
+        price: Number(price),
+        spicyLevel: Number(spicyLevel),
+        restaurantId: Number(restaurantId),
       },
     });
     return menu;
@@ -31,19 +31,26 @@ class Menurepository {
   updateMenu = async ({ menuId, data }) => {
     const updateMenu = await this.#orm.menu.update({
       where: {
-        menuId: Number(menuId),
+        id: Number(menuId),
       },
-      data,
+      data: {
+        name: data.name,
+        price: Number(data.price),
+        spicyLevel: Number(data.spicyLevel),
+        restaurantId: Number(data.restaurantId),
+      },
     });
     return updateMenu;
   };
   // 메뉴 삭제(사장님용)
   deleteMenu = async ({ menuId }) => {
+    console.log('메뉴아이디', menuId);
     const deleteMenu = await this.#orm.menu.delete({
       where: {
-        menuId: Number(menuId),
+        id: Number(menuId),
       },
     });
+    console.log('메뉴아이디', menuId);
     return deleteMenu;
   };
 }
