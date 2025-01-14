@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import { authenticatePartner } from '../middlewares/auth.middleware.js';
 import partnerRestaurantRouter from './partner/partner.restaurants.router.js';
 import menuRouter from './partner/menu.router.js';
 import ordersRouter from './partner/orders.router.js';

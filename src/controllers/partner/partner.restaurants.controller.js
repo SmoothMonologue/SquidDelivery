@@ -7,7 +7,8 @@ class PartnerRestaurantController {
   // 업장 등록
   async createRestaurant(req, res, next) {
     try {
-      const restaurant = await PartnerRestaurantService.createRestaurant(req.body);
+      const{id} = req.partner
+      const restaurant = await PartnerRestaurantService.createRestaurant(req.body,id);
       res.status(HTTP_STATUS.CREATED).json({
         message: MESSAGES.RESTAURANTS.CREATE.SUCCEED,
         data: restaurant,

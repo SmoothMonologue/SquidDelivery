@@ -8,9 +8,9 @@ class PartnerRestaurantRepository {
     this.#prisma = prisma;
   }
 
-  async createRestaurant(data) {
+  async createRestaurant(data,id) {
     const requiredFields = {
-      partnerId: data.partnerId,
+      partnerId: id,
       restaurantName: data.restaurantName,
     };
     return this.#prisma.restaurant.create({
