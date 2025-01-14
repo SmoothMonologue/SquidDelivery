@@ -56,12 +56,13 @@ class PartnerRestaurantController {
   // 업장 삭제
   async deleteRestaurant(req, res, next) {
     try {
-      const { restaurantId } = req.params;
-      const partnerId = req.user.id;
+      // console.log(req.params);
+      const { restaurantsId } = req.params;
+      const partnerId = req.partner.id;
+      // console.log(restaurantsId, partnerId);
+      await PartnerRestaurantService.verifyRestaurantOwnership(+restaurantsId, partnerId);
 
-      await PartnerRestaurantService.verifyRestaurantOwnership(restaurantId, partnerId);
-
-      await PartnerRestaurantService.deleteRestaurant(restaurantId);
+      await PartnerRestaurantService.deleteRestaurant(+restaurantsId);
       res.status(HTTP_STATUS.OK).json({
         message: MESSAGES.RESTAURANTS.DELETE.SUCCEED,
       });

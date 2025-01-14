@@ -8,7 +8,6 @@ export const authenticateUser = async (req, res, next) => {
   try {
     const { authorization } = req.headers;
 
-
     if (!authorization) {
       return res.status(HTTP_STATUS.UNAUTHORIZED).json({
         message: MESSAGES.AUTH.COMMON.JWT.NO_TOKEN,
@@ -24,7 +23,7 @@ export const authenticateUser = async (req, res, next) => {
     }
 
     const decodedToken = jwt.verify(token, ACCESS_TOKEN_SECRET);
- 
+
     const user = await prisma.user.findUnique({
       where: { id: decodedToken.id },
     });
@@ -39,7 +38,7 @@ export const authenticateUser = async (req, res, next) => {
     next();
   } catch (error) {
     console.error(error);
-    
+
     if (error.name === 'TokenExpiredError') {
       return res.status(HTTP_STATUS.UNAUTHORIZED).json({
         message: MESSAGES.AUTH.COMMON.JWT.EXPIRED,
@@ -84,7 +83,7 @@ export const authenticatePartner = async (req, res, next) => {
     next();
   } catch (error) {
     console.error(error);
-    
+
     if (error.name === 'TokenExpiredError') {
       return res.status(HTTP_STATUS.UNAUTHORIZED).json({
         message: MESSAGES.AUTH.COMMON.JWT.EXPIRED,

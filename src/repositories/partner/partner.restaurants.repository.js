@@ -8,7 +8,7 @@ class PartnerRestaurantRepository {
     this.#prisma = prisma;
   }
 
-  async createRestaurant(data,id) {
+  async createRestaurant(data, id) {
     const requiredFields = {
       partnerId: id,
       restaurantName: data.restaurantName,
@@ -57,7 +57,6 @@ class PartnerRestaurantRepository {
     } catch (error) {
       throw new Error(MESSAGES.RESTAURANTS.DELETE.ERROR);
     }
-    return prisma.restaurant.delete({ where: { id } });
   }
 
   async findRestaurantsByPartnerId(partnerId) {
