@@ -37,7 +37,6 @@ class ReviewService {
       userId,
       orderId,
       restaurantId: order.Cart.restaurantId,
-      restaurantsId: order.Cart.restaurantId,
       image,
       content,
       starRating
