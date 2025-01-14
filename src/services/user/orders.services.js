@@ -1,4 +1,4 @@
-import orderRepository from '';
+import orderRepository from '../../repositories/user/orders.repository.js';
 
 class OrderService {
   #repository;

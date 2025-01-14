@@ -1,6 +1,6 @@
 import express from 'express';
 import ordersController from '../../controllers/partner/orders.controller.js';
-// import authorization from '';
+import { authorization } from '../../middlewares/auth.middleware.js';
 
 const ordersRouter = express.Router();
 

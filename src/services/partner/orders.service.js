@@ -7,22 +7,31 @@ class OrderService {
     this.#repository = repository;
   }
 
-  getOrder = async (partner, restaurant) => {
-    const restaurant = await this.#repository.findUniqueRestaurant(partner);
+  getOrders = async (partner) => {
+    try {
+      const restaurantInfo = await this.#repository.findUniqueRestaurant(partner);
 
-    if (!restaurant) {
+      if (!restaurantInfo) {
+        return {
+          status: 404,
+          message: '음식점이 존재하지 않습니다.',
+        };
+      }
+
+      const orders = await this.#repository.findManyOrder(restaurantInfo);
+
       return {
-        status: 404,
-        message: '업장을 찾을 수 없습니다.',
+        status: 200,
+        message: '주문 조회에 성공했습니다.',
+        data: orders,
+      };
+    } catch (err) {
+      console.error(err);
+      return {
+        status: 500,
+        message: '주문 조회에 실패했습니다.',
       };
     }
-
-    const order = await this.#repository.findManyOrder(restaurant);
-    return {
-      status: 200,
-      message: '주문 전체 조회 성공',
-      order,
-    };
   };
 
   selectGetOrder = async (orderId, partner) => {

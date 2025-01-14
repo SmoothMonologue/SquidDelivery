@@ -1,13 +1,13 @@
 import express from 'express';
-import PartnerRestaurantController from '../../controllers/partner/partner.restaurants.controller.js';
+import partnerRestaurantController from '../../controllers/partner/partner.restaurants.controller.js';
+import { authorization } from '../../middlewares/auth.middleware.js';
 
-const partnerRestaurantRouter = express.Router();
+const router = express.Router();
 
-partnerRestaurantRouter.use(authenticatePartner);
+// authorization 미들웨어를 통해 파트너 인증 확인
+router.post('/', authorization, partnerRestaurantController.createRestaurant);
+router.get('/:partnerId', authorization, partnerRestaurantController.getRestaurants);
+router.put('/:restaurantsId', authorization, partnerRestaurantController.updateRestaurant);
+router.delete('/:restaurantsId', authorization, partnerRestaurantController.deleteRestaurant);
 
-partnerRestaurantRouter.post('/', PartnerRestaurantController.createRestaurant);
-partnerRestaurantRouter.patch('/:restaurantId', PartnerRestaurantController.updateRestaurant);
-partnerRestaurantRouter.delete('/:restaurantId', PartnerRestaurantController.deleteRestaurant);
-partnerRestaurantRouter.get('/:partnerId/restaurants', PartnerRestaurantController.getRestaurants);
-
-export default partnerRestaurantRouter;
+export default router;
