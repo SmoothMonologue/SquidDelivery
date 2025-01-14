@@ -26,7 +26,7 @@ export const authenticateUser = async (req, res, next) => {
     const decodedToken = jwt.verify(token, ACCESS_TOKEN_SECRET);
  
     const user = await prisma.user.findUnique({
-      where: { id: decodedToken.userId },
+      where: { id: decodedToken.id },
     });
 
     if (!user) {
@@ -63,7 +63,7 @@ export const authenticatePartner = async (req, res, next) => {
     }
 
     const [tokenType, token] = authorization.split(' ');
-    console.log(tokenType, token);
+    // console.log(tokenType, token);
     if (tokenType !== 'Bearer') {
       return res.status(HTTP_STATUS.UNAUTHORIZED).json({
         message: MESSAGES.AUTH.COMMON.JWT.NOT_SUPPORTED_TYPE,

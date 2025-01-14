@@ -141,7 +141,7 @@ model MenuCart {
   id     Int  @id @default(autoincrement())
   menuId Int
   cartId Int
-  Cart   Cart @relation(fields: [cartId], references: [id])
+  Cart   Cart @relation(fields: [cartId], references: [id], onDelete: Cascade)
   Menu   Menu @relation(fields: [menuId], references: [id])
 
   @@index([cartId], map: "MenuCart_cartId_fkey")
