@@ -23,13 +23,13 @@ export const MESSAGES = {
       INTEREST: {
         INVALID_FORMAT: '관심사는 문자열로 입력해 주세요.',
       },
-      UNAUTHORIZED: '인증 정보가 유효하지 않습니다.',
+      UNAUTHORIZED: '인증 정보가 1유효하지 않습니다.',
       JWT: {
         NO_TOKEN: '인증 정보가 없습니다.',
         NOT_SUPPORTED_TYPE: '지원하지 않는 인증 방식입니다.',
         EXPIRED: '인증 정보가 만료되었습니다.',
         NO_USER: '인증 정보와 일치하는 사용자가 없습니다.',
-        INVALID: '인증 정보가 유효하지 않습니다.',
+        INVALID: '인증 정보가 23유효하지 않습니다.',
       },
       CATCH_BOX: {
         INVALID_FORMAT: '캐치박스는 문자열로 입력되어야 합니다.',

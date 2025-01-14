@@ -24,14 +24,22 @@ class AuthController {
 
     if (Boolean(catchBox)) {
       const partner = await this.#service.signInPartner({ email, password });
+      // console.log(partner)
       const { accessToken } = partner.data;
       if (accessToken) {
         res.setHeader('Authorization', `Bearer ${accessToken}`);
+        console.log("이건 사장이에요!")
       }
       res.status(HTTP_STATUS.OK).json(partner.data);
     } else {
       const user = await this.#service.signInUser({ email, password });
-      res.status(HTTP_STATUS.CREATED).json(user);
+      // console.log(user);
+      const { accessToken } = user.data;
+      if (accessToken) {
+        res.setHeader('authorization', `Bearer ${accessToken}`);
+        console.log("이건 사용자에요!")
+      }
+      res.status(HTTP_STATUS.CREATED).json(user.data);
     }
   };
 
