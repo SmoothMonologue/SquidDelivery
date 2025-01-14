@@ -8,7 +8,7 @@ class UserRestaurantRepository {
     this.#prisma = prisma;
   }
 
-  async findAllRestaurants() {
+  async getAllRestaurants() {
     return this.#prisma.restaurant.findMany({
       select: {
         id: true,
@@ -16,7 +16,6 @@ class UserRestaurantRepository {
         starRating: true,
         keyword: true,
         createdAt: true,
-        updatedAt: true,
         number: true,
         Menu: {
           select: {
@@ -29,8 +28,8 @@ class UserRestaurantRepository {
     });
   }
 
-  async findRestaurantById(id) {
-    const restaurant = await this.#prisma.restaurant.findUnique({
+  async getAllRestaurantsById(id) {
+    const restaurant = await this.#prisma.restaurant.findUniqe({
       where: { id },
       select: {
         id: true,
