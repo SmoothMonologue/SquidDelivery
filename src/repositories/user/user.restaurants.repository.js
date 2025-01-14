@@ -1,4 +1,4 @@
-import { prisma } from '../utils/prisma/index.js';
+import { prisma } from '../../utils/prisma/index.js';
 import { RESTAURANT_MESSAGES } from '../../constants/message.constant.js';
 
 class UserRestaurantRepository {
