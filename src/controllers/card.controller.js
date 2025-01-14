@@ -61,4 +61,57 @@ class cartController {
       });
     }
   };
+
+  //장바구니 조회
+  usingCarts = async (req, res) => {
+    try {
+      const userId = req.user.id;
+      const usingCarts = await this.#service.usingCarts(userId);
+      if (!usingCarts) {
+        return res.status(HTTP_STATUS.NOT_FOUND).json({
+          message: MESSAGES.CARTS.COMMON.NOT_FOUND,
+        });
+      }
+
+      return res.status(HTTP_STATUS.OK).json({
+        message: MESSAGES.CARTS.COMMON.SUCCEED,
+        data: usingCarts,
+      });
+    } catch (error) {
+      return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+        message: MESSAGES.CARTS.COMMON.NOT_FOUND,
+      });
+    }
+  };
+
+  //장바구니 삭제
+  deleteCart = async (req, res) => {
+    try {
+      const cartId = req.params.cartId;
+      const usingCart = await this.#service.usingCart(cartId);
+
+      //카트 존재 여부, 로그인한 사용자의 카트인지 검증
+      if (!usingCart) {
+        return res.status(HTTP_STATUS.NOT_FOUND).json({
+          message: MESSAGES.CARTS.COMMON.NOT_FOUND,
+        });
+      } else if (usingCart.userId !== Number(userId)) {
+        return res.status(HTTP_STATUS.FORBIDDEN).json({
+          message: MESSAGES.CARTS.COMMON.NOT_AUTHORIZED,
+        });
+      }
+
+      this.#service.deleteCart(cartId);
+
+      return res.status(HTTP_STATUS.OK).json({
+        message: MESSAGES.CARTS.DELETE.SUCCEED,
+      });
+    } catch (error) {
+      return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+        message: MESSAGES.CARTS.DELETE.FAILED,
+      });
+    }
+  };
 }
+
+export default new cartController(cartService);

@@ -49,7 +49,7 @@ class cartRepository {
     });
   };
 
-  //
+  //장바구니에 메뉴 추가
   addMenu = async ({ cartId, infoOfChosenMenu }) => {
     return await this.#orm.cart.update({
       where: {
@@ -60,8 +60,6 @@ class cartRepository {
       },
     });
   };
-
-  //장바구니에 메뉴 추가
   newMenuOfCart = async ({ cartId, menuId }) => {
     return await this.#orm.menuCart.create({
       data: {
