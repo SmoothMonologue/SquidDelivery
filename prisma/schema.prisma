@@ -84,7 +84,7 @@ model Cart {
 model Order {
   id        Int      @id @default(autoincrement())
   userId    Int
-  cartId    Int?
+  cartId    Int      @unique
   priceSum  Int
   status    String
   menuName  Json

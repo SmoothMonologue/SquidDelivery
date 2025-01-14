@@ -16,7 +16,7 @@ class UserRestaurantService {
   }
 
   // 키워드로 레스토랑 검색
-  async searchRestaurantByKeyword(keyword) {
+  getRestaurantsByKeyword = async (keyword) => {
     //키워드 데이터 검증
     // trim을 이용해 String 데이터에서 공백을 없앤다
     if (!keyword || keyword.trim() === '') {
@@ -24,7 +24,7 @@ class UserRestaurantService {
     }
 
     // 레스토랑, 메뉴의 키워드와 검색 키워드가 부분 일치하는 레스토랑 조회
-    const data = await this.#repository.findRestaurantByKeyword(keyword);
+    const data = await this.#repository.getRestaurantsByKeyword(keyword);
 
     // 조회 결과가 없을 경우
     if (data.length === 0) {
@@ -37,7 +37,7 @@ class UserRestaurantService {
       restaurantName: restaurant.name,
     }));
     return newData;
-  }
+  };
 }
 
 export default new UserRestaurantService(UserRestaurantRepository);
