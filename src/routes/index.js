@@ -10,3 +10,4 @@ apiRouter.use('/users', userRouter);
 apiRouter.use('/partners', partnerRouter);
 
 export default apiRouter;
+

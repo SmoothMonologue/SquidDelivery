@@ -11,6 +11,7 @@ export const MESSAGES = {
       PASSWORD: {
         REQURIED: '비밀번호를 입력해 주세요.',
         MIN_LENGTH: `비밀번호는 ${MIN_PASSWORD_LENGTH}자리 이상이어야 합니다.`,
+        PATTERN: '비밀번호는 영문자와 숫자를 모두 포함해야 합니다.',
       },
       PASSWORD_CONFIRM: {
         REQURIED: '비밀번호 확인을 입력해 주세요.',
@@ -18,6 +19,9 @@ export const MESSAGES = {
       },
       NAME: {
         REQURIED: '이름을 입력해 주세요.',
+      },
+      INTEREST: {
+        INVALID_FORMAT: '관심사는 문자열로 입력해 주세요.',
       },
       UNAUTHORIZED: '인증 정보가 유효하지 않습니다.',
       JWT: {
@@ -33,6 +37,7 @@ export const MESSAGES = {
     },
     SIGN_IN: {
       SUCCEED: '로그인에 성공했습니다.',
+      FAILED: '로그인에 실패했습니다.',
     },
   },
   USERS: {
@@ -45,6 +50,7 @@ export const MESSAGES = {
       NOT_FOUND: '리뷰를 찾을 수 없습니다.',
       ALREADY_EXISTS: '이미 리뷰가 작성되었습니다.',
       NOT_AUTHORIZED: '자신이 작성한 리뷰만 수정/삭제할 수 있습니다.',
+      INVALID_STAR_RATING: '별점은 1-5 사이의 값이어야 합니다.',
     },
     CREATE: {
       SUCCEED: '리뷰 작성에 성공했습니다.',
@@ -81,6 +87,34 @@ export const MESSAGES = {
       FAILED: '댓글 삭제에 실패했습니다.',
     },
   },
+  RESTAURANTS: {
+    COMMON: {
+      NOT_FOUND: '업장이 존재하지 않습니다.',
+      NO_PERMISSION: '해당 업장에 대한 권한이 없습니다.',
+      REQUIRED_FIELDS: '필수 정보가 누락되었습니다.',
+    },
+    CREATE: {
+      SUCCEED: '업장 등록에 성공했습니다.',
+      FAILED: '업장 등록에 실패했습니다.',
+    },
+    UPDATE: {
+      SUCCEED: '업장 정보가 수정되었습니다.',
+      FAILED: '업장 수정에 실패했습니다.',
+    },
+    DELETE: {
+      SUCCEED: '업장이 삭제되었습니다.',
+      FAILED: '업장 삭제에 실패했습니다.',
+      ERROR: '레스토랑 삭제 중 오류가 발생했습니다.',
+    },
+    TRANSACTION: {
+      ERROR: '데이터 처리 중 오류가 발생했습니다.',
+    },
+    READ_LIST: {
+      SUCCEED: '업장 목록 조회에 성공했습니다.',
+      FAILED: '업장 목록 조회에 실패했습니다.',
+    },
+  },
+
   CARTS: {
     COMMON: {
       SUCCEED: '장바구니 조회에 성공했습니다.',
@@ -101,3 +135,5 @@ export const MESSAGES = {
     },
   },
 };
+
+export const RESTAURANT_MESSAGES = MESSAGES.RESTAURANTS;
