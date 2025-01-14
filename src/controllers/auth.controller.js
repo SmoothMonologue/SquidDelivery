@@ -24,12 +24,10 @@ class AuthController {
 
     if (catchBox) {
       const partner = await this.#service.signInPartner({ email, password });
-      res.setHeader('Authorization', `Bearer ${token}`);
-      res.status(HTTP_STATUS.CREATED).json(...partner, token );
+      res.status(HTTP_STATUS.CREATED).json(partner);
     } else {
       const user = await this.#service.signInUser({ email, password });
-      res.setHeader('Authorization', `Bearer ${token}`);
-      res.status(HTTP_STATUS.CREATED).json(user, token);
+      res.status(HTTP_STATUS.CREATED).json(user);
     }
   };
 }

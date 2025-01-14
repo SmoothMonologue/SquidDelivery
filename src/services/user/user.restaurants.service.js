@@ -1,4 +1,4 @@
-import UserRestaurantRepository from '../repositories/user.restaurant.repository.js';
+import UserRestaurantRepository from '../../routes/user/user.restaurants.router.js';
 
 class UserRestaurantService {
   async getAllRestaurants() {
