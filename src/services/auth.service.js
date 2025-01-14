@@ -35,8 +35,7 @@ class AuthService {
         message: MESSAGES.AUTH.COMMON.UNAUTHORIZED,
       };
     }
-    console.log('partner= ', partner);
-    console.log('partner.password= ', partner.password);
+
     const isPasswordMatched = bcrypt.compareSync(partnerData.password, partner.password);
     if (!isPasswordMatched) {
       return {
@@ -46,17 +45,11 @@ class AuthService {
     }
 
     const payload = { id: partner.id };
+
     const accessToken = jwt.sign(payload, ACCESS_TOKEN_SECRET, {
       expiresIn: ACCESS_TOKEN_EXPIRES_IN,
     });
-
-    return {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        'Access-Control-Expose-Headers': 'Authorization',
-      },
-      data: { accessToken },
-    };
+    return { data: { accessToken } };
   };
 
   signInUser = async (userData) => {
@@ -71,17 +64,11 @@ class AuthService {
     }
 
     const payload = { id: user.id };
+
     const accessToken = jwt.sign(payload, ACCESS_TOKEN_SECRET, {
       expiresIn: ACCESS_TOKEN_EXPIRES_IN,
     });
-
-    return {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        'Access-Control-Expose-Headers': 'Authorization',
-      },
-      data: { accessToken },
-    };
+    return { data: { accessToken } };
   };
 
   signOut = async (authorization) => {
