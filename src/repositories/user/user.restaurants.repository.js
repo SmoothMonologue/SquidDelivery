@@ -7,6 +7,8 @@ class UserRestaurantRepository {
       select: {
         id: true,
         restaurantName: true,
+        starRating: true,
+        keyword: true,
         Menu: {
           select: {
             id: true,
@@ -35,7 +37,7 @@ class UserRestaurantRepository {
     });
 
     if (!restaurant) {
-      throw new Error(RESTAURANT_MESSAGES.NOT_FOUND);
+      throw new Error(MESSAGES.RESTAURANTS.COMMON.NOT_FOUND);
     }
     return restaurant;
   }

@@ -25,17 +25,21 @@ class PartnerRestaurantRepository {
   }
 
   async deleteRestaurant(id) {
-    return await prisma.$transaction(async (tx) => {
-      await tx.comment.deleteMany({
-        where: {
-          Review: { restaurantId: id },
-        },
+    try {
+      return await prisma.$transaction(async (tx) => {
+        await tx.comment.deleteMany({
+          where: {
+            Review: { restaurantId: id },
+          },
+        });
+        await tx.review.deleteMany({ where: { restaurantId: id } });
+        await tx.cart.deleteMany({ where: { restaurantId: id } });
+        await tx.menu.deleteMany({ where: { restaurantId: id } });
+        return tx.restaurant.delete({ where: { id } });
       });
-      await tx.review.deleteMany({ where: { restaurantId: id } });
-      await tx.cart.deleteMany({ where: { restaurantId: id } });
-      await tx.menu.deleteMany({ where: { restaurantId: id } });
-      return tx.restaurant.delete({ where: { id } });
-    });
+    } catch (error) {
+      throw new Error(MESSAGES.RESTAURANTS.DELETE.ERROR);
+    }
   }
 
   async findRestaurantsByPartnerId(partnerId) {
@@ -53,7 +57,7 @@ class PartnerRestaurantRepository {
     });
 
     if (!restaurant) {
-      throw new Error(RESTAURANT_MESSAGES.NOT_FOUND);
+      throw new Error(MESSAGES.RESTAURANTS.COMMON.NOT_FOUND);
     }
     return restaurant;
   }

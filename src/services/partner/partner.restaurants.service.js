@@ -5,7 +5,7 @@ class PartnerRestaurantService {
   async createRestaurant(data) {
     // 필수 필드 검증
     if (!data.restaurantName) {
-      throw new Error(RESTAURANT_MESSAGES.REQUIRED_FIELDS);
+      throw new Error(MESSAGES.RESTAURANTS.COMMON.REQUIRED_FIELDS);
     }
 
     // 데이터 형식 검증
@@ -44,7 +44,7 @@ class PartnerRestaurantService {
     }
 
     if (restaurant.partnerId !== partnerId) {
-      throw new Error(RESTAURANT_MESSAGES.NO_PERMISSION);
+      throw new Error(MESSAGES.RESTAURANTS.COMMON.NO_PERMISSION);
     }
   }
 }

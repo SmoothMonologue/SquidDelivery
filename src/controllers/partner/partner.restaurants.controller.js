@@ -1,6 +1,7 @@
 import PartnerRestaurantService from '../../services/partner/partner.restaurants.service.js';
 import { HTTP_STATUS } from '../../constants/http-status.constant.js';
 import { RESTAURANT_MESSAGES } from '../../constants/message.constant.js';
+import { MESSAGES } from '../../constants/message.constant.js';
 
 class PartnerRestaurantController {
   // 업장 등록
@@ -8,7 +9,7 @@ class PartnerRestaurantController {
     try {
       const restaurant = await PartnerRestaurantService.createRestaurant(req.body);
       res.status(HTTP_STATUS.CREATED).json({
-        message: RESTAURANT_MESSAGES.CREATE_SUCCESS,
+        message: MESSAGES.RESTAURANTS.CREATE.SUCCEED,
         data: restaurant,
       });
     } catch (error) {
@@ -32,6 +33,9 @@ class PartnerRestaurantController {
   async updateRestaurant(req, res, next) {
     try {
       const { restaurantId } = req.params;
+      if (!req.user || !req.user.id) {
+        throw new Error(RESTAURANT_MESSAGES.NO_PERMISSION);
+      }
       const partnerId = req.user.id;
 
       await PartnerRestaurantService.verifyRestaurantOwnership(restaurantId, partnerId);
@@ -41,7 +45,7 @@ class PartnerRestaurantController {
         req.body,
       );
       res.status(HTTP_STATUS.OK).json({
-        message: RESTAURANT_MESSAGES.UPDATE_SUCCESS,
+        message: MESSAGES.RESTAURANTS.UPDATE.SUCCEED,
         data: updatedRestaurant,
       });
     } catch (error) {
@@ -59,7 +63,7 @@ class PartnerRestaurantController {
 
       await PartnerRestaurantService.deleteRestaurant(restaurantId);
       res.status(HTTP_STATUS.OK).json({
-        message: RESTAURANT_MESSAGES.DELETE_SUCCESS,
+        message: MESSAGES.RESTAURANTS.DELETE.SUCCEED,
       });
     } catch (error) {
       next(error);
