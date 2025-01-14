@@ -44,6 +44,7 @@ class UserRestaurantRepository {
 
   // 키워드 가게-메뉴 검색
   async findRestaurantsByKeyword(keyword) {
+    console.log('keyword@@@@@', keyword);
     const data = await prisma.restaurant.findMany({
       where: {
         OR: [
