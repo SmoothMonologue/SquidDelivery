@@ -38,9 +38,9 @@ model Partner {
 }
 
 model Restaurant {
-  id             Int     @id @default(autoincrement())
-  partnerId      Int     @unique
-  restaurantName String  @unique
+  id             Int      @id @default(autoincrement())
+  partnerId      Int      @unique
+  restaurantName String   @unique
   keyword        String?
   starRating     Int?
   createdAt      DateTime @default(now())
@@ -110,7 +110,7 @@ model Payment {
 }
 
 model Review {
-  id           Int      @id @default(autoincrement())
+  id           Int        @id @default(autoincrement())
   userId       Int
   restaurantId Int
   orderId      Int        @unique
