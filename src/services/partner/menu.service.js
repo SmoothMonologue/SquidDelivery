@@ -1,4 +1,4 @@
-import menuRepository from '../../repositories/menu/menu.repository.js';
+import menuRepository from '../../repositories/partner/menu.repository.js';
 
 class Menuservice {
   #repository;
@@ -10,24 +10,24 @@ class Menuservice {
     if (!name || price === undefined || restaurantId === undefined) {
       throw new Error('메뉴 이름, 가격, 레스토랑 ID는 필수입니다.');
     }
-    const menu = this.#repository.menu({
+    const menu = this.#repository.createMenu({
       name,
-      price,
-      spicyLevel,
-      restaurantId,
+      price: +price,
+      spicyLevel: +spicyLevel,
+      restaurantId: +restaurantId,
     });
     return menu;
   };
   // 메뉴 목록 조회(소비자/사장님 공용)
   restaurantIdMenu = async ({ restaurantId }) => {
     const menus = this.#repository.restaurantIdMenu({
-      restaurantId,
+      restaurantId: +restaurantId,
     });
     return menus;
   };
   updateMenu = async ({ menuId, data }) => {
     const menu = this.#repository.updateMenu({
-      menuId,
+      menuId: +menuId,
       data,
     });
     return menu;
@@ -35,7 +35,7 @@ class Menuservice {
 
   deleteMenu = async ({ menuId }) => {
     const menu = this.#repository.deleteMenu({
-      menuId,
+      menuId: +menuId,
     });
     return menu;
   };

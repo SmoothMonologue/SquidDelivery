@@ -1,7 +1,7 @@
 import UserRestaurantService from '../../services/user/user.restaurants.service.js';
 
 class UserRestaurantController {
-  async getAllRestaurants(req, res, next) {
+  async getRestaurantMenus(req, res, next) {
     try {
       const restaurants = await UserRestaurantService.getAllRestaurants();
       res.status(200).json({ data: restaurants });

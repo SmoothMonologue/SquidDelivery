@@ -19,9 +19,10 @@ class Menurepository {
   };
   // 메뉴 목록 조회(소비자/사장님 공용)
   restaurantIdMenu = async ({ restaurantId }) => {
+    console.log(+restaurantId);
     const restaurantIdMenu = await this.#orm.menu.findMany({
       where: {
-        restaurantId,
+        restaurantId: { equals: Number(restaurantId) },
       },
     });
     return restaurantIdMenu;
