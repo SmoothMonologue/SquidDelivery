@@ -1,8 +1,14 @@
-import userRestaurantRepository from '../../repositories/user/user.restaurants.repository.js';
+import UserRestaurantRepository from '../../repositories/user/user.restaurants.repository.js';
 
 class UserRestaurantService {
+  #repository;
+
+  constructor(repository) {
+    this.#repository = repository;
+  }
+
   async getAllRestaurants() {
-    const restaurants = await userRestaurantRepository.findAllRestaurants();
+    const restaurants = await this.#repository.findAllRestaurants();
     if (!restaurants || restaurants.length === 0) {
       throw new Error('등록된 업장이 없습니다.');
     }
@@ -17,7 +23,7 @@ class UserRestaurantService {
     }
 
     // 레스토랑, 메뉴의 키워드와 검색 키워드가 부분 일치하는 레스토랑 조회
-    const data = await userRestaurantRepository.findRestaurantsByKeyword(keyword);
+    const data = await this.#repository.findRestaurantsByKeyword(keyword);
 
     // 조회 결과가 없을 경우
     if (data.length === 0) {
@@ -33,4 +39,4 @@ class UserRestaurantService {
   }
 }
 
-export default new UserRestaurantService();
+export default new UserRestaurantService(UserRestaurantRepository);

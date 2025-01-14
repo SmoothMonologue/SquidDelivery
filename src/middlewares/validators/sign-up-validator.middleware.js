@@ -26,13 +26,15 @@ const schema = Joi.object({
   interest: Joi.string().optional().messages({
     'string.base': MESSAGES.AUTH.COMMON.INTEREST.INVALID_FORMAT,
   }),
-});
+  phoneNumber: Joi.string().optional(),
+  catchBox: Joi.string().optional(),
+}).unknown(true);
 
 export const signUpValidator = async (req, res, next) => {
   try {
     await schema.validateAsync(req.body);
     next();
   } catch (error) {
-    next(error);
+    return res.status(400).json({ message: error.message });
   }
 };

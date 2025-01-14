@@ -96,4 +96,4 @@ export const authenticatePartner = async (req, res, next) => {
       message: MESSAGES.AUTH.COMMON.JWT.INVALID,
     });
   }
-}; 
+};
