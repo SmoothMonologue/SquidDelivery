@@ -115,3 +115,5 @@ export const MESSAGES = {
     },
   },
 };
+
+export const RESTAURANT_MESSAGES = MESSAGES.RESTAURANTS;

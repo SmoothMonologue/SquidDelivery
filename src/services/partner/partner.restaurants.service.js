@@ -1,5 +1,5 @@
 import PartnerRestaurantRepository from '../../repositories/partner/partner.restaurants.repository.js';
-import { RESTAURANT_MESSAGES } from '../../constants/message.constant.js';
+import { MESSAGES } from '../../constants/message.constant.js';
 
 class PartnerRestaurantService {
   async createRestaurant(data) {
@@ -19,7 +19,7 @@ class PartnerRestaurantService {
   async updateRestaurant(id, data) {
     const restaurant = await PartnerRestaurantRepository.findRestaurantById(id);
     if (!restaurant) {
-      throw new Error(RESTAURANT_MESSAGES.NOT_FOUND);
+      throw new Error(MESSAGES.RESTAURANTS.COMMON.NOT_FOUND);
     }
     return PartnerRestaurantRepository.updateRestaurant(id, data);
   }
@@ -40,7 +40,7 @@ class PartnerRestaurantService {
     const restaurant = await PartnerRestaurantRepository.findRestaurantById(restaurantId);
 
     if (!restaurant) {
-      throw new Error(RESTAURANT_MESSAGES.NOT_FOUND);
+      throw new Error(MESSAGES.RESTAURANTS.COMMON.NOT_FOUND);
     }
 
     if (restaurant.partnerId !== partnerId) {
