@@ -1,4 +1,4 @@
-import cartRepository from '../repositories/cart.repository.js';
+import cartRepository from '../../repositories/user/cart.repository.js';
 
 class cartService {
   #repository;
