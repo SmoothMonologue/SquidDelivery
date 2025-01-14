@@ -25,7 +25,7 @@ class UserRepository {
     });
   };
 
-  signInUser = async ({ email, password }) => {
+  signInUser = async ({ email }) => {
     const user = await this.#orm.user.findUnique({ where: { email } });
 
     if (!user) {
@@ -35,7 +35,7 @@ class UserRepository {
       };
     }
 
-    return { email: user.email, password: user.password };
+    return user;
   };
 }
 

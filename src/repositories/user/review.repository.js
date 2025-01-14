@@ -1,5 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
+import { prisma } from '../utils/prisma/index.js';
 
 /**
  * ReviewRepository
@@ -22,10 +21,7 @@ class ReviewRepository {
   // 주문에 대한 리뷰 존재 여부 확인
   findReviewByOrderId = async (orderId) => {
     return this.prisma.review.findUnique({
-      where: {
-        orderId,
-        restaurantId: restaurant.id,
-      },
+      where: { orderId },
     });
   };
 
