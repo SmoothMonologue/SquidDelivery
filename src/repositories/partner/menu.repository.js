@@ -44,13 +44,13 @@ class Menurepository {
   };
   // 메뉴 삭제(사장님용)
   deleteMenu = async ({ menuId }) => {
-    console.log('메뉴아이디', menuId);
+    // console.log('메뉴아이디', menuId);
     const deleteMenu = await this.#orm.menu.delete({
       where: {
         id: Number(menuId),
       },
     });
-    console.log('메뉴아이디', menuId);
+    // console.log('메뉴아이디', menuId);
     return deleteMenu;
   };
 }
