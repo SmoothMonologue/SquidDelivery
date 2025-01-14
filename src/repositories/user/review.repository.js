@@ -71,4 +71,7 @@ class ReviewRepository {
   };
 }
 
+// 클래스를 export
+export { ReviewRepository };
+// 인스턴스도 export (기존 코드와의 호환성 유지)
 export default new ReviewRepository(prisma);

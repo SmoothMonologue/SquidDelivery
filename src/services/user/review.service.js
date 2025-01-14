@@ -1,6 +1,6 @@
 import { HTTP_STATUS } from '../../constants/http-status.constant.js';
 import { MESSAGES } from '../../constants/message.constant.js';
-import ReviewRepository from '../../repositories/review.repository.js';
+import ReviewRepository from '../../repositories/user/review.repository.js';
 
 /**
  * ReviewService
@@ -8,14 +8,16 @@ import ReviewRepository from '../../repositories/review.repository.js';
  * 데이터 검증, 권한 확인, 에러 처리 등을 담당
  */
 class ReviewService {
-  constructor(reviewRepository) {
-    this.reviewRepository = reviewRepository;
+  #reviewRepository;
+
+  constructor() {
+    this.#reviewRepository = ReviewRepository;
   }
 
   // 리뷰 생성 서비스
   createReview = async ({ userId, orderId, image, content, starRating }) => {
     // 주문 존재 여부 확인
-    const order = await this.reviewRepository.findOrderById(orderId);
+    const order = await this.#reviewRepository.findOrderById(orderId);
     if (!order) {
       const error = new Error(MESSAGES.REVIEWS.COMMON.NOT_FOUND);
       error.status = HTTP_STATUS.NOT_FOUND;
@@ -23,7 +25,7 @@ class ReviewService {
     }
 
     // 리뷰 중복 작성 확인
-    const existingReview = await this.reviewRepository.findReviewByOrderId(orderId);
+    const existingReview = await this.#reviewRepository.findReviewByOrderId(orderId);
     if (existingReview) {
       const error = new Error(MESSAGES.REVIEWS.COMMON.ALREADY_EXISTS);
       error.status = HTTP_STATUS.CONFLICT;
@@ -31,11 +33,10 @@ class ReviewService {
     }
 
     // 리뷰 생성
-    const review = await this.reviewRepository.createReview({
+    const review = await this.#reviewRepository.createReview({
       userId,
       orderId,
       restaurantId: order.Cart.restaurantId,
-      restaurantsId: order.Cart.restaurantId,
       image,
       content,
       starRating
@@ -49,7 +50,7 @@ class ReviewService {
 
   // 전체 리뷰 조회 서비스
   getAllReviews = async () => {
-    const reviews = await this.reviewRepository.findAllReviews();
+    const reviews = await this.#reviewRepository.findAllReviews();
     return {
       message: MESSAGES.REVIEWS.READ_LIST.SUCCEED,
       data: reviews
@@ -59,7 +60,7 @@ class ReviewService {
   // 리뷰 수정 서비스
   updateReview = async ({ reviewId, userId, content, starRating, image }) => {
     // 리뷰 존재 여부 확인
-    const review = await this.reviewRepository.findReviewById(reviewId);
+    const review = await this.#reviewRepository.findReviewById(reviewId);
     if (!review) {
       const error = new Error(MESSAGES.REVIEWS.COMMON.NOT_FOUND);
       error.status = HTTP_STATUS.NOT_FOUND;
@@ -73,7 +74,7 @@ class ReviewService {
       throw error;
     }
 
-    const updatedReview = await this.reviewRepository.updateReview(reviewId, {
+    const updatedReview = await this.#reviewRepository.updateReview(reviewId, {
       content,
       starRating,
       image
@@ -88,7 +89,7 @@ class ReviewService {
   // 리뷰 삭제 서비스
   deleteReview = async ({ reviewId, userId }) => {
     // 리뷰 존재 여부 확인
-    const review = await this.reviewRepository.findReviewById(reviewId);
+    const review = await this.#reviewRepository.findReviewById(reviewId);
     if (!review) {
       const error = new Error(MESSAGES.REVIEWS.COMMON.NOT_FOUND);
       error.status = HTTP_STATUS.NOT_FOUND;
@@ -102,7 +103,7 @@ class ReviewService {
       throw error;
     }
 
-    await this.reviewRepository.deleteReview(reviewId);
+    await this.#reviewRepository.deleteReview(reviewId);
 
     return {
       message: MESSAGES.REVIEWS.DELETE.SUCCEED
@@ -110,4 +111,4 @@ class ReviewService {
   };
 }
 
-export default ReviewService; 
+export default new ReviewService(); 
