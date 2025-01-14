@@ -1,4 +1,4 @@
-import PartnerRestaurantService from '../services/partner.restaurant.service.js';
+import PartnerRestaurantService from '../../services/partner/partner.restaurants.service.js';
 
 class PartnerRestaurantController {
   // 업장 등록

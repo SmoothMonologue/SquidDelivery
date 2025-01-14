@@ -4,7 +4,7 @@ import { PrismaClient } from '../../utils/prisma/index.js';
 const app = express();
 const prisma = new PrismaClient();
 
-app.post('/', async (req, res) => {
+app.post('/od', async (req, res) => {
   const { userId, orderId } = req.body;
 
   if (!userId || !orderId) {

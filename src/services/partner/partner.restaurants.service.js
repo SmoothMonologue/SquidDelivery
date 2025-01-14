@@ -1,4 +1,4 @@
-import PartnerRestaurantRepository from '../repositories/partner.restaurant.repository.js';
+import PartnerRestaurantRepository from '../../repositories/partner/partner.restaurants.repository.js';
 
 class PartnerRestaurantService {
   async createRestaurant(data) {
