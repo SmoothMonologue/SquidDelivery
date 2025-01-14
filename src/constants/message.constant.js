@@ -31,6 +31,9 @@ export const MESSAGES = {
         NO_USER: '인증 정보와 일치하는 사용자가 없습니다.',
         INVALID: '인증 정보가 유효하지 않습니다.',
       },
+      CATCH_BOX: {
+        INVALID_FORMAT: '잘못된 형식입니다.'
+      }
     },
     SIGN_UP: {
       SUCCEED: '회원가입에 성공했습니다.',
