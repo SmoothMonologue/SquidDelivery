@@ -1,11 +1,14 @@
 import express from 'express';
 import PartnerRestaurantController from '../../controllers/partner/partner.restaurants.controller.js';
+import { authenticatePartner } from '../../middlewares/auth.middleware.js';
 
 const partnerRestaurantRouter = express.Router();
 
+partnerRestaurantRouter.use(authenticatePartner);
+
 partnerRestaurantRouter.post('/', PartnerRestaurantController.createRestaurant);
-partnerRestaurantRouter.patch('/:restaurantsId', PartnerRestaurantController.updateRestaurant);
-partnerRestaurantRouter.delete('/:restaurantsId', PartnerRestaurantController.deleteRestaurant);
+partnerRestaurantRouter.patch('/:restaurantId', PartnerRestaurantController.updateRestaurant);
+partnerRestaurantRouter.delete('/:restaurantId', PartnerRestaurantController.deleteRestaurant);
 partnerRestaurantRouter.get('/:partnerId/restaurants', PartnerRestaurantController.getRestaurants);
 
 export default partnerRestaurantRouter;

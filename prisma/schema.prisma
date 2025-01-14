@@ -41,6 +41,8 @@ model Restaurant {
   restaurantName String   @unique
   keyword        String?
   starRating     Int?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
   Partner        Partner  @relation(fields: [partnerId], references: [id])
   Review         Review[]
   Menu           Menu[]
@@ -102,18 +104,17 @@ model Payment {
 
 // 테이블 정리 완료
 model Review {
-  id            Int        @id @default(autoincrement())
-  userId        Int
-  restaurantId  Int
-  orderId       Int        @unique
-  restaurantsId Int
-  image         String?
-  content       String?
-  starRating    Int
-  createdAt     DateTime   @default(now())
-  Order         Order      @relation(fields: [orderId], references: [id])
-  Restaurant    Restaurant @relation(fields: [restaurantsId], references: [id])
-  Comment       Comment[]
+  id           Int        @id @default(autoincrement())
+  userId       Int
+  orderId      Int        @unique
+  restaurantId Int
+  image        String?
+  content      String?
+  starRating   Int
+  createdAt    DateTime   @default(now())
+  Order        Order      @relation(fields: [orderId], references: [id])
+  Restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  Comment      Comment[]
 
   @@unique([userId, restaurantId])
   @@map("Review")

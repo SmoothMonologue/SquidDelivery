@@ -87,9 +87,11 @@ export const MESSAGES = {
     },
   },
   RESTAURANTS: {
-    NOT_FOUND: '업장을 찾을 수 없습니다.',
-    CREATED: '업장이 성공적으로 생성되었습니다.',
-    UPDATED: '업장이 성공적으로 수정되었습니다.',
-    DELETED: '업장이 성공적으로 삭제되었습니다.',
+    NOT_FOUND: '업장이 존재하지 않습니다.',
+    NO_PERMISSION: '해당 업장에 대한 권한이 없습니다.',
+    CREATE_SUCCESS: '업장 등록에 성공했습니다.',
+    UPDATE_SUCCESS: '업장 정보가 수정되었습니다.',
+    DELETE_SUCCESS: '업장이 삭제되었습니다.',
+    REQUIRED_FIELDS: '필수 정보가 누락되었습니다.',
   },
 };
