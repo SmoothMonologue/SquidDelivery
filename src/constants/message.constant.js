@@ -34,6 +34,9 @@ export const MESSAGES = {
       CATCH_BOX: {
         INVALID_FORMAT: '캐치박스는 문자열로 입력되어야 합니다.',
       },
+      PHONE_NUMBER: {
+        FAILED: '올바른 전화번호 형식으로 입력해 주세요. ex)010-XXXX-XXXX',
+      },
     },
     SIGN_UP: {
       SUCCEED: '회원가입에 성공했습니다.',

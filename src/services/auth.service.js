@@ -15,16 +15,27 @@ class AuthService {
     this.#partnerRepository = partnerRepository;
   }
 
-  createUser = async ({ email, password, name, interest }) => {
+  createUser = async ({ email, password, name, interest, phoneNumber }) => {
     const hashedPassword = bcrypt.hashSync(password, HASH_SALT_ROUNDS);
 
-    return this.#userRepository.createUser({ name, email, password: hashedPassword, interest });
+    return this.#userRepository.createUser({
+      name,
+      email,
+      password: hashedPassword,
+      interest,
+      phoneNumber,
+    });
   };
 
-  createPartner = async ({ email, password, name }) => {
+  createPartner = async ({ email, password, name, phoneNumber }) => {
     const hashedPassword = bcrypt.hashSync(password, HASH_SALT_ROUNDS);
 
-    return this.#partnerRepository.createPartner({ name, email, password: hashedPassword });
+    return this.#partnerRepository.createPartner({
+      name,
+      email,
+      password: hashedPassword,
+      phoneNumber,
+    });
   };
 
   signInPartner = async (partnerData) => {
