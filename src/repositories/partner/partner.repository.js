@@ -26,7 +26,6 @@ class PartnerRepository {
   };
   signInPartner = async ({ email }) => {
     const partner = await this.#orm.partner.findUnique({ where: { email } });
-    console.log('signInPartner ==', partner);
     if (!partner) {
       return {
         status: HTTP_STATUS.NOT_FOUND,

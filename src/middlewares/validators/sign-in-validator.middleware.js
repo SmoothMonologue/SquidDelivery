@@ -9,7 +9,7 @@ const schema = Joi.object({
   password: Joi.string().required().messages({
     'any.required': MESSAGES.AUTH.COMMON.PASSWORD.REQURIED,
   }),
-  catchBox: Joi.string().optional().messages({
+  catchBox: Joi.boolean().optional().messages({
     'string.base': MESSAGES.AUTH.COMMON.CATCH_BOX.INVALID_FORMAT,
   }),
 });
