@@ -1,14 +1,23 @@
-import { prisma } from '../utils/prisma/index.js';
-import { RESTAURANT_MESSAGES } from '../../constants/message.constant.js';
+import { prisma } from '../../utils/prisma/index.js';
+import { MESSAGES } from '../../constants/message.constant.js';
 
 class UserRestaurantRepository {
+  #prisma;
+
+  constructor(prisma) {
+    this.#prisma = prisma;
+  }
+
   async findAllRestaurants() {
-    return prisma.restaurant.findMany({
+    return this.#prisma.restaurant.findMany({
       select: {
         id: true,
         restaurantName: true,
         starRating: true,
         keyword: true,
+        createdAt: true,
+        updatedAt: true,
+        number: true,
         Menu: {
           select: {
             id: true,
@@ -21,7 +30,7 @@ class UserRestaurantRepository {
   }
 
   async findRestaurantById(id) {
-    const restaurant = await prisma.restaurant.findUnique({
+    const restaurant = await this.#prisma.restaurant.findUnique({
       where: { id },
       select: {
         id: true,
@@ -43,4 +52,4 @@ class UserRestaurantRepository {
   }
 }
 
-export default new UserRestaurantRepository();
+export default new UserRestaurantRepository(prisma);

@@ -1,32 +1,49 @@
-import { prisma } from '../../utils/prisma/index.js';
 import { MESSAGES } from '../../constants/message.constant.js';
+import { prisma } from '../../utils/prisma/index.js';
 
 class PartnerRestaurantRepository {
+  #prisma;
+
+  constructor(prisma) {
+    this.#prisma = prisma;
+  }
+
   async createRestaurant(data) {
     const requiredFields = {
       partnerId: data.partnerId,
       restaurantName: data.restaurantName,
     };
-    return prisma.restaurant.create({
+    return this.#prisma.restaurant.create({
       data: {
         ...requiredFields,
         keyword: data.keyword,
         starRating: data.starRating,
+        businessNumber: data.businessNumber,
+        number: data.number,
       },
     });
   }
 
   async updateRestaurant(id, data) {
-    const restaurant = await prisma.restaurant.findUnique({ where: { id } });
+    const restaurant = await this.#prisma.restaurant.findUnique({ where: { id } });
     if (!restaurant) {
-      throw new Error(RESTAURANT_MESSAGES.NOT_FOUND);
+      throw new Error(MESSAGES.RESTAURANTS.COMMON.NOT_FOUND);
     }
-    return prisma.restaurant.update({ where: { id }, data });
+    return this.#prisma.restaurant.update({
+      where: { id },
+      data: {
+        restaurantName: data.restaurantName,
+        keyword: data.keyword,
+        starRating: data.starRating,
+        businessNumber: data.businessNumber,
+        number: data.number,
+      },
+    });
   }
 
   async deleteRestaurant(id) {
     try {
-      return await prisma.$transaction(async (tx) => {
+      return await this.#prisma.$transaction(async (tx) => {
         await tx.comment.deleteMany({
           where: {
             Review: { restaurantId: id },
@@ -40,19 +57,26 @@ class PartnerRestaurantRepository {
     } catch (error) {
       throw new Error(MESSAGES.RESTAURANTS.DELETE.ERROR);
     }
+    return prisma.restaurant.delete({ where: { id } });
   }
 
   async findRestaurantsByPartnerId(partnerId) {
-    return prisma.restaurant.findMany({ where: { partnerId } });
+    return this.#prisma.restaurant.findMany({ where: { partnerId } });
   }
 
   async findRestaurantById(id) {
-    const restaurant = await prisma.restaurant.findUnique({
+    const restaurant = await this.#prisma.restaurant.findUnique({
       where: { id },
       select: {
         id: true,
-        restaurantName: true,
         partnerId: true,
+        restaurantName: true,
+        keyword: true,
+        starRating: true,
+        createdAt: true,
+        updatedAt: true,
+        businessNumber: true,
+        number: true,
       },
     });
 
@@ -63,4 +87,4 @@ class PartnerRestaurantRepository {
   }
 }
 
-export default new PartnerRestaurantRepository();
+export default new PartnerRestaurantRepository(prisma);

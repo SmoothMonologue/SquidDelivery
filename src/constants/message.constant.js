@@ -32,8 +32,8 @@ export const MESSAGES = {
         INVALID: '인증 정보가 유효하지 않습니다.',
       },
       CATCH_BOX: {
-        INVALID_FORMAT: '잘못된 형식입니다.'
-      }
+        INVALID_FORMAT: '캐치박스는 문자열로 입력되어야 합니다.',
+      },
     },
     SIGN_UP: {
       SUCCEED: '회원가입에 성공했습니다.',
@@ -41,6 +41,9 @@ export const MESSAGES = {
     SIGN_IN: {
       SUCCEED: '로그인에 성공했습니다.',
       FAILED: '로그인에 실패했습니다.',
+    },
+    SIGN_OUT: {
+      SUCCEED: '로그아웃에 성공했습니다.',
     },
   },
   USERS: {

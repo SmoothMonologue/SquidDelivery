@@ -2,42 +2,41 @@ import PartnerRestaurantRepository from '../../repositories/partner/partner.rest
 import { MESSAGES } from '../../constants/message.constant.js';
 
 class PartnerRestaurantService {
+  #repository;
+
+  constructor(repository) {
+    this.#repository = repository;
+  }
+
   async createRestaurant(data) {
-    // 필수 필드 검증
     if (!data.restaurantName) {
       throw new Error(MESSAGES.RESTAURANTS.COMMON.REQUIRED_FIELDS);
     }
-
-    // 데이터 형식 검증
-    if (typeof data.restaurantName !== 'string' || data.restaurantName.length < 2) {
-      throw new Error('업장 이름은 2글자 이상이어야 합니다.');
-    }
-
-    return PartnerRestaurantRepository.createRestaurant(data);
+    return this.#repository.createRestaurant(data);
   }
 
   async updateRestaurant(id, data) {
-    const restaurant = await PartnerRestaurantRepository.findRestaurantById(id);
+    const restaurant = await this.#repository.findRestaurantById(id);
     if (!restaurant) {
       throw new Error(MESSAGES.RESTAURANTS.COMMON.NOT_FOUND);
     }
-    return PartnerRestaurantRepository.updateRestaurant(id, data);
+    return this.#repository.updateRestaurant(id, data);
   }
 
   async deleteRestaurant(id) {
-    const restaurant = await PartnerRestaurantRepository.findRestaurantById(id);
+    const restaurant = await this.#repository.findRestaurantById(id);
     if (!restaurant) {
       throw new Error('업장이 존재하지 않습니다.');
     }
-    return PartnerRestaurantRepository.deleteRestaurant(id);
+    return this.#repository.deleteRestaurant(id);
   }
 
   async getRestaurantsByPartner(partnerId) {
-    return PartnerRestaurantRepository.findRestaurantsByPartnerId(partnerId);
+    return this.#repository.findRestaurantsByPartnerId(partnerId);
   }
 
   async verifyRestaurantOwnership(restaurantId, partnerId) {
-    const restaurant = await PartnerRestaurantRepository.findRestaurantById(restaurantId);
+    const restaurant = await this.#repository.findRestaurantById(restaurantId);
 
     if (!restaurant) {
       throw new Error(MESSAGES.RESTAURANTS.COMMON.NOT_FOUND);
@@ -49,4 +48,4 @@ class PartnerRestaurantService {
   }
 }
 
-export default new PartnerRestaurantService();
+export default new PartnerRestaurantService(PartnerRestaurantRepository);
