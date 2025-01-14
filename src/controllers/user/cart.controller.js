@@ -32,9 +32,11 @@ class cartController {
   //장바구니에 선택한 메뉴 추가
   newMenuOfCart = async (req, res) => {
     try {
+      const userId = req.user.id;
       const cartId = req.params.cartId;
       const { menuId } = req.body;
       const usingCart = await this.#service.usingCart(cartId);
+
       //카트 존재 여부, 로그인한 사용자의 카트인지 검증
       //컨트롤러에서 하는 거 맞나?
       if (!usingCart) {
@@ -47,9 +49,9 @@ class cartController {
         });
       }
 
-      this.#service.addMenu({ cartId, menuId });
+      await this.#service.addMenu({ cartId, menuId });
 
-      const newMenuOfCart = this.#service.newMenuOfCart({ cartId, menuId });
+      const newMenuOfCart = await this.#service.newMenuOfCart({ cartId, menuId });
 
       return res.status(HTTP_STATUS.OK).json({
         message: MESSAGES.CARTS.UPDATE.SUCCEED,
@@ -57,7 +59,7 @@ class cartController {
       });
     } catch (error) {
       return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-        message: MESSAGES.COMMENTS.UPDATE.FAILED,
+        message: MESSAGES.CARTS.UPDATE.FAILED,
       });
     }
   };
@@ -87,6 +89,7 @@ class cartController {
   //장바구니 삭제
   deleteCart = async (req, res) => {
     try {
+      const userId = req.user.id;
       const cartId = req.params.cartId;
       const usingCart = await this.#service.usingCart(cartId);
 
@@ -101,7 +104,7 @@ class cartController {
         });
       }
 
-      this.#service.deleteCart(cartId);
+      await this.#service.deleteCart(cartId);
 
       return res.status(HTTP_STATUS.OK).json({
         message: MESSAGES.CARTS.DELETE.SUCCEED,
