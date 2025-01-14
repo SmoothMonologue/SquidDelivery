@@ -1,12 +1,12 @@
-import express from 'express';
+import { Router } from 'express';
 import authRouter from './auth.router.js';
 import userRouter from './user.router.js';
 import partnerRouter from './partner.router.js';
 
-const apiRouter = express.Router();
+const router = Router();
 
-apiRouter.use('/auth', authRouter);
-apiRouter.use('/users', usersRouter);
-apiRouter.use('/partners', partnersRouter);
+router.use('/auth', authRouter);
+router.use('/users', userRouter);
+router.use('/partners', partnerRouter);
 
-export default apiRouter;
+export default router;
