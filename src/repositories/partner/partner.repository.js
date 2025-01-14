@@ -24,9 +24,9 @@ class PartnerRepository {
       data: { name, email, password },
     });
   };
-  signInPartner = async ({ email, password }) => {
+  signInPartner = async ({ email }) => {
     const partner = await this.#orm.partner.findUnique({ where: { email } });
-
+    console.log('signInPartner ==', partner);
     if (!partner) {
       return {
         status: HTTP_STATUS.NOT_FOUND,
@@ -34,7 +34,7 @@ class PartnerRepository {
       };
     }
 
-    return { email: partner.email, password: partner.password };
+    return partner;
   };
 }
 

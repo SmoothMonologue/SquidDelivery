@@ -1,5 +1,5 @@
-import { prisma } from '../../utils/prisma/index.js';
 import { MESSAGES } from '../../constants/message.constant.js';
+import { prisma } from '../../utils/prisma/index.js';
 
 class PartnerRestaurantRepository {
   #prisma;
@@ -57,6 +57,7 @@ class PartnerRestaurantRepository {
     } catch (error) {
       throw new Error(MESSAGES.RESTAURANTS.DELETE.ERROR);
     }
+    return prisma.restaurant.delete({ where: { id } });
   }
 
   async findRestaurantsByPartnerId(partnerId) {

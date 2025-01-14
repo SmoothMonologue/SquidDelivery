@@ -39,12 +39,12 @@ class ReviewService {
       restaurantId: order.Cart.restaurantId,
       image,
       content,
-      starRating
+      starRating,
     });
 
     return {
       message: MESSAGES.REVIEWS.CREATE.SUCCEED,
-      data: review
+      data: review,
     };
   };
 
@@ -53,7 +53,7 @@ class ReviewService {
     const reviews = await this.#reviewRepository.findAllReviews();
     return {
       message: MESSAGES.REVIEWS.READ_LIST.SUCCEED,
-      data: reviews
+      data: reviews,
     };
   };
 
@@ -77,12 +77,12 @@ class ReviewService {
     const updatedReview = await this.#reviewRepository.updateReview(reviewId, {
       content,
       starRating,
-      image
+      image,
     });
 
     return {
       message: MESSAGES.REVIEWS.UPDATE.SUCCEED,
-      data: updatedReview
+      data: updatedReview,
     };
   };
 
@@ -106,9 +106,9 @@ class ReviewService {
     await this.#reviewRepository.deleteReview(reviewId);
 
     return {
-      message: MESSAGES.REVIEWS.DELETE.SUCCEED
+      message: MESSAGES.REVIEWS.DELETE.SUCCEED,
     };
   };
 }
 
-export default new ReviewService(); 
+export default new ReviewService();
