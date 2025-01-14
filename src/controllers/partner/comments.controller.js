@@ -14,7 +14,11 @@ class CommentController {
   createComment = async (req, res, next) => {
     try {
       const { reviewId, content } = req.body;
-      const restaurantId = req.restaurant.id; // 인증 미들웨어에서 설정된 레스토랑 정보
+      console.log('req.partner:', req.partner);  // 파트너 정보 확인
+      console.log('req.restaurant:', req.restaurant);  // 레스토랑 정보 확인
+      
+      // req.restaurant이 undefined인 것 같습니다
+      const restaurantId = req.restaurant?.id;  
 
       const result = await this.commentService.createComment({
         restaurantId,
@@ -24,7 +28,7 @@ class CommentController {
 
       return res.status(HTTP_STATUS.CREATED).json(result);
     } catch (error) {
-      next(error); // 에러 처리 미들웨어로 전달
+      next(error);
     }
   };
 

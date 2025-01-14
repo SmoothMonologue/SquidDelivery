@@ -14,8 +14,10 @@ class ReviewController {
     createReview = async (req, res, next) => {
       try {
         const { orderId, image, content, starRating } = req.body;
+        console.log(`req.body의 정보`,req.body);
         const userId = req.user.id;  // 인증 미들웨어에서 설정된 사용자 정보
-  
+        console.log(`userId의 정보`,userId);
+
         const result = await this.reviewService.createReview({
           userId,
           orderId,

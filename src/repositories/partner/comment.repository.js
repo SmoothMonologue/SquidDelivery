@@ -20,7 +20,8 @@ class CommentRepository {
         Restaurant: {   // 레스토랑 정보 포함
           select: {
             id: true,
-            name: true
+            restaurantName: true,
+            restaurantId: true
           }
         }
       }
@@ -35,11 +36,32 @@ class CommentRepository {
   };
 
   // 새로운 댓글 생성
-  createComment = async (commentData) => {
+  createComment = async ({ restaurantId, reviewId, comment }) => {
+    console.log('Repository received:', { restaurantId, reviewId, comment });
+    
+    // restaurant 찾기 전에 로그 추가
+    console.log('Looking for restaurant with ID:', restaurantId);
+    
+    const restaurant = await this.prisma.restaurant.findUnique({
+      where: { id: Number(restaurantId) },
+      select: { partnerId: true }
+    });
+
+    // restaurant 찾은 후 결과 확인
+    console.log('Found restaurant:', restaurant);
+
+    if (!restaurant) {
+      throw new Error(`Restaurant with ID ${restaurantId} not found`);
+    }
+
     return this.prisma.comment.create({
-      data: commentData,
+      data: {
+        partnerId: restaurant.partnerId,
+        reviewId: Number(reviewId),
+        comment,
+      },
       include: {
-        Review: true  // 연관된 리뷰 정보 포함
+        Review: true
       }
     });
   };
@@ -71,6 +93,17 @@ class CommentRepository {
   deleteComment = async (commentId) => {
     return this.prisma.comment.delete({
       where: { id: Number(commentId) }
+    });
+  };
+
+  // 댓글 ID로 댓글 찾기 메소드 추가
+  findCommentById = async (commentId) => {
+    return this.prisma.comment.findUnique({
+      where: { id: Number(commentId) },
+      include: {
+        Review: true,
+        Partner: true
+      }
     });
   };
 }
