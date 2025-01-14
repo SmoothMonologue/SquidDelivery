@@ -24,10 +24,9 @@ class AuthController {
 
     if (Boolean(catchBox)) {
       const partner = await this.#service.signInPartner({ email, password });
-      if (partner.headers) {
-        Object.entries(partner.headers).forEach(([key, value]) => {
-          res.setHeader(key, value);
-        });
+      const { accessToken } = partner.data;
+      if (accessToken) {
+        res.setHeader('Authorization', `Bearer ${accessToken}`);
       }
       res.status(HTTP_STATUS.OK).json(partner.data);
     } else {

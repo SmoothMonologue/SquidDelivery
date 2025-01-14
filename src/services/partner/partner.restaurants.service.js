@@ -8,11 +8,11 @@ class PartnerRestaurantService {
     this.#repository = repository;
   }
 
-  async createRestaurant(data) {
+  async createRestaurant(data,id) {
     if (!data.restaurantName) {
       throw new Error(MESSAGES.RESTAURANTS.COMMON.REQUIRED_FIELDS);
     }
-    return this.#repository.createRestaurant(data);
+    return this.#repository.createRestaurant(data,id);
   }
 
   async updateRestaurant(id, data) {
