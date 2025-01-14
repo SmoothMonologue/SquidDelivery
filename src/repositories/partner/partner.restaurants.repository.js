@@ -61,7 +61,7 @@ class PartnerRestaurantRepository {
   }
 
   async findRestaurantsByPartnerId(partnerId) {
-    return this.#prisma.restaurant.findMany({ where: { partnerId } });
+    return this.#prisma.restaurant.findUnique({ where: { partnerId } });
   }
 
   async findRestaurantById(id) {
