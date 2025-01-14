@@ -7,8 +7,8 @@ class OrderRepository {
     this.#prisma = prisma;
   }
 
-  findUniqueRestaurant = async (partner) => {
-    return await prisma.restaurant.findUnique({
+  findFirstRestaurant = async (partner) => {
+    return await prisma.restaurant.findFirst({
       where: {
         partnerId: partner.id,
       },
@@ -18,7 +18,7 @@ class OrderRepository {
   findManyOrder = async (restaurant) => {
     return await prisma.order.findMany({
       where: {
-        cart: {
+        Cart: {
           restaurantId: restaurant.id,
         },
       },
@@ -37,7 +37,7 @@ class OrderRepository {
     return await prisma.order.findUnique({
       where: {
         id: +orderId,
-        cart: {
+        Cart: {
           restaurantId: restaurant.id,
         },
       },
@@ -56,7 +56,7 @@ class OrderRepository {
     return await prisma.order.update({
       where: {
         id: +orderId,
-        cart: {
+        Cart: {
           restaurantId: restaurant.id,
         },
       },
