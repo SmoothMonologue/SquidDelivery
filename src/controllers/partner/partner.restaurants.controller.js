@@ -56,10 +56,10 @@ class PartnerRestaurantController {
   // 업장 삭제
   async deleteRestaurant(req, res, next) {
     try {
-      console.log(req.params);
+      // console.log(req.params);
       const { restaurantsId } = req.params;
       const partnerId = req.partner.id;
-      console.log(restaurantsId, partnerId);
+      // console.log(restaurantsId, partnerId);
       await PartnerRestaurantService.verifyRestaurantOwnership(+restaurantsId, partnerId);
 
       await PartnerRestaurantService.deleteRestaurant(+restaurantsId);
