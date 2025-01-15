@@ -36,7 +36,7 @@ class ReviewService {
     const review = await this.#reviewRepository.createReview({
       userId,
       orderId,
-      restaurantId: order.Cart.restaurantId,
+      restaurantId: order.restaurantId,
       image,
       content,
       starRating,
