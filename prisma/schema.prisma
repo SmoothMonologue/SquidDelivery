@@ -49,8 +49,8 @@ model Restaurant {
   number         String?
   Cart           Cart[]
   Menu           Menu[]
-  Partner        Partner  @relation(fields: [partnerId], references: [id])
   Review         Review[]
+  Partner        Partner  @relation(fields: [partnerId], references: [id])
 
   @@map("Restaurant")
 }
@@ -134,7 +134,6 @@ model Comment {
   Partner   Partner  @relation(fields: [partnerId], references: [id])
   Review    Review   @relation(fields: [reviewId], references: [id])
 
-  @@index([partnerId], map: "Comment_partnerId_fkey")
   @@map("Comment")
 }
 
