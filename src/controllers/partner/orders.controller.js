@@ -36,8 +36,8 @@ class OrderController {
     try {
       const { orderId } = req.params;
       const partner = req.partner.id;
-
-      const data = await this.#service.updateOrder(orderId, partner);
+      const { method } = req.body;
+      const data = await this.#service.updateOrder(orderId, partner, method);
       return res.status(data.status).json(data);
     } catch (err) {
       console.log(err);
