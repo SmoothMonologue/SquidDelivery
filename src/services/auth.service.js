@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import { HASH_SALT_ROUNDS, ACCESS_TOKEN_EXPIRES_IN } from '../constants/auth.constant.js';
 import { ACCESS_TOKEN_SECRET } from '../constants/env.constant.js';
 import { MESSAGES } from '../constants/message.constant.js';
+import { HTTP_STATUS } from '../constants/http-status.constant.js';
 
 class AuthService {
   #userRepository;
@@ -83,14 +84,14 @@ class AuthService {
   };
 
   signOut = async (authorization) => {
-    if (!authorization) {
+    if (!authorization.authorization) {
       return {
         status: HTTP_STATUS.UNAUTHORIZED,
         message: MESSAGES.AUTH.COMMON.JWT.NO_TOKEN,
       };
     }
+    const [tokenType, token] = authorization.authorization.split(' ');
 
-    const [tokenType, token] = authorization.split(' ');
     if (!token || tokenType !== 'Bearer') {
       return {
         status: HTTP_STATUS.UNAUTHORIZED,
@@ -101,7 +102,7 @@ class AuthService {
     jwt.verify(token, ACCESS_TOKEN_SECRET);
     return {
       status: HTTP_STATUS.OK,
-      message: MESSAGES.AUTH.COMMON.SIGN_OUT.SUCCEED,
+      message: MESSAGES.AUTH.SIGN_OUT.SUCCEED,
     };
   };
 }

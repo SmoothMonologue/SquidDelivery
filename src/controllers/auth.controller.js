@@ -46,8 +46,8 @@ class AuthController {
 
   signOut = async (req, res) => {
     const { authorization } = req.headers;
-    const user = await this.#service.signOutUser({ authorization });
-    res.status(HTTP_STATUS.CREATED).json();
+    const user = await this.#service.signOut({ authorization });
+    res.status(user.status).json(user.message);
   };
 }
 
