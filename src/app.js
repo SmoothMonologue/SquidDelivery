@@ -78,7 +78,16 @@ app.get("/user", async (req, res) => {
   }
 });
 
-
+// 인증 페이지 라우트 추가
+app.get("/auth", async (req, res) => {
+  try {
+    const data = await fs.readFile("./public/auth.html");
+    res.writeHead(200, { "Content-Type": "text/html" });
+    res.end(data);
+  } catch (err) {
+    res.status(500).send("파일을 로드할 수 없습니다.");
+  }
+});
 
 server.listen(PORT, () => {
   console.log(`서버가  http://localhost:${PORT} 에서 실행되었습니다.`);
