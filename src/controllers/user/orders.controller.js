@@ -10,8 +10,9 @@ class OrderController {
   postOrder = async (req, res) => {
     try {
       const userId = req.user.id;
-      const data = await this.#service.createOrder(userId);
-      console.log(`-------------->`,data);
+      const { method } = req.body;
+      const data = await this.#service.createOrder(userId, method);
+      console.log(`-------------->`, data);
       return res.status(data.status).json(data);
     } catch (error) {
       console.log(error);

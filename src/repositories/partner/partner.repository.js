@@ -1,8 +1,6 @@
-import { PrismaClient } from '@prisma/client';
 import { HTTP_STATUS } from '../../constants/http-status.constant.js';
 import { MESSAGES } from '../../constants/message.constant.js';
-
-const prisma = new PrismaClient();
+import { prisma } from '../../utils/prisma/index.js';
 
 class PartnerRepository {
   #orm;
@@ -10,7 +8,7 @@ class PartnerRepository {
     this.#orm = orm;
   }
 
-  createPartner = async ({ name, email, password }) => {
+  createPartner = async ({ name, email, password, phoneNumber }) => {
     const existedPartner = await this.#orm.partner.findUnique({ where: { email } });
 
     if (existedPartner) {
@@ -21,7 +19,7 @@ class PartnerRepository {
     }
 
     return this.#orm.partner.create({
-      data: { name, email, password },
+      data: { name, email, password, phoneNumber },
     });
   };
   signInPartner = async ({ email }) => {
