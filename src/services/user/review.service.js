@@ -32,6 +32,19 @@ class ReviewService {
       throw error;
     }
 
+    // 리뷰 별점 최소 1점 최대 5점
+    if (starRating < 1 || starRating > 5) {
+      const error = new Error(MESSAGES.REVIEWS.COMMON.INVALID_STAR_RATING);
+      error.status = HTTP_STATUS.BAD_REQUEST;
+      throw error;
+    }
+
+    // 리뷰 별점 평점 계산
+    const restaurant = await this.#reviewRepository.findRestaurantById(order.restaurantId);
+    const currentStarRating = restaurant.starRating || 0;
+    const newStarRating = (currentStarRating * restaurant.reviewCount + starRating) / (restaurant.reviewCount + 1);
+
+
     // 리뷰 생성
     const review = await this.#reviewRepository.createReview({
       userId,
