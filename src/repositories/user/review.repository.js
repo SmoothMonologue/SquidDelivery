@@ -33,7 +33,7 @@ class ReviewRepository {
 
   //평점 계산
   calStarRateAvg = async (restaurantId) => {
-    return this.prisma.restaurant.aggregate({
+    return this.prisma.review.aggregate({
       _avg: {
         starRating: true,
       },
@@ -47,7 +47,7 @@ class ReviewRepository {
   setStarRateAvg = async (restaurantId, starRating) => {
     return this.prisma.restaurant.update({
       where: {
-        restaurantId,
+        id: restaurantId,
       },
       data: {
         starRating,

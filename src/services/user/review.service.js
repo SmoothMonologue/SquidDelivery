@@ -44,18 +44,15 @@ class ReviewService {
     const review = await this.#reviewRepository.createReview({
       userId,
       orderId,
-      restaurantId: order.restaurantId,
+      restaurantId,
       image,
       content,
       starRating,
     });
 
     // 리뷰 별점 평점 계산
-    // const restaurant = await this.#reviewRepository.findRestaurantById(order.restaurantId);
-    // const currentStarRating = restaurant.starRating || 0;
-    // const newStarRating = (currentStarRating * restaurant.reviewCount + starRating) / (restaurant.reviewCount + 1);
     const newStarRating = await this.#reviewRepository.calStarRateAvg(restaurantId);
-    await this.#reviewRepository.setStarRateAvg(restaurantId, newStarRating);
+    await this.#reviewRepository.setStarRateAvg(restaurantId, newStarRating._avg.starRating);
 
     return {
       message: MESSAGES.REVIEWS.CREATE.SUCCEED,
