@@ -9,7 +9,7 @@ class OrderService {
 
   getOrders = async (partner) => {
     try {
-      const restaurantInfo = await this.#repository.findUniqueRestaurant(partner);
+      const restaurantInfo = await this.#repository.findFirstRestaurant(partner);
 
       if (!restaurantInfo) {
         return {
@@ -23,7 +23,7 @@ class OrderService {
       return {
         status: 200,
         message: '주문 조회에 성공했습니다.',
-        data: orders,
+        orders,
       };
     } catch (err) {
       console.error(err);
@@ -35,7 +35,7 @@ class OrderService {
   };
 
   selectGetOrder = async (orderId, partner) => {
-    const restaurant = await this.#repository.findUniqueRestaurant(partner);
+    const restaurant = await this.#repository.findFirstRestaurant(partner);
 
     if (!restaurant) {
       return {
@@ -44,7 +44,14 @@ class OrderService {
       };
     }
 
-    const order = await this.#repository.findUniqueOrder(orderId, restaurant);
+    const order = await this.#repository.findFirstOrder(orderId, restaurant);
+    if (!order) {
+      return {
+        status: 404,
+        message: '주문을 찾을 수 없습니다.',
+      };
+    }
+
     return {
       status: 200,
       message: '주문 선택 조회 성공',
@@ -53,7 +60,7 @@ class OrderService {
   };
 
   updateOrder = async (orderId, partner) => {
-    const restaurant = await this.#repository.findUniqueRestaurant(partner);
+    const restaurant = await this.#repository.findFirstRestaurant(partner);
 
     if (!restaurant) {
       return {
@@ -62,24 +69,24 @@ class OrderService {
       };
     }
 
-    const order = await this.#repository.findUniqueOrder(orderId, restaurant);
+    const order = await this.#repository.findFirstOrder(orderId, restaurant);
     if (!order) {
       return {
         status: 404,
         message: '주문을 찾을 수 없습니다.',
       };
     }
-    await this.#repository.updateOrder(orderId, restaurant);
+    const cureentorder = await this.#repository.updateOrder(orderId, restaurant);
 
     return {
       status: 200,
       message: '주문이 접수되었습니다.',
-      order,
+      data: cureentorder,
     };
   };
 
   cancelOrder = async (orderId, partner) => {
-    const restaurant = await this.#repository.findUniqueRestaurant(partner);
+    const restaurant = await this.#repository.findFirstRestaurant(partner);
 
     if (!restaurant) {
       return {
