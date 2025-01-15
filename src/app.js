@@ -47,6 +47,8 @@ io.on('connection', (socket) => {
         userId: socket.userId,
       });
     }
+
+    // 주문 상태 업데이트
     socket.on('status_update', (data) => {
       if (socket.role === 'partner') {
         // 유저들에게 상태 업데이트 전달
@@ -54,6 +56,15 @@ io.on('connection', (socket) => {
       }
     });
 
+    // 주문 완료 이벤트 처리
+    socket.on('order_complete', (orderDetails) => {
+      console.log('고객 주문 완료:', orderDetails);
+
+      // 모든 연결된 사장님에게 알림 전달
+      io.emit('order_complete', orderDetails);
+    });
+
+    // 연결 종료
     socket.on('disconnect', () => {
       if (socket.role === 'partner') {
         console.log(socket.role, ' user disconnected', {
