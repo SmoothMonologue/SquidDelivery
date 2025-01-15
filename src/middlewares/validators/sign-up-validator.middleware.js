@@ -26,7 +26,12 @@ const schema = Joi.object({
   interest: Joi.string().optional().messages({
     'string.base': MESSAGES.AUTH.COMMON.INTEREST.INVALID_FORMAT,
   }),
-  phoneNumber: Joi.string().optional(),
+  phoneNumber: Joi.string()
+    .optional()
+    .pattern(/^010-\d{4}-\d{4}$/)
+    .messages({
+      'string.pattern.base': MESSAGES.AUTH.COMMON.PHONE_NUMBER.FAILED,
+    }),
   catchBox: Joi.string().optional(),
 }).unknown(true);
 

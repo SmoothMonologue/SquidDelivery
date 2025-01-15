@@ -10,7 +10,7 @@ class UserRepository {
     this.#orm = orm;
   }
 
-  createUser = async ({ name, email, password, interest }) => {
+  createUser = async ({ email, password, name, interest, phoneNumber }) => {
     const existedUser = await this.#orm.user.findUnique({ where: { email } });
 
     if (existedUser) {
@@ -21,7 +21,7 @@ class UserRepository {
     }
 
     return this.#orm.user.create({
-      data: { name, email, password, interest },
+      data: { email, password, name, interest, phoneNumber },
     });
   };
 

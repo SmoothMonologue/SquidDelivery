@@ -15,7 +15,7 @@ model User {
   interest    String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  cash        Int      @default(1000000) // 디폴트 값 100만
+  cash        Int      @default(1000000)
   phoneNumber String?
   Order       Order[]
 
@@ -31,8 +31,8 @@ model Partner {
   updatedAt   DateTime    @updatedAt
   cash        Int         @default(10000)
   phoneNumber String?
-  Restaurant  Restaurant?
   Comment     Comment[]
+  Restaurant  Restaurant?
 
   @@map("Partner")
 }
@@ -49,8 +49,8 @@ model Restaurant {
   number         String?
   Cart           Cart[]
   Menu           Menu[]
-  Review         Review[]
   Partner        Partner  @relation(fields: [partnerId], references: [id])
+  Review         Review[]
 
   @@map("Restaurant")
 }
@@ -89,10 +89,9 @@ model Order {
   status       String
   menuName     Json
   createdAt    DateTime @default(now())
-
-  User    User     @relation(fields: [userId], references: [id])
-  Payment Payment?
-  Review  Review?
+  User         User     @relation(fields: [userId], references: [id])
+  Payment      Payment?
+  Review       Review?
 
   @@index([userId], map: "Order_userId_fkey")
   @@map("Order")
@@ -117,11 +116,11 @@ model Review {
   content      String?
   starRating   Int
   createdAt    DateTime   @default(now())
+  Comment      Comment?
   Order        Order      @relation(fields: [orderId], references: [id])
   Restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
-  Comment      Comment[]
 
-  @@unique([userId, restaurantId])
+  @@index([restaurantId], map: "Review_restaurantId_fkey")
   @@map("Review")
 }
 
@@ -134,6 +133,7 @@ model Comment {
   Partner   Partner  @relation(fields: [partnerId], references: [id])
   Review    Review   @relation(fields: [reviewId], references: [id])
 
+  @@index([partnerId], map: "Comment_partnerId_fkey")
   @@map("Comment")
 }
 
