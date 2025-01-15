@@ -14,6 +14,12 @@ dotenv.config();
 const app = express();
 const PORT = process.env.SERVER_PORT || 3000;
 const server = http.createServer(app);
+
+// 서버 헬스 체크
+app.get('/', (req, res) => {
+  res.status(200).send('안녕하세요.');
+});
+
 // 생성된 http 서버에 Socket.IO를 바인딩 >> 실시간 통신 기능을 추
 const io = new Server(server, {
   cors: { origin: '*' }, // 필요한 경우 특정 도메인만
