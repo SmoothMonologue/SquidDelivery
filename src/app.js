@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import routes from './routes/index.js';
 import { Server } from 'socket.io';
+import http from 'http';
 
 const app = express();
 const PORT = process.env.SERVER_PORT || 3000;
