@@ -28,6 +28,16 @@ class CommentController {
     }
   };
 
+  // 전체 댓글 조회 컨트롤러
+  getAllComments = async (req, res, next) => {
+    try {
+      const result = await this.commentService.getAllComments();
+      return res.status(HTTP_STATUS.OK).json(result);
+    } catch (error) {
+      next(error);
+    }
+  };
+
   // 댓글 수정 컨트롤러
   updateComment = async (req, res, next) => {
     try {
