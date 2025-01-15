@@ -122,7 +122,6 @@ model Review {
   Restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
   Comment      Comment[]
 
-  @@unique([userId, restaurantId])
   @@map("Review")
 }
 
