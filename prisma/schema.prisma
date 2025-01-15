@@ -117,12 +117,11 @@ model Review {
   content      String?
   starRating   Int
   createdAt    DateTime   @default(now())
-  Comment      Comment?
   Order        Order      @relation(fields: [orderId], references: [id])
   Restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  Comment      Comment[]
 
   @@unique([userId, restaurantId])
-  @@index([restaurantId], map: "Review_restaurantId_fkey")
   @@map("Review")
 }
 
