@@ -14,21 +14,21 @@ class OrderRepository {
   };
 
   createTransaction = async (userId, cart, priceSum, menuName) => {
-    return await prisma.$transaction(async (tx) => {
-      //결제api
-
-      const order = await tx.order.update({
-        where: {
-          cartId: cart.id,
-        },
+    console.log('Creating order with:', { userId, cartId: cart.id, priceSum, menuName });
+    
+    return await this.#prisma.$transaction(async (tx) => {
+      // 1. Order 생성 (totalPrice 제거)
+      const order = await tx.order.create({
         data: {
-          userId: +userId,
-          cartId: cart.id,
-          priceSum: priceSum,
-          status: '주문 요청',
-          menuName: menuName,
-        },
+          userId: Number(userId),
+          cartId: Number(cart.id),
+          priceSum: Number(priceSum),  // priceSum만 사용
+          menuName,
+          status: 'PENDING'
+        }
       });
+
+      return order;
     });
   };
 
