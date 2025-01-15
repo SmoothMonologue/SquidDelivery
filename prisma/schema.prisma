@@ -31,8 +31,8 @@ model Partner {
   updatedAt   DateTime    @updatedAt
   cash        Int         @default(10000)
   phoneNumber String?
-  Comment     Comment[]
   Restaurant  Restaurant?
+  Comment     Comment[]
 
   @@map("Partner")
 }
