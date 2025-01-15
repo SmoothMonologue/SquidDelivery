@@ -7,12 +7,29 @@ class OrderService {
     this.#repository = repository;
   }
 
-  createOrder = async (userId) => {
+  createOrder = async (userId, method) => {
     const cart = await this.#repository.findCart(userId);
     if (!cart) {
       return {
         status: 404,
         message: '장바구니를 찾을 수 없습니다.',
+      };
+    }
+
+    // 결제 방식 검증
+    if (!['cash'].includes(method)) {
+      return {
+        status: 400,
+        message: `결제 방식은 'cash'만 가능합니다.)`,
+      };
+    }
+
+    // 유저 캐시 확인
+    const user = await this.#repository.findUser(userId);
+    if (!user || user.cash < priceSum) {
+      return {
+        status: 400,
+        message: '잔액이 부족합니다.',
       };
     }
 
@@ -22,12 +39,7 @@ class OrderService {
     // join 메서드를 사용하여 배열을 문자열로 변환합니다.
     const menuName = menuNames.join(', ');
 
-    const order = await this.#repository.createTransaction(
-      userId,
-      cart,
-      priceSum,
-      menuName,
-    );
+    const order = await this.#repository.createTransaction(userId, cart, priceSum, menuName);
 
     return {
       status: 201,
