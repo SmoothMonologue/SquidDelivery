@@ -6,20 +6,23 @@ import commentService from '../../services/partner/comment.service.js';
  * 요청 데이터 추출, 응답 형식 결정, 에러 처리 미들웨어 연동
  */
 class CommentController {
+  #commentService;
   constructor(commentService) {
-    this.commentService = commentService;
+    this.#commentService = commentService;
   }
 
   // 댓글 생성 컨트롤러
   createComment = async (req, res, next) => {
     try {
-      const { reviewId, content } = req.body;
-      const restaurantId = req.restaurant.id; // 인증 미들웨어에서 설정된 레스토랑 정보
+      const { reviewId, comment } = req.body;
+      const restaurantId = req.restaurant.id;// 레스토랑 미들웨어에서 설정된 레스토랑 정보
+      const partnerId = req.partner.id; 
 
-      const result = await this.commentService.createComment({
+      const result = await this.#commentService.createComment({
         restaurantId,
+        partnerId,
         reviewId,
-        content,
+        comment,
       });
 
       return res.status(HTTP_STATUS.CREATED).json(result);
@@ -31,7 +34,7 @@ class CommentController {
   // 전체 댓글 조회 컨트롤러
   getAllComments = async (req, res, next) => {
     try {
-      const result = await this.commentService.getAllComments();
+      const result = await this.#commentService.getAllComments();
       return res.status(HTTP_STATUS.OK).json(result);
     } catch (error) {
       next(error);
@@ -42,13 +45,13 @@ class CommentController {
   updateComment = async (req, res, next) => {
     try {
       const { commentId } = req.params;
-      const { content } = req.body;
-      const restaurantId = req.restaurant.id;
+      const { comment } = req.body;
+      const partnerId = req.partner.id;
 
-      const result = await this.commentService.updateComment({
+      const result = await this.#commentService.updateComment({
         commentId: Number(commentId),
-        restaurantId,
-        content,
+        partnerId,
+        comment,
       });
 
       return res.status(HTTP_STATUS.OK).json(result);
@@ -61,11 +64,11 @@ class CommentController {
   deleteComment = async (req, res, next) => {
     try {
       const { commentId } = req.params;
-      const restaurantId = req.restaurant.id;
+      const partnerId = req.partner.id;
 
-      const result = await this.commentService.deleteComment({
+      const result = await this.#commentService.deleteComment({
         commentId: Number(commentId),
-        restaurantId,
+        partnerId,
       });
 
       return res.status(HTTP_STATUS.OK).json(result);
@@ -75,4 +78,4 @@ class CommentController {
   };
 }
 
-export default CommentController;
+export default new CommentController(commentService);

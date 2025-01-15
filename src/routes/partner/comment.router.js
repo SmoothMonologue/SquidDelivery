@@ -1,13 +1,15 @@
 import express from 'express';
+import { authenticatePartner } from '../../middlewares/auth.middleware.js';
+import { restaurantAuthMiddleware } from '../../middlewares/restaurant-auth.middleware.js';
 import CommentController from '../../controllers/partner/comments.controller.js';
-import commentService from '../../services/partner/comment.service.js';
+
 
 const commentRouter = express.Router();
-const commentController = new CommentController(commentService);
 
-commentRouter.post('/', commentController.createComment);
-commentRouter.get('/', commentController.getAllComments);
-commentRouter.patch('/:commentId', commentController.updateComment);
-commentRouter.delete('/:commentId', commentController.deleteComment);
+
+commentRouter.post('/',authenticatePartner, restaurantAuthMiddleware, CommentController.createComment);
+commentRouter.get('/', CommentController.getAllComments);
+commentRouter.patch('/:commentId',authenticatePartner, restaurantAuthMiddleware, CommentController.updateComment);
+commentRouter.delete('/:commentId',authenticatePartner, restaurantAuthMiddleware, CommentController.deleteComment);
 
 export default commentRouter;
