@@ -76,24 +76,23 @@ model Cart {
   menuInfo     Json
   Restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
   MenuCart     MenuCart[]
-  Order        Order?
 
   @@index([restaurantId], map: "Cart_restaurantId_fkey")
   @@map("Cart")
 }
 
 model Order {
-  id        Int      @id @default(autoincrement())
-  userId    Int
-  cartId    Int      @unique
-  priceSum  Int
-  status    String
-  menuName  Json
-  createdAt DateTime @default(now())
-  Cart      Cart     @relation(fields: [cartId], references: [id])
-  User      User     @relation(fields: [userId], references: [id])
-  Payment   Payment?
-  Review    Review?
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  restaurantId Int
+  priceSum     Int
+  status       String
+  menuName     Json
+  createdAt    DateTime @default(now())
+
+  User    User     @relation(fields: [userId], references: [id])
+  Payment Payment?
+  Review  Review?
 
   @@index([userId], map: "Order_userId_fkey")
   @@map("Order")

@@ -31,7 +31,7 @@ class OrderRepository {
     return order;
   };
 
-  findFirstOrder = async (orderId) => {
+  findFirstOrder = async (orderId, restaurant) => {
     return await prisma.order.findUnique({
       where: {
         id: +orderId,
