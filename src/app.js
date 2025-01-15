@@ -34,9 +34,9 @@ io.on("connection", (socket) => {
     socket.partnerId = data.partnerId;
     socket.userId = data.userId;
 
-    if (socket.role === "patner") {
+    if (socket.role === "partner") {
       console.log(socket.role, "connected", {
-        patnerId: socket.patnerId,
+        partnerId: socket.partnerId,
       });
     } else if (socket.role === "user") {
       console.log(socket.role, "connected", {
