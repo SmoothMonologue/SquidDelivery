@@ -95,6 +95,9 @@ export const MESSAGES = {
       SUCCEED: '댓글 삭제에 성공했습니다.',
       FAILED: '댓글 삭제에 실패했습니다.',
     },
+    READ_LIST: {
+      SUCCEED: "댓글 목록을 성공적으로 조회하였습니다."
+    },
   },
   RESTAURANTS: {
     COMMON: {

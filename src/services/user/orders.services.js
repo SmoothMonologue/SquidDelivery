@@ -16,10 +16,19 @@ class OrderService {
       };
     }
 
-    const priceSum = cart.menuInfo.price.reduce((prev, current) => prev + current, 0); //장바구니 가격 합계
-    const menuName = cart.menuInfo.name.join(', '); // 장바구니에서 메뉴 이름 배열을 문자열로 변환
+    const priceSum = cart.menuInfo.reduce((prev, current) => prev + current.price, 0); //장바구니 가격 합계
+    // menuInfo 배열에서 각 객체의 name 속성을 추출하여 배열로 만듭니다.
+    const menuNames = cart.menuInfo.map((item) => item.name);
+    // join 메서드를 사용하여 배열을 문자열로 변환합니다.
+    const menuName = menuNames.join(', ');
 
-    const order = await this.#repository.createTransaction(userId, cart, priceSum, menuName);
+    const order = await this.#repository.createTransaction(
+      userId,
+      cart,
+      priceSum,
+      menuName,
+    );
+
     return {
       status: 201,
       message: '메뉴를 주문했습니다.',
@@ -27,8 +36,8 @@ class OrderService {
     };
   };
 
-  cancelOrder = async (orderId, userId) => {
-    const orderStatus = await this.#repository.checkOrderStatus(orderId, userId);
+  cancelOrder = async (orderId) => {
+    const orderStatus = await this.#repository.checkOrderStatus(orderId);
     if (orderStatus.status !== '주문 요청') {
       return {
         status: 400,
@@ -36,9 +45,8 @@ class OrderService {
       };
     }
 
-    const order = await await prisma.$transaction(async (tx) => {
-      await this.#repository.cancelOrder(orderId, userId, tx);
-    });
+    const order = await this.#repository.cancelOrderTransaction(orderId);
+
     if (!order) {
       return {
         status: 404,
