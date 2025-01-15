@@ -16,26 +16,44 @@
         crossorigin="anonymous"></script>
     <script>
 
-        const userId = 1;
+        // const userId = 1;
 
-        const socket = io('http://localhost:3001');
+        const token = localStorage.getItem('accessToken');
 
-        // userId가 없으면 로그인 화면으로 이동
-        if (!userId) {
+        if (!token) {
             alert('로그인이 필요합니다.');
             window.location.href = '/public/login.html';
-        } else {
-            console.log(`현재 로그인된 사용자 ID: ${userId}`);
-            // 이후 사용자 데이터를 활용한 로직 추가
         }
 
-        // 유저 역할 등록
-        socket.emit('register', { role: 'user', userId: userId });
+        fetch('http://localhost:3001/api/auth/user-id', {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('인증 실패');
+                }
+                return response.json();
+            })
+            .then((data) => {
+                const userId = data.userId;
+                console.log(`현재 로그인된 사용자 ID: ${userId}`);
 
-        // 상태 업데이트 수신
-        socket.on('status_update', (data) => {
-            document.getElementById('status').innerText = `배달 상태: ${data.status}`;
-        });
+                // 소켓 연결 및 역할 등록
+                const socket = io('http://localhost:3001', { auth: { token } });
+                socket.emit('register', { role: 'user', userId });
+
+                socket.on('status_update', (data) => {
+                    document.getElementById('status').innerText = `배달 상태: ${data.status}`;
+                });
+            })
+            .catch((error) => {
+                console.error('사용자 ID를 가져오는 중 오류 발생:', error.message);
+                alert('로그인이 필요합니다.');
+                window.location.href = '/public/login.html';
+            });
 
     </script>
 </body>

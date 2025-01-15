@@ -28,32 +28,57 @@
     <script>
 
         // 로컬 저장소에서 partnerId 가져오기
-        const partnerId = 1;
-
-
-        // 로컬 저장소에서 partnerId 가져오기
         // const partnerId = 1;
 
-        // partnerId가 없으면 로그인 화면으로 이동
-        if (!partnerId) {
+        const token = localStorage.getItem('accessToken');
+
+        if (!token) {
             alert('로그인이 필요합니다.');
             window.location.href = '/public/login.html';
-        } else {
-            console.log(`현재 로그인된 파트너 ID: ${partnerId}`);
-            // 이후 파트너 데이터를 활용한 로직 추가
         }
-        const socket = io('http://localhost:3001');
+        fetch('http://localhost:3001/api/auth/partner-id', {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('인증 실패');
+                }
+                return response.json();
+            })
+            .then((data) => {
+                const partnerId = data.partnerId; // `partnerId`를 변수로 선언
+                console.log(`현재 로그인된 파트너 ID: ${partnerId}`);
+
+                const socket = io('http://localhost:3001', {
+                    auth: { token },
+                });
+
+                socket.emit('register', { role: 'partner', partnerId }); // 선언된 `partnerId` 사용
+
+                document.querySelector('button').onclick = () => {
+                    const status = document.getElementById('status').value;
+                    socket.emit('status_update', { status });
+                };
+            })
+            .catch((error) => {
+                console.error('파트너 ID를 가져오는 중 오류 발생:', error.message);
+                alert('로그인이 필요합니다.');
+                window.location.href = '/public/login.html';
+            });
 
 
-        // 사장 역할 등록
-        socket.emit('register', { role: 'partner', partnerId: partnerId });
+        // // 사장 역할 등록
+        // socket.emit('register', { role: 'partner', partnerId: partnerId });
 
-        // 상태 업데이트 전송
-        const updateStatus = () => {
-            console.log("주문현황 사장")
-            const status = document.getElementById('status').value;
-            socket.emit('status_update', { status });
-        };
+        // // 상태 업데이트 전송
+        // const updateStatus = () => {
+        //     console.log("주문현황 사장")
+        //     const status = document.getElementById('status').value;
+        //     socket.emit('status_update', { status });
+        // };
 
 
     </script>
