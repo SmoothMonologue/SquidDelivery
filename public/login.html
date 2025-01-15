@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인</title>
+</head>
+
+<body>
+    <h1>로그인</h1>
+    <form id="loginForm">
+        <label for="email">이메일:</label>
+        <input type="email" id="email" name="email" required><br>
+        <label for="password">비밀번호:</label>
+        <input type="password" id="password" name="password" required><br>
+        <button type="submit">로그인</button>
+    </form>
+    <button id="logoutBtn" style="display:none;">로그아웃</button>
+
+    <script>
+        const API_BASE_URL = '/api/auth';
+
+        // 로그인 이벤트
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/sign-in`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password }),
+                });
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert('로그인 성공!');
+                    localStorage.setItem('accessToken', data.accessToken);
+
+                    // 파트너와 유저 구분하여 이동
+                    if (data.role === 'partner') {
+                        window.location.href = '/partner';
+                    } else {
+                        window.location.href = '/user';
+                    }
+                } else {
+                    alert(data.message || '로그인 실패');
+                }
+            } catch (error) {
+                console.error('로그인 요청 실패:', error);
+                alert('로그인 중 문제가 발생했습니다.');
+            }
+        });
+
+        // 로그아웃 이벤트
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            localStorage.removeItem('accessToken');
+            alert('로그아웃 성공!');
+            window.location.href = '/login'; // 로그인 페이지로 리다이렉트
+        });
+
+        // 토큰 상태 확인
+        if (localStorage.getItem('accessToken')) {
+            document.getElementById('logoutBtn').style.display = 'block';
+        }
+    </script>
+</body>
+
+</html>

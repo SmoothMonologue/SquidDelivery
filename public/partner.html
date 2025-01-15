@@ -28,8 +28,6 @@
         const partnerId = 1 /* 테스트용 코드 */
         const socket = io();
 
-        // const urlParams = new URLSearchParams(window.location.search);
-        // const partnerId = urlParams.get('partnerId'); // 없으면 null
 
         // 사장 역할 등록
         socket.emit('register', { role: 'partner', partnerId: partnerId });
