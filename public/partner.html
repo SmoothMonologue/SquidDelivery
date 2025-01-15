@@ -19,24 +19,30 @@
     <main>
         <div id="orderContainer"></div>
     </main>
-    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"
+        integrity="sha384-mkQ3/7FUtcGyoppY6bz/PORYoGqOl7/aSUMn2ymDOJcapfS6PHqxhRTMh1RR0Q6+"
+        crossorigin="anonymous"></script>
     <!-- 로그인할때 쿠키로 사장 계정의 partnerId, paymnetId 등을 가져와 사용할 수 있을 듯 
      결제별로 연결이 되어야하고... 배달 완료 시 실시간 연결 끝
      일반 배달어플 > 결제 > 주문현황 페이지-->
     <script>
 
         // 로컬 저장소에서 partnerId 가져오기
-        const partnerId = localStorage.getItem('partnerId');
+        const partnerId = 1;
+
+
+        // 로컬 저장소에서 partnerId 가져오기
+        // const partnerId = 1;
 
         // partnerId가 없으면 로그인 화면으로 이동
         if (!partnerId) {
             alert('로그인이 필요합니다.');
-            window.location.href = '/login.html';
+            window.location.href = '/public/login.html';
         } else {
             console.log(`현재 로그인된 파트너 ID: ${partnerId}`);
             // 이후 파트너 데이터를 활용한 로직 추가
         }
-        const socket = io();
+        const socket = io('http://localhost:3001');
 
 
         // 사장 역할 등록
@@ -44,6 +50,7 @@
 
         // 상태 업데이트 전송
         const updateStatus = () => {
+            console.log("주문현황 사장")
             const status = document.getElementById('status').value;
             socket.emit('status_update', { status });
         };

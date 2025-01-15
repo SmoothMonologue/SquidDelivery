@@ -11,14 +11,19 @@
     <h1>주문 현황 (고객)</h1>
     <p id="status">잠시 기다려주세요...</p>
 
-    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"
+        integrity="sha384-mkQ3/7FUtcGyoppY6bz/PORYoGqOl7/aSUMn2ymDOJcapfS6PHqxhRTMh1RR0Q6+"
+        crossorigin="anonymous"></script>
     <script>
-        const userId = localStorage.getItem('userId');
+
+        const userId = 1;
+
+        const socket = io('http://localhost:3001');
 
         // userId가 없으면 로그인 화면으로 이동
         if (!userId) {
             alert('로그인이 필요합니다.');
-            window.location.href = '/login.html';
+            window.location.href = '/public/login.html';
         } else {
             console.log(`현재 로그인된 사용자 ID: ${userId}`);
             // 이후 사용자 데이터를 활용한 로직 추가

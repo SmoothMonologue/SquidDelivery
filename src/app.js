@@ -39,17 +39,11 @@ io.on('connection', (socket) => {
         userId: socket.userId,
       });
     }
-    // socket.on('status_update', (data) => {
-    //   if (socket.role === 'partner') {
-    //     // 유저들에게 상태 업데이트 전달
-    //     io.emit('status_update', { status: data.status });
-    //   }
-    // });
-
-    // 새로운 이벤트 추가
-    socket.on('message', (message) => {
-      console.log('새 메시지 수신:', message);
-      io.emit('message', { from: socket.id, text: message });
+    socket.on('status_update', (data) => {
+      if (socket.role === 'partner') {
+        // 유저들에게 상태 업데이트 전달
+        io.emit('status_update', { status: data.status });
+      }
     });
 
     socket.on('disconnect', () => {
