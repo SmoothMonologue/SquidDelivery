@@ -4,13 +4,18 @@ import { Server } from 'socket.io'; // 수정된 부분
 import http from 'http'; // Node.js 기본 내장 모듈
 import fs from 'fs/promises'; // 파일 시스템 모듈로, Promise 기반으로 파일을 읽고 쓸 수 있게 해줌
 import routes from './routes/index.js';
+import dotenv from 'dotenv';
+
+// .env 로드
+dotenv.config();
 
 const app = express();
-
 const PORT = process.env.SERVER_PORT || 3000;
 const server = http.createServer(app);
 // 생성된 http 서버에 Socket.IO를 바인딩 >> 실시간 통신 기능을 추
-const io = new Server(server); // 수정된 부분
+const io = new Server(server, {
+  cors: { origin: '*' }, // 필요한 경우 특정 도메인만
+});
 
 // 정적 파일 제공
 app.use('/public', express.static('public')); // public 폴더 내의 정적 파일을 제공
@@ -25,9 +30,9 @@ io.on('connection', (socket) => {
     socket.partnerId = data.partnerId;
     socket.userId = data.userId;
 
-    if (socket.role === 'patner') {
+    if (socket.role === 'partner') {
       console.log(socket.role, 'connected', {
-        patnerId: socket.patnerId,
+        partnerId: socket.partnerId,
       });
     } else if (socket.role === 'user') {
       console.log(socket.role, 'connected', {
@@ -44,7 +49,7 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
       if (socket.role === 'partner') {
         console.log(socket.role, ' user disconnected', {
-          ownerId: socket.ownerId,
+          partnerId: socket.partnerId,
         });
       } else if (socket.role === 'user') {
         console.log(socket.role, ' user disconnected', {

@@ -18,15 +18,18 @@
 
     <main>
         <div id="orderContainer"></div>
-    </main> 
+    </main>
     <script src="/socket.io/socket.io.js"></script>
-    <!-- 로그인할때 쿠키로 사장 계정의 ownerId, paymnetId 등을 가져와 사용할 수 있을 듯 
+    <!-- 로그인할때 쿠키로 사장 계정의 partnerId, paymnetId 등을 가져와 사용할 수 있을 듯 
      결제별로 연결이 되어야하고... 배달 완료 시 실시간 연결 끝
      일반 배달어플 > 결제 > 주문현황 페이지-->
     <script>
 
         const partnerId = 1 /* 테스트용 코드 */
         const socket = io();
+
+        // const urlParams = new URLSearchParams(window.location.search);
+        // const partnerId = urlParams.get('partnerId'); // 없으면 null
 
         // 사장 역할 등록
         socket.emit('register', { role: 'partner', partnerId: partnerId });
