@@ -23,13 +23,7 @@ class OrderService {
     // join 메서드를 사용하여 배열을 문자열로 변환합니다.
     const menuName = menuNames.join(', ');
 
-    const order = await this.#repository.createTransaction(
-      userId,
-      cart,
-      priceSum,
-      menuName,
-      restaurantId,
-    );
+    const order = await this.#repository.createTransaction(userId, cart, priceSum, menuName);
 
     return {
       status: 201,
