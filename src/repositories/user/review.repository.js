@@ -14,7 +14,6 @@ class ReviewRepository {
   findOrderById = async (orderId) => {
     return this.prisma.order.findUnique({
       where: { id: orderId },
-      include: { Cart: true },
     });
   };
 

@@ -15,20 +15,12 @@ class CommentService {
   }
 
   // 댓글 생성 서비스
-  createComment = async ({ restaurantId, reviewId, content }) => {
-    // 리뷰 존재 여부 확인
+  createComment = async ({ restaurantId, reviewId, comment ,partnerId }) => {
+    // 먼저 검증 로직 수행
     const review = await this.#commentRepository.findReviewById(reviewId);
     if (!review) {
       const error = new Error(MESSAGES.REVIEWS.COMMON.NOT_FOUND);
       error.status = HTTP_STATUS.NOT_FOUND;
-      throw error;
-    }
-
-    // 댓글 중복 작성 확인
-    const existingComment = await this.#commentRepository.findCommentByReviewId(reviewId);
-    if (existingComment) {
-      const error = new Error(MESSAGES.COMMENTS.COMMON.ALREADY_EXISTS);
-      error.status = HTTP_STATUS.CONFLICT;
       throw error;
     }
 
@@ -39,16 +31,24 @@ class CommentService {
       throw error;
     }
 
+    // 이미 댓글이 있는지 확인
+    const existingComment = await this.#commentRepository.findCommentByReviewId(reviewId);
+    if (existingComment) {
+      const error = new Error(MESSAGES.COMMENTS.CREATE.ALREADY_EXISTS);
+      error.status = HTTP_STATUS.CONFLICT;
+      throw error;
+    }
+
     // 댓글 생성
-    const comment = await this.#commentRepository.createComment({
-      restaurantId,
+    const newComment = await this.#commentRepository.createComment({
       reviewId,
-      content
+      comment,
+      partnerId,
     });
 
     return {
       message: MESSAGES.COMMENTS.CREATE.SUCCEED,
-      data: comment
+      data: newComment
     };
   };
 
@@ -62,26 +62,24 @@ class CommentService {
   };
 
   // 댓글 수정 서비스
-  updateComment = async ({ commentId, restaurantId, content }) => {
+  updateComment = async ({ commentId, partnerId, comment }) => {
     // 댓글 존재 여부 및 권한 확인
-    const comment = await this.#commentRepository.findCommentById(commentId);
-    if (!comment) {
+    const newComment = await this.#commentRepository.findCommentByReviewId(commentId);
+    if (!newComment) {
       const error = new Error(MESSAGES.COMMENTS.COMMON.NOT_FOUND);
       error.status = HTTP_STATUS.NOT_FOUND;
       throw error;
     }
 
     // 자신의 레스토랑 댓글인지 확인
-    if (comment.restaurantId !== restaurantId) {
+    if (newComment.partnerId !== partnerId) {
       const error = new Error(MESSAGES.COMMENTS.COMMON.NOT_AUTHORIZED);
       error.status = HTTP_STATUS.FORBIDDEN;
       throw error;
     }
 
     // 댓글 수정
-    const updatedComment = await this.#commentRepository.updateComment(commentId, {
-      content
-    });
+    const updatedComment = await this.#commentRepository.updateComment(commentId,comment);
 
     return {
       message: MESSAGES.COMMENTS.UPDATE.SUCCEED,
@@ -90,9 +88,10 @@ class CommentService {
   };
 
   // 댓글 삭제 서비스
-  deleteComment = async ({ commentId, restaurantId }) => {
+  deleteComment = async ({ commentId, partnerId }) => {
     // 댓글 존재 여부 및 권한 확인
-    const comment = await this.#commentRepository.findCommentById(commentId);
+    const comment = await this.#commentRepository.findCommentByReviewId(commentId);
+    console.log(`------------>`,comment);
     if (!comment) {
       const error = new Error(MESSAGES.COMMENTS.COMMON.NOT_FOUND);
       error.status = HTTP_STATUS.NOT_FOUND;
@@ -100,7 +99,7 @@ class CommentService {
     }
 
     // 자신의 레스토랑 댓글인지 확인
-    if (comment.restaurantId !== restaurantId) {
+    if (comment.partnerId !== partnerId) {
       const error = new Error(MESSAGES.COMMENTS.COMMON.NOT_AUTHORIZED);
       error.status = HTTP_STATUS.FORBIDDEN;
       throw error;
@@ -115,6 +114,6 @@ class CommentService {
   };
 }
 
-const commentService = new CommentService(commentRepository);
 
-export default commentService;
+
+export default new CommentService(commentRepository);
