@@ -24,6 +24,7 @@ class OrderService {
     const menuName = menuNames.join(', ');
 
     const order = await this.#repository.createTransaction(userId, cart, priceSum, menuName);
+
     return {
       status: 201,
       message: '메뉴를 주문했습니다.',

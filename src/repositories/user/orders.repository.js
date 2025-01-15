@@ -29,6 +29,7 @@ class OrderRepository {
           menuName: menuName,
         },
       });
+      return order;
     });
   };
 

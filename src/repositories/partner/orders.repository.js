@@ -15,39 +15,26 @@ class OrderRepository {
     });
   };
 
-  findManyOrder = async (restaurant) => {
-    return await prisma.order.findMany({
-      where: {
-        Cart: {
-          restaurantId: restaurant.id,
-        },
-      },
+  findManyOrder = async (restaurantInfo) => {
+    const order = await prisma.order.findMany({
+      where: {},
       select: {
         id: true,
         userId: true,
-        cartId: true,
+        status: true,
         priceSum: true,
         menuName: true,
         createdAt: true,
       },
     });
+
+    return order;
   };
 
-  findUniqueOrder = async (orderId, restaurant) => {
+  findFirstOrder = async (orderId) => {
     return await prisma.order.findUnique({
       where: {
         id: +orderId,
-        Cart: {
-          restaurantId: restaurant.id,
-        },
-      },
-      select: {
-        id: true,
-        userId: true,
-        cartId: true,
-        priceSum: true,
-        menuName: true,
-        createdAt: true,
       },
     });
   };
@@ -56,9 +43,6 @@ class OrderRepository {
     return await prisma.order.update({
       where: {
         id: +orderId,
-        Cart: {
-          restaurantId: restaurant.id,
-        },
       },
       data: {
         status: '음식 조리 중',
@@ -72,10 +56,7 @@ class OrderRepository {
 
       return await tx.order.update({
         where: {
-          id: orderId,
-          cart: {
-            restaurantId: restaurant.id,
-          },
+          id: +orderId,
         },
         data: { status: '주문 취소' },
       });
