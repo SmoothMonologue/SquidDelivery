@@ -10,7 +10,13 @@ const app = express();
 const PORT = process.env.SERVER_PORT || 3000;
 const server = http.createServer(app);
 // 생성된 http 서버에 Socket.IO를 바인딩 >> 실시간 통신 기능을 추
-const io = new Server(server); // 수정된 부분
+const io = new Server(server, {
+  path: "/socket.io",
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+  },
+}); // 수정된 부분
 
 // 정적 파일 제공
 app.use("/public", express.static("public")); // public 폴더 내의 정적 파일을 제공
@@ -22,6 +28,7 @@ app.use('/api', routes);
 
 // 소켓 연결 관리
 io.on("connection", (socket) => {
+  console.log("a user connected");
   socket.on("register", (data) => {
     socket.role = data.role; // 역할 저장 (owner 또는 user)
     socket.partnerId = data.partnerId;
