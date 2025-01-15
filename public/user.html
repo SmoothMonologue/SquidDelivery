@@ -10,14 +10,12 @@
 <body>
     <h1>주문 현황 (고객)</h1>
     <p id="status">잠시 기다려주세요...</p>
+    <button id="orderComplete">주문 완료</button>
 
     <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"
         integrity="sha384-mkQ3/7FUtcGyoppY6bz/PORYoGqOl7/aSUMn2ymDOJcapfS6PHqxhRTMh1RR0Q6+"
         crossorigin="anonymous"></script>
     <script>
-
-        // const userId = 1;
-
         const token = localStorage.getItem('accessToken');
 
         if (!token) {
@@ -41,10 +39,22 @@
                 const userId = data.userId;
                 console.log(`현재 로그인된 사용자 ID: ${userId}`);
 
-                // 소켓 연결 및 역할 등록
+                // 소켓 연결
                 const socket = io('http://localhost:3001', { auth: { token } });
                 socket.emit('register', { role: 'user', userId });
 
+                // 주문 완료 버튼 클릭 시 알림 전송
+                document.getElementById('orderComplete').onclick = () => {
+                    const orderDetails = {
+                        userId,
+                        menu: '치킨',
+                        quantity: 1,
+                    };
+                    socket.emit('order_complete', orderDetails);
+                    alert('주문이 완료되었습니다!');
+                };
+
+                // 사장님이 상태 업데이트를 보내는 경우
                 socket.on('status_update', (data) => {
                     document.getElementById('status').innerText = `배달 상태: ${data.status}`;
                 });
@@ -54,7 +64,6 @@
                 alert('로그인이 필요합니다.');
                 window.location.href = '/public/login.html';
             });
-
     </script>
 </body>
 
