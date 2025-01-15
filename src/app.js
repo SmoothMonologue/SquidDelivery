@@ -4,7 +4,6 @@ import { Server } from 'socket.io'; // 수정된 부분
 import http from "http"; // Node.js 기본 내장 모듈
 import fs from "fs/promises"; // 파일 시스템 모듈로, Promise 기반으로 파일을 읽고 쓸 수 있게 해줌
 import routes from './routes/index.js';
-import { errorHandler } from './middlewares/error-handler.middleware.js';
 
 const app = express();
 
@@ -16,16 +15,10 @@ const io = new Server(server); // 수정된 부분
 // 정적 파일 제공
 app.use("/public", express.static("public")); // public 폴더 내의 정적 파일을 제공
 app.use(cors()); // CORS 미들웨어 추가 >>  다른 도메인에서의 요청을 허용
-app.use(express.json()); 
+app.use(express.json());
 app.use('/api', routes);
 
-// 에러 핸들링 미들웨어 추가 (라우트 정의 후에 위치해야 함)
-app.use(errorHandler);
 
-// 존재하지 않는 라우트에 대한 처리
-app.use((req, res) => {
-  res.status(404).json({ message: '요청한 페이지를 찾을 수 없습니다.' });
-});
 
 // 소켓 연결 관리
 io.on("connection", (socket) => {
@@ -34,9 +27,9 @@ io.on("connection", (socket) => {
     socket.partnerId = data.partnerId;
     socket.userId = data.userId;
 
-    if (socket.role === "partner") {
+    if (socket.role === "patner") {
       console.log(socket.role, "connected", {
-        partnerId: socket.partnerId,
+        patnerId: socket.patnerId,
       });
     } else if (socket.role === "user") {
       console.log(socket.role, "connected", {
@@ -85,17 +78,8 @@ app.get("/user", async (req, res) => {
   }
 });
 
-// 인증 페이지 라우트 추가
-app.get("/auth", async (req, res) => {
-  try {
-    const data = await fs.readFile("./public/auth.html");
-    res.writeHead(200, { "Content-Type": "text/html" });
-    res.end(data);
-  } catch (err) {
-    res.status(500).send("파일을 로드할 수 없습니다.");
-  }
-});
+
 
 server.listen(PORT, () => {
-  console.log(`서버가 http://localhost:${PORT} 에서 실행되었습니다.`);
+  console.log(`서버가  http://localhost:${PORT} 에서 실행되었습니다.`);
 });
