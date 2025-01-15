@@ -7,7 +7,7 @@ class UserRestaurantController {
     this.#service = service;
   }
 
-  async getAllRestaurants(req, res, next) {
+  getAllRestaurants = async (req, res, next) => {
     try {
       const restaurants = await this.#service.getAllRestaurants();
       res.status(200).json({ data: restaurants });
