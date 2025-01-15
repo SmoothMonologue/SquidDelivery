@@ -28,7 +28,7 @@
         <button type="submit">회원가입</button>
     </form>
 
-    <p>이미 계정이 있으신가요? <a href="/login.html">로그인</a></p>
+    <p>이미 계정이 있으신가요? <a href="/public/login.html">로그인</a></p>
 
     <script>
         const API_BASE_URL = 'http://localhost:3001/api/auth/partners/sign-up'; // 백엔드 서버 URL로 수정
@@ -61,7 +61,7 @@
                 }
 
                 alert('회원가입 성공! 로그인 페이지로 이동합니다.');
-                window.location.href = '/login.html';
+                window.location.href = '/public/login.html';
             } catch (error) {
                 console.error('회원가입 요청 실패:', error);
                 alert('회원가입 중 문제가 발생했습니다.');
