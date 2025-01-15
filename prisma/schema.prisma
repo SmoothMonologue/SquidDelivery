@@ -103,6 +103,7 @@ model Payment {
   orderId   Int      @unique
   createdAt DateTime @default(now())
   method    String
+  // status    String
   Order     Order    @relation(fields: [orderId], references: [id])
 
   @@map("Payment")

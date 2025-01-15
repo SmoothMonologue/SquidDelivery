@@ -18,7 +18,21 @@ class OrderRepository {
     return await prisma.user.findUnique({ where: { id: userId } });
   };
 
-  createTransaction = async (userId, cart, priceSum, menuName, method) => {
+  //유저ID의 카트의 레스토랑의 파트너 데이터를 조회
+  findPartner = async (userId) => {
+    return await prisma.cart.findFirst({
+      where: { userId: +userId },
+      include: {
+        Restaurant: {
+          include: {
+            Partner: true,
+          },
+        },
+      },
+    });
+  };
+
+  createTransaction = async (userId, cart, priceSum, menuName, method, partnerId) => {
     return await prisma.$transaction(async (tx) => {
       //결제api
       // 사용자 캐시 차감
@@ -30,7 +44,6 @@ class OrderRepository {
       });
 
       // 파트너 캐시 증감
-      const partnerId = cart.Restaurant.Partner.id; //await?
       await tx.partner.update({
         where: { id: partnerId },
         data: {
@@ -53,6 +66,7 @@ class OrderRepository {
         data: {
           orderId: order.id,
           method,
+          // status: '결제',
         },
       });
 
@@ -60,25 +74,30 @@ class OrderRepository {
     });
   };
 
-  cancelOrderTransaction = async (orderId) => {
+  cancelOrderTransaction = async (orderId, userId, partnerId, priceSum) => {
     return await prisma.$transaction(async (tx) => {
       //결제취소 api
       // 유저 캐시 환불
       await tx.user.update({
         where: { id: userId },
         data: {
-          cash: { increment: orderPrice },
+          cash: { increment: priceSum },
         },
       });
 
       // 파트너 캐시 차감
-      const partnerId = cart.Restaurant.Partner.id;
       await tx.partner.update({
         where: { id: partnerId },
         data: {
-          cash: { decrement: orderPrice },
+          cash: { decrement: priceSum },
         },
       });
+
+      // 결제 정보 저장
+      // await tx.payment.update({
+      //   where: { id: +orderId },
+      //   data: { status: '환불' },
+      // });
 
       return await tx.order.update({
         where: { id: +orderId },
