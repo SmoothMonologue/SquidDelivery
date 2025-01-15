@@ -7,16 +7,16 @@ import routes from './routes/index.js';
 
 const app = express();
 
+const PORT = process.env.SERVER_PORT || 3000;
 const server = http.createServer(app);
 // 생성된 http 서버에 Socket.IO를 바인딩 >> 실시간 통신 기능을 추
 const io = new Server(server); // 수정된 부분
-const PORT = process.env.SERVER_PORT || 3000;
 
 // 정적 파일 제공
 app.use('/public', express.static('public')); // public 폴더 내의 정적 파일을 제공
 app.use(cors()); // CORS 미들웨어 추가 >>  다른 도메인에서의 요청을 허용
-app.use(express.json()); // JSON 파싱
-app.use('/api', routes); // 기존 REST API 라우트 통합
+app.use(express.json());
+app.use('/api', routes);
 
 // 소켓 연결 관리
 io.on('connection', (socket) => {
@@ -76,8 +76,6 @@ app.get('/user', async (req, res) => {
   }
 });
 
-app.use('/api', routes);
-
-server.listen(8020, () => {
-  console.log('Server running on http://localhost:8020');
+server.listen(PORT, () => {
+  console.log(`서버가  http://localhost:${PORT} 에서 실행되었습니다.`);
 });
