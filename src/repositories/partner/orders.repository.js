@@ -1,12 +1,9 @@
 import { prisma } from '../../utils/prisma/index.js';
-
 class OrderRepository {
   #prisma;
-
   constructor(prisma) {
     this.#prisma = prisma;
   }
-
   findFirstRestaurant = async (partner) => {
     return await prisma.restaurant.findFirst({
       where: {
@@ -14,7 +11,6 @@ class OrderRepository {
       },
     });
   };
-
   findManyOrder = async (restaurantInfo) => {
     const order = await prisma.order.findMany({
       where: { restaurantId: restaurantInfo.id },
@@ -27,10 +23,8 @@ class OrderRepository {
         createdAt: true,
       },
     });
-
     return order;
   };
-
   findFirstOrder = async (orderId, restaurant) => {
     return await prisma.order.findUnique({
       where: {
@@ -39,7 +33,6 @@ class OrderRepository {
       },
     });
   };
-
   updateOrder = async (orderId, restaurant) => {
     return await prisma.order.update({
       where: {
@@ -51,11 +44,9 @@ class OrderRepository {
       },
     });
   };
-
   createTransaction = async (orderId, restaurant) => {
     return await prisma.$transaction(async (tx) => {
       //결제취소api
-
       return await tx.order.update({
         where: {
           id: +orderId,
@@ -66,5 +57,4 @@ class OrderRepository {
     });
   };
 }
-
 export default new OrderRepository(prisma);

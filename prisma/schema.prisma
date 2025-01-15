@@ -61,7 +61,7 @@ model Menu {
   name         String
   price        Int
   spicyLevel   Int?
-  Restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  Restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
   MenuCart     MenuCart[]
 
   @@index([restaurantId], map: "Menu_restaurantId_fkey")
