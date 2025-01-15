@@ -13,8 +13,16 @@
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        const userId = 2 /* 테스트용 코드 */
-        const socket = io();
+        const userId = localStorage.getItem('userId');
+
+        // userId가 없으면 로그인 화면으로 이동
+        if (!userId) {
+            alert('로그인이 필요합니다.');
+            window.location.href = '/login.html';
+        } else {
+            console.log(`현재 로그인된 사용자 ID: ${userId}`);
+            // 이후 사용자 데이터를 활용한 로직 추가
+        }
 
         // 유저 역할 등록
         socket.emit('register', { role: 'user', userId: userId });

@@ -26,7 +26,7 @@ app.use('/api', routes);
 // 소켓 연결 관리
 io.on('connection', (socket) => {
   socket.on('register', (data) => {
-    socket.role = data.role; // 역할 저장 (owner 또는 user)
+    socket.role = data.role; // 역할 저장 (partner 또는 user)
     socket.partnerId = data.partnerId;
     socket.userId = data.userId;
 
@@ -39,11 +39,17 @@ io.on('connection', (socket) => {
         userId: socket.userId,
       });
     }
-    socket.on('status_update', (data) => {
-      if (socket.role === 'partner') {
-        // 유저들에게 상태 업데이트 전달
-        io.emit('status_update', { status: data.status });
-      }
+    // socket.on('status_update', (data) => {
+    //   if (socket.role === 'partner') {
+    //     // 유저들에게 상태 업데이트 전달
+    //     io.emit('status_update', { status: data.status });
+    //   }
+    // });
+
+    // 새로운 이벤트 추가
+    socket.on('message', (message) => {
+      console.log('새 메시지 수신:', message);
+      io.emit('message', { from: socket.id, text: message });
     });
 
     socket.on('disconnect', () => {
@@ -74,6 +80,27 @@ app.get('/partner', async (req, res) => {
 app.get('/user', async (req, res) => {
   try {
     const data = await fs.readFile('./public/user.html');
+    res.writeHead(200, { 'Content-Type': 'text/html' });
+    res.end(data);
+  } catch (err) {
+    res.status(500).send('파일을 로드할 수 없습니다.');
+  }
+});
+
+// 새롭게 추가한 라우트
+app.get('/login', async (req, res) => {
+  try {
+    const data = await fs.readFile('./public/login.html');
+    res.writeHead(200, { 'Content-Type': 'text/html' });
+    res.end(data);
+  } catch (err) {
+    res.status(500).send('파일을 로드할 수 없습니다.');
+  }
+});
+
+app.get('/index', async (req, res) => {
+  try {
+    const data = await fs.readFile('./public/index.html');
     res.writeHead(200, { 'Content-Type': 'text/html' });
     res.end(data);
   } catch (err) {

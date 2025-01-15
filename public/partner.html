@@ -25,7 +25,17 @@
      일반 배달어플 > 결제 > 주문현황 페이지-->
     <script>
 
-        const partnerId = 1 /* 테스트용 코드 */
+        // 로컬 저장소에서 partnerId 가져오기
+        const partnerId = localStorage.getItem('partnerId');
+
+        // partnerId가 없으면 로그인 화면으로 이동
+        if (!partnerId) {
+            alert('로그인이 필요합니다.');
+            window.location.href = '/login.html';
+        } else {
+            console.log(`현재 로그인된 파트너 ID: ${partnerId}`);
+            // 이후 파트너 데이터를 활용한 로직 추가
+        }
         const socket = io();
 
 
