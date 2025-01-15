@@ -9,13 +9,13 @@ class OrderService {
 
   createOrder = async (userId) => {
     const cart = await this.#repository.findCart(userId);
-
     if (!cart) {
       return {
         status: 404,
         message: '장바구니를 찾을 수 없습니다.',
       };
     }
+
     const priceSum = cart.menuInfo.reduce((prev, current) => prev + current.price, 0); //장바구니 가격 합계
     // menuInfo 배열에서 각 객체의 name 속성을 추출하여 배열로 만듭니다.
     const menuNames = cart.menuInfo.map((item) => item.name);
@@ -23,7 +23,13 @@ class OrderService {
     // join 메서드를 사용하여 배열을 문자열로 변환합니다.
     const menuName = menuNames.join(', ');
 
-    const order = await this.#repository.createTransaction(userId, cart, priceSum, menuName);
+    const order = await this.#repository.createTransaction(
+      userId,
+      cart,
+      priceSum,
+      menuName,
+      restaurantId,
+    );
 
     return {
       status: 201,

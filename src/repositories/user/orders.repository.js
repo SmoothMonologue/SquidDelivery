@@ -17,13 +17,10 @@ class OrderRepository {
     return await prisma.$transaction(async (tx) => {
       //결제api
 
-      const order = await tx.order.update({
-        where: {
-          cartId: cart.id,
-        },
+      const order = await tx.order.create({
         data: {
           userId: +userId,
-          cartId: cart.id,
+          restaurantId: cart.restaurantId,
           priceSum: priceSum,
           status: '주문 요청',
           menuName: menuName,
