@@ -4,6 +4,7 @@ import { Server } from 'socket.io'; // 수정된 부분
 import http from "http"; // Node.js 기본 내장 모듈
 import fs from "fs/promises"; // 파일 시스템 모듈로, Promise 기반으로 파일을 읽고 쓸 수 있게 해줌
 import routes from './routes/index.js';
+import { errorHandler } from './middlewares/error-handler.middleware.js';
 
 const app = express();
 
@@ -18,7 +19,13 @@ app.use(cors()); // CORS 미들웨어 추가 >>  다른 도메인에서의 요�
 app.use(express.json()); 
 app.use('/api', routes);
 
+// 에러 핸들링 미들웨어 추가 (라우트 정의 후에 위치해야 함)
+app.use(errorHandler);
 
+// 존재하지 않는 라우트에 대한 처리
+app.use((req, res) => {
+  res.status(404).json({ message: '요청한 페이지를 찾을 수 없습니다.' });
+});
 
 // 소켓 연결 관리
 io.on("connection", (socket) => {
@@ -27,9 +34,9 @@ io.on("connection", (socket) => {
     socket.partnerId = data.partnerId;
     socket.userId = data.userId;
 
-    if (socket.role === "patner") {
+    if (socket.role === "partner") {
       console.log(socket.role, "connected", {
-        patnerId: socket.patnerId,
+        partnerId: socket.partnerId,
       });
     } else if (socket.role === "user") {
       console.log(socket.role, "connected", {
@@ -90,5 +97,5 @@ app.get("/auth", async (req, res) => {
 });
 
 server.listen(PORT, () => {
-  console.log(`서버가  http://localhost:${PORT} 에서 실행되었습니다.`);
+  console.log(`서버가 http://localhost:${PORT} 에서 실행되었습니다.`);
 });
