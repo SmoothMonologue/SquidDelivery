@@ -22,10 +22,10 @@
         <label for="passwordConfirm">비밀번호 확인:</label>
         <input type="password" id="passwordConfirm" name="passwordConfirm" required><br>
 
-        <label for="phoneNumber">전화번호 (선택):</label>
+        <label for="phoneNumber">전화번호:</label>
         <input type="text" id="phoneNumber" name="phoneNumber" placeholder="010-1234-5678"><br>
 
-        <label for="interest">관심사 (선택):</label>
+        <label for="interest">관심사:</label>
         <input type="text" id="interest" name="interest"><br>
 
         <button type="submit">회원가입</button>
@@ -53,19 +53,22 @@
             }
 
             try {
+                console.log('Signup data:', { name, email, password, passwordConfirm, phoneNumber, interest });
                 const response = await fetch(API_BASE_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name, email, password, phoneNumber, interest }),
+                    body: JSON.stringify({ name, email, password, passwordConfirm, phoneNumber, interest }),
                 });
 
+                // 상태 코드 확인
                 if (!response.ok) {
                     const errorData = await response.json().catch(() => ({ message: '알 수 없는 에러' }));
                     alert(errorData.message || '회원가입 실패');
                     return;
                 }
 
-                alert('회원가입 성공! 로그인 페이지로 이동합니다.');
+                const data = await response.json();
+                alert(data.message || '회원가입 성공!');
                 window.location.href = '/login.html';
             } catch (error) {
                 console.error('회원가입 요청 실패:', error);
