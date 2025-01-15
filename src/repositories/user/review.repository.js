@@ -31,6 +31,30 @@ class ReviewRepository {
     });
   };
 
+  //평점 계산
+  calStarRateAvg = async (restaurantId) => {
+    return this.prisma.review.aggregate({
+      _avg: {
+        starRating: true,
+      },
+      where: {
+        restaurantId,
+      },
+    });
+  };
+
+  //리뷰 등록 시 평점 반영
+  setStarRateAvg = async (restaurantId, starRating) => {
+    return this.prisma.restaurant.update({
+      where: {
+        id: restaurantId,
+      },
+      data: {
+        starRating,
+      },
+    });
+  };
+
   // 모든 리뷰 조회 (댓글 포함, 최신순 정렬)
   findAllReviews = async () => {
     return this.prisma.review.findMany({
@@ -40,6 +64,13 @@ class ReviewRepository {
       orderBy: {
         createdAt: 'desc',
       },
+    });
+  };
+
+  // 특정 식당에 해당하는 리뷰들 조회
+  findReviewByRestaurantId = async (restaurantId) => {
+    return this.prisma.review.findMany({
+      where: { restaurantId: Number(restaurantId) },
     });
   };
 

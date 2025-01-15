@@ -103,6 +103,7 @@ model Payment {
   orderId   Int      @unique
   createdAt DateTime @default(now())
   method    String
+  // status    String
   Order     Order    @relation(fields: [orderId], references: [id])
 
   @@map("Payment")
@@ -121,7 +122,6 @@ model Review {
   Restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
   Comment      Comment[]
 
-  @@unique([userId, restaurantId])
   @@map("Review")
 }
 

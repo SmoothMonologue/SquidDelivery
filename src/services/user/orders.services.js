@@ -7,7 +7,7 @@ class OrderService {
     this.#repository = repository;
   }
 
-  createOrder = async (userId) => {
+  createOrder = async (userId, method) => {
     const cart = await this.#repository.findCart(userId);
     if (!cart) {
       return {
@@ -22,7 +22,35 @@ class OrderService {
     // join 메서드를 사용하여 배열을 문자열로 변환합니다.
     const menuName = menuNames.join(', ');
 
-    const order = await this.#repository.createTransaction(userId, cart, priceSum, menuName);
+    // 결제 방식 검증
+    if (!['cash'].includes(method)) {
+      return {
+        status: 400,
+        message: `결제 방식은 'cash'만 가능합니다.)`,
+      };
+    }
+
+    // 유저 캐시 확인
+    const user = await this.#repository.findUser(userId);
+    if (!user || user.cash < priceSum) {
+      return {
+        status: 400,
+        message: '잔액이 부족합니다.',
+      };
+    }
+
+    //유저ID의 카트의 레스토랑의 파트너 데이터를 조회
+    const partnerData = await this.#repository.findPartner(userId);
+    const partnerId = partnerData.id;
+
+    const order = await this.#repository.createTransaction(
+      userId,
+      cart,
+      priceSum,
+      menuName,
+      method,
+      partnerId,
+    );
 
     return {
       status: 201,
@@ -31,8 +59,16 @@ class OrderService {
     };
   };
 
-  cancelOrder = async (orderId) => {
+  cancelOrder = async (orderId, userId) => {
     const orderStatus = await this.#repository.checkOrderStatus(orderId);
+
+    if (orderStatus.status === '주문 취소') {
+      return {
+        status: 400,
+        message: '이미 주문 취소 되었습니다.',
+      };
+    }
+
     if (orderStatus.status !== '주문 요청') {
       return {
         status: 400,
@@ -40,7 +76,18 @@ class OrderService {
       };
     }
 
-    const order = await this.#repository.cancelOrderTransaction(orderId);
+    //결제 환불
+    const cart = await this.#repository.findCart(userId);
+    const priceSum = cart.menuInfo.reduce((prev, current) => prev + current.price, 0);
+    const partnerData = await this.#repository.findPartner(userId);
+    const partnerId = partnerData.id;
+
+    const order = await this.#repository.cancelOrderTransaction(
+      orderId,
+      userId,
+      partnerId,
+      priceSum,
+    );
 
     if (!order) {
       return {
