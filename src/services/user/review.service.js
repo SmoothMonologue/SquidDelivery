@@ -18,6 +18,7 @@ class ReviewService {
   createReview = async ({ userId, orderId, image, content, starRating }) => {
     // 주문 존재 여부 확인
     const order = await this.#reviewRepository.findOrderById(orderId);
+    const restaurantId = order.restaurantId;
     if (!order) {
       const error = new Error(MESSAGES.REVIEWS.COMMON.NOT_FOUND);
       error.status = HTTP_STATUS.NOT_FOUND;
@@ -39,21 +40,19 @@ class ReviewService {
       throw error;
     }
 
-    // 리뷰 별점 평점 계산
-    const restaurant = await this.#reviewRepository.findRestaurantById(order.restaurantId);
-    const currentStarRating = restaurant.starRating || 0;
-    const newStarRating = (currentStarRating * restaurant.reviewCount + starRating) / (restaurant.reviewCount + 1);
-
-
     // 리뷰 생성
     const review = await this.#reviewRepository.createReview({
       userId,
       orderId,
-      restaurantId: order.restaurantId,
+      restaurantId,
       image,
       content,
       starRating,
     });
+
+    // 리뷰 별점 평점 계산
+    const newStarRating = await this.#reviewRepository.calStarRateAvg(restaurantId);
+    await this.#reviewRepository.setStarRateAvg(restaurantId, newStarRating._avg.starRating);
 
     return {
       message: MESSAGES.REVIEWS.CREATE.SUCCEED,
