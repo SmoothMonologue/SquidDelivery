@@ -1,6 +1,6 @@
-import { prisma } from '../../utils/prisma/index.js';
+// import { prisma } from '../../utils/prisma/index.js';
 
-class profileRepository {
+export default class ProfileRepository {
   #orm;
 
   constructor(orm) {
@@ -33,4 +33,4 @@ class profileRepository {
   };
 }
 
-export default new profileRepository(prisma);
+// export default new profileRepository(prisma);

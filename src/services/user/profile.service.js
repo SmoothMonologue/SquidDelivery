@@ -1,6 +1,6 @@
-import profileRepository from '../../repositories/user/profile.repository.js';
+// import profileRepository from '../../repositories/user/profile.repository.js';
 
-class profileService {
+export default class ProfileService {
   #repository;
 
   constructor(repository) {
@@ -20,4 +20,4 @@ class profileService {
   };
 }
 
-export default new profileService(profileRepository);
+// export default new profileService(profileRepository);

@@ -1,6 +1,6 @@
-import profileService from '../../services/user/profile.service.js';
+// import profileService from '../../services/user/profile.service.js';
 
-class profileController {
+export default class ProfileController {
   #service;
 
   constructor(service) {
@@ -24,4 +24,4 @@ class profileController {
   };
 }
 
-export default new profileController(profileService);
+// export default new profileController(profileService);
