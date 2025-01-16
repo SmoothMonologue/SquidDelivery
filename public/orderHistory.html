@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>주문 내역</title>
+</head>
+
+<body>
+    <h1>주문 내역</h1>
+    <div id="orderHistory"></div>
+
+    <script>
+        const API_URL = 'http://localhost:3001/api/orders/user';
+
+        const loadOrderHistory = async () => {
+            const token = localStorage.getItem('accessToken');
+            if (!token) {
+                alert('로그인이 필요합니다.');
+                window.location.href = '/public/login.html';
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}`, {
+                    method: 'GET',
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+
+                if (!response.ok) throw new Error('주문 내역을 불러올 수 없습니다.');
+
+                const orders = await response.json();
+                const container = document.getElementById('orderHistory');
+                container.innerHTML = orders.map(order => `
+                    <div>
+                        <h2>주문 ID: ${order.id}</h2>
+                        <p>메뉴: ${order.menuName}</p>
+                        <p>수량: ${order.quantity}</p>
+                        <p>가격: ${order.totalPrice}원</p>
+                        <p>상태: ${order.status}</p>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error(error);
+                alert('주문 내역을 로드하는 중 문제가 발생했습니다.');
+            }
+        };
+
+        loadOrderHistory();
+    </script>
+</body>
+
+</html>

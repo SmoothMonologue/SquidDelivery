@@ -23,6 +23,7 @@
             cursor: pointer;
         }
     </style>
+    <script type="module" src="/path/to/common.js"></script>
 </head>
 
 <body>
@@ -31,23 +32,22 @@
 
     <div class="button-container">
         <button onclick="location.href='/public/login.html'">로그인</button>
-        <button onclick="location.href='/public/partnerSignup.html'">사장님 회원가입</button>
-        <button onclick="location.href='/public/userSignup.html'">고객 회원가입</button>
-        <button onclick="checkStatus()">내 주문 현황</button>
+        <button onclick="checkRole()">내 메인 페이지로 이동</button>
     </div>
 
-    <script>
-        // 주문 현황 버튼 클릭 시 사용자 역할에 따라 리다이렉트
-        function checkStatus() {
+    <script type="module">
+        // 공통 로직에서 requireAuth 함수 가져오기
+        import { requireAuth } from '/path/to/common.js';
+        requireAuth(); // 유저 또는 사장님 로그인 상태 확인
+
+        function checkRole() {
             const userId = localStorage.getItem('userId');
             const partnerId = localStorage.getItem('partnerId');
 
             if (partnerId) {
-                // 사장님일 경우
-                window.location.href = '/public/partner.html';
+                window.location.href = '/public/partnerMain.html';
             } else if (userId) {
-                // 고객일 경우
-                window.location.href = '/public/user.html';
+                window.location.href = '/public/userMain.html';
             } else {
                 alert('로그인이 필요합니다.');
                 window.location.href = '/public/login.html';

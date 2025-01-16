@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>업장 등록</title>
+</head>
+
+<body>
+    <h1>업장 등록</h1>
+    <form id="registerRestaurantForm">
+        <label for="name">업장 이름:</label>
+        <input type="text" id="name" name="name" required><br>
+
+        <label for="address">주소:</label>
+        <input type="text" id="address" name="address" required><br>
+
+        <label for="description">설명:</label>
+        <textarea id="description" name="description" required></textarea><br>
+
+        <label for="image">이미지 업로드:</label>
+        <input type="file" id="image" name="image" accept="image/*"><br>
+
+        <button type="submit">등록</button>
+    </form>
+
+    <script>
+        // 사장님 권한 확인: partnerId가 없으면 접근 차단
+        const partnerId = localStorage.getItem('partnerId');
+        if (!partnerId) {
+            alert('권한이 없습니다. 로그인 페이지로 이동합니다.');
+            window.location.href = '/public/login.html';
+        }
+
+        // 업장 등록 로직
+        const API_URL = 'http://localhost:3001/api/restaurants';
+        document.getElementById('registerRestaurantForm').onsubmit = async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(e.target);
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+                    },
+                    body: formData,
+                });
+
+                if (!response.ok) throw new Error('업장 등록 실패');
+                alert('업장이 등록되었습니다!');
+                window.location.href = '/public/partnerMain.html';
+            } catch (error) {
+                console.error(error);
+                alert('업장 등록 중 문제가 발생했습니다.');
+            }
+        };
+    </script>
+</body>
+
+</html>

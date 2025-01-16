@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>메뉴</title>
+</head>
+
+<body>
+    <h1>메뉴</h1>
+    <div id="menuContainer"></div>
+
+    <script>
+        const API_URL = 'http://localhost:3001/api/menu';
+
+        const loadMenus = async () => {
+            try {
+                const response = await fetch(API_URL);
+                const menus = await response.json();
+
+                const container = document.getElementById('menuContainer');
+                container.innerHTML = menus.map(menu => `
+                    <div>
+                        <h2>${menu.name}</h2>
+                        <p>가격: ${menu.price}</p>
+                        <button onclick="addToCart(${menu.id})">장바구니에 추가</button>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('메뉴 로드 실패:', error);
+            }
+        };
+
+        const addToCart = async (menuId) => {
+            try {
+                const response = await fetch(`http://localhost:3001/api/cart`, {
+                    method: 'POST',
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ menuId }),
+                });
+
+                if (!response.ok) throw new Error('장바구니 추가 실패');
+                alert('장바구니에 추가되었습니다!');
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        loadMenus();
+    </script>
+</body>
+
+</html>

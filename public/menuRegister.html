@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>메뉴 등록</title>
+</head>
+
+<body>
+    <h1>메뉴 등록</h1>
+    <form id="menuRegisterForm">
+        <label for="name">메뉴 이름:</label>
+        <input type="text" id="name" name="name" required><br>
+
+        <label for="price">가격:</label>
+        <input type="number" id="price" name="price" required><br>
+
+        <label for="description">설명:</label>
+        <textarea id="description" name="description" required></textarea><br>
+
+        <label for="image">이미지 업로드:</label>
+        <input type="file" id="image" name="image" accept="image/*"><br>
+
+        <button type="submit">등록</button>
+    </form>
+
+    <script>
+        const API_URL = 'http://localhost:3001/api/menu';
+
+        document.getElementById('menuRegisterForm').onsubmit = async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(e.target);
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+                    },
+                    body: formData,
+                });
+
+                if (!response.ok) throw new Error('메뉴 등록 실패');
+
+                alert('메뉴가 등록되었습니다!');
+                window.location.reload();
+            } catch (error) {
+                console.error(error);
+                alert('메뉴 등록 중 문제가 발생했습니다.');
+            }
+        };
+    </script>
+</body>
+
+</html>

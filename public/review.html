@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>리뷰 작성</title>
+</head>
+
+<body>
+    <h1>리뷰 작성</h1>
+    <form id="reviewForm">
+        <label for="orderId">주문 ID:</label>
+        <input type="text" id="orderId" name="orderId" required><br>
+
+        <label for="starRating">별점:</label>
+        <select id="starRating" name="starRating" required>
+            <option value="5">⭐⭐⭐⭐⭐</option>
+            <option value="4">⭐⭐⭐⭐</option>
+            <option value="3">⭐⭐⭐</option>
+            <option value="2">⭐⭐</option>
+            <option value="1">⭐</option>
+        </select><br>
+
+        <label for="content">리뷰 내용:</label>
+        <textarea id="content" name="content" required></textarea><br>
+
+        <button type="submit">리뷰 작성</button>
+    </form>
+
+    <script>
+        const REVIEW_API_URL = 'http://localhost:3001/api/review';
+
+        document.getElementById('reviewForm').onsubmit = async (e) => {
+            e.preventDefault();
+
+            const orderId = document.getElementById('orderId').value;
+            const starRating = document.getElementById('starRating').value;
+            const content = document.getElementById('content').value;
+
+            try {
+                const response = await fetch(REVIEW_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ orderId, starRating, content }),
+                });
+
+                if (!response.ok) throw new Error('리뷰 작성 실패');
+
+                alert('리뷰가 작성되었습니다!');
+                window.location.href = '/public/user.html';
+            } catch (error) {
+                console.error(error);
+                alert('리뷰 작성 중 문제가 발생했습니다.');
+            }
+        };
+    </script>
+</body>
+
+</html>
