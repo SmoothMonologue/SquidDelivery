@@ -8,16 +8,77 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #fef4e8;
+            margin: 0;
+            padding: 0;
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             padding: 20px;
         }
 
-        #searchResults div {
-            border: 1px solid #ddd;
-            margin: 10px 0;
+        h1 {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        #searchInput {
+            width: 300px;
             padding: 10px;
+            border: 1px solid #ccc;
             border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        #searchButton {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #searchButton:hover {
+            background-color: #45a049;
+        }
+
+        #searchResults {
+            max-width: 600px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .result-item {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin: 10px auto;
+            padding: 20px;
+            text-align: left;
+        }
+
+        .result-item h2 {
+            margin: 0;
+            font-size: 20px;
+            color: #444;
+        }
+
+        .result-item p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .no-results {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #777;
         }
     </style>
 </head>
@@ -73,14 +134,14 @@
             // 검색 결과 표시
             if (results.length > 0) {
                 container.innerHTML = results.map(item => `
-                    <div>
+                    <div class="result-item">
                         <h2>${item.name}</h2>
                         <p>${item.description}</p>
-                        <p>${item.price}원</p>
+                        <p><strong>${item.price}원</strong></p>
                     </div>
                 `).join('');
             } else {
-                container.innerHTML = "<p>검색 결과가 없습니다.</p>";
+                container.innerHTML = "<p class='no-results'>검색 결과가 없습니다.</p>";
             }
         };
     </script>

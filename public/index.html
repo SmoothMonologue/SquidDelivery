@@ -7,9 +7,38 @@
     <title>메인 페이지</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             text-align: center;
             padding: 20px;
+            margin: 0;
+            background-color: #fef4e8;
+            color: #333;
+        }
+
+        header {
+            background-color: #ff8378;
+            padding: 20px 0;
+            margin-bottom: 20px;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        header img {
+            width: 50px;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+
+        h1 {
+            font-size: 32px;
+            color: #444;
+        }
+
+        p {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 20px;
         }
 
         .button-container {
@@ -17,32 +46,59 @@
         }
 
         button {
-            padding: 10px 20px;
-            font-size: 16px;
+            padding: 15px 30px;
+            font-size: 18px;
             margin: 10px;
             cursor: pointer;
             border: none;
-            border-radius: 5px;
-            background-color: #007BFF;
+            border-radius: 25px;
+            background-color: #ff8378;
             color: white;
+            transition: all 0.3s ease-in-out;
         }
 
         button:hover {
-            background-color: #0056b3;
+            background-color: #ff8378;
+            transform: scale(1.05);
+        }
+
+        footer {
+            margin-top: 40px;
+            padding: 10px 0;
+            background-color: #ff8378;
+            color: white;
+            font-size: 14px;
+        }
+
+        footer img {
+            width: 20px;
+            vertical-align: middle;
         }
     </style>
 </head>
 
 <body>
-    <h1>환영합니다!</h1>
-    <p>아래에서 원하는 작업을 선택하세요:</p>
+    <header>
+        <img src="/public/images/squid_icon.png" />
+        오징어 제육볶음
 
-    <div class="button-container">
-        <button onclick="location.href='/public/login.html'">로그인</button>
-        <button onclick="location.href='/public/partnerSignup.html'">사장님 회원가입</button>
-        <button onclick="location.href='/public/userSignup.html'">고객 회원가입</button>
-        <button id="checkRoleButton">내 메인 페이지</button>
-    </div>
+    </header>
+
+    <main>
+        <h1>환영합니다!</h1>
+        <p>아래에서 원하는 작업을 선택하세요!</p>
+
+        <div class="button-container">
+            <button onclick="location.href='/public/login.html'">로그인</button>
+            <button onclick="location.href='/public/partnerSignup.html'">사장님 회원가입</button>
+            <button onclick="location.href='/public/userSignup.html'">고객 회원가입</button>
+            <button id="checkRoleButton">내 메인 페이지</button>
+        </div>
+    </main>
+
+    <footer>
+        <p> &copy; 팀 오징어 제육볶음</p>
+    </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {

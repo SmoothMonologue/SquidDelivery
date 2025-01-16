@@ -5,18 +5,134 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>유저 메인 페이지</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fef4e8;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+            background-color: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 600px;
+        }
+
+        h1 {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .button-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        button {
+            padding: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        button:nth-child(1) {
+            background-color: #a2d369;
+            /* 부드러운 연녹색 */
+        }
+
+        button:nth-child(1):hover {
+            background-color: #83c03c;
+        }
+
+        button:nth-child(2) {
+            background-color: #faa48a;
+            /* 부드러운 연주황색 */
+        }
+
+        button:nth-child(2):hover {
+            background-color: #f77b55;
+        }
+
+        button:nth-child(3) {
+            background-color: #67c8f5;
+            /* 부드러운 연파랑색 */
+        }
+
+        button:nth-child(3):hover {
+            background-color: #2db3f1;
+        }
+
+        button:nth-child(4) {
+            background-color: #f79dbc;
+            /* 부드러운 연분홍색 */
+        }
+
+        button:nth-child(4):hover {
+            background-color: #f56889;
+        }
+
+        button:nth-child(5) {
+            background-color: #98a5fa;
+            /* 부드러운 연보라색 */
+        }
+
+        button:nth-child(5):hover {
+            background-color: #8d81f7;
+        }
+
+        button:nth-child(6) {
+            background-color: #8bd3dd;
+            /* 부드러운 연청록색 */
+        }
+
+        button:nth-child(6):hover {
+            background-color: #55cfd8;
+        }
+
+        button:nth-child(7) {
+            background-color: #fa9da6;
+            /* 부드러운 연핑크색 */
+        }
+
+        button:nth-child(7):hover {
+            background-color: #f3666f;
+        }
+    </style>
 </head>
 
 <body>
-    <h1>유저 메인 페이지</h1>
-    <div class="button-container">
-        <button onclick="location.href='/public/menu.html'">메뉴 보기</button>
-        <button onclick="location.href='/public/cart.html'">장바구니</button>
-        <button onclick="location.href='/public/orderHistory.html'">주문 내역</button>
-        <button onclick="location.href='/public/review.html'">리뷰 작성</button>
-        <button onclick="location.href='/public/search.html'">메뉴 검색</button>
-        <button onclick="location.href='/public/user.html'">현재 주문 상황</button>
-        <button onclick="location.href='/public/restaurantList.html'">레스토랑 보기</button>
+    <div class="container">
+        <h1>유저 메인 페이지</h1>
+        <div class="button-container">
+            <button onclick="location.href='/public/menu.html'">메뉴 보기</button>
+            <button onclick="location.href='/public/cart.html'">장바구니</button>
+            <button onclick="location.href='/public/orderHistory.html'">주문 내역</button>
+            <button onclick="location.href='/public/review.html'">리뷰 작성</button>
+            <button onclick="location.href='/public/search.html'">메뉴 검색</button>
+            <button onclick="location.href='/public/user.html'">현재 주문 상황</button>
+            <button onclick="location.href='/public/restaurantList.html'">레스토랑 보기</button>
+        </div>
     </div>
 
     <script>

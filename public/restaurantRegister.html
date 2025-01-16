@@ -5,31 +5,131 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>업장 등록</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fef4e8;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1,
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .restaurant-container {
+            max-width: 800px;
+            margin: 20px auto;
+        }
+
+        .restaurant-card {
+            background-color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .restaurant-card h3 {
+            margin: 0;
+            color: #444;
+        }
+
+        .restaurant-card p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .restaurant-card button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .restaurant-card button:hover {
+            background-color: #e53935;
+        }
+    </style>
 </head>
 
 <body>
     <h1>업장 등록</h1>
     <form id="registerRestaurantForm">
         <label for="restaurantName">업장 이름:</label>
-        <input type="text" id="restaurantName" name="restaurantName" required><br>
+        <input type="text" id="restaurantName" name="restaurantName" placeholder="업장 이름을 입력하세요" required>
 
         <label for="keywords">키워드:</label>
-        <input type="text" id="keywords" name="keywords" required><br>
+        <input type="text" id="keywords" name="keywords" placeholder="예: 한식, 분식" required>
 
         <label for="address">주소:</label>
-        <input type="text" id="address" name="address" required><br>
+        <input type="text" id="address" name="address" placeholder="주소를 입력하세요" required>
 
         <label for="phoneNumber">전화번호:</label>
-        <input type="text" id="phoneNumber" name="phoneNumber" required><br>
+        <input type="text" id="phoneNumber" name="phoneNumber" placeholder="예: 010-1234-5678" required>
 
         <label for="description">설명:</label>
-        <textarea id="description" name="description" required></textarea><br>
+        <textarea id="description" name="description" placeholder="업장에 대한 설명을 입력하세요" required></textarea>
 
         <button type="submit">등록</button>
     </form>
 
     <h2>등록된 업장</h2>
-    <div id="registeredRestaurants"></div>
+    <div id="registeredRestaurants" class="restaurant-container">
+        <!-- 등록된 업장 리스트 -->
+    </div>
 
     <script>
         const restaurants = [
@@ -45,37 +145,46 @@
         const displayRestaurants = () => {
             const container = document.getElementById("registeredRestaurants");
             container.innerHTML = ""; // 초기화
+            if (restaurants.length === 0) {
+                container.innerHTML = "<p style='text-align: center; color: #666;'>등록된 업장이 없습니다.</p>";
+                return;
+            }
+
             restaurants.forEach((restaurant, index) => {
                 const div = document.createElement("div");
+                div.className = "restaurant-card";
                 div.innerHTML = `
                     <h3>${restaurant.restaurantName}</h3>
-                    <p>키워드: ${restaurant.keywords}</p>
-                    <p>주소: ${restaurant.address}</p>
-                    <p>전화번호: ${restaurant.phoneNumber}</p>
-                    <p>설명: ${restaurant.description}</p>
+                    <p><strong>키워드:</strong> ${restaurant.keywords}</p>
+                    <p><strong>주소:</strong> ${restaurant.address}</p>
+                    <p><strong>전화번호:</strong> ${restaurant.phoneNumber}</p>
+                    <p><strong>설명:</strong> ${restaurant.description}</p>
                     <button onclick="deleteRestaurant(${index})">삭제</button>
-                    <hr>
                 `;
                 container.appendChild(div);
             });
         };
 
         const deleteRestaurant = (index) => {
-            restaurants.splice(index, 1); // 삭제
-            displayRestaurants(); // 갱신
+            if (confirm("정말 삭제하시겠습니까?")) {
+                restaurants.splice(index, 1); // 삭제
+                displayRestaurants(); // 갱신
+            }
         };
 
         document.getElementById("registerRestaurantForm").onsubmit = (e) => {
             e.preventDefault();
 
-            const restaurantName = document.getElementById("restaurantName").value;
-            const keywords = document.getElementById("keywords").value;
-            const address = document.getElementById("address").value;
-            const phoneNumber = document.getElementById("phoneNumber").value;
-            const description = document.getElementById("description").value;
+            const restaurantName = document.getElementById("restaurantName").value.trim();
+            const keywords = document.getElementById("keywords").value.trim();
+            const address = document.getElementById("address").value.trim();
+            const phoneNumber = document.getElementById("phoneNumber").value.trim();
+            const description = document.getElementById("description").value.trim();
 
             restaurants.push({ restaurantName, keywords, address, phoneNumber, description });
             alert(`${restaurantName}이(가) 등록되었습니다!`);
+
+            e.target.reset(); // 폼 초기화
             displayRestaurants();
         };
 

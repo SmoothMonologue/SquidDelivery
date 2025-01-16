@@ -5,12 +5,87 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>메뉴</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fef4e8;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 20px 0;
+            color: #333;
+        }
+
+        #menuContainer {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .menu-item {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            text-align: center;
+        }
+
+        .menu-item h2 {
+            margin: 0 0 10px;
+            color: #444;
+        }
+
+        .menu-item p {
+            margin: 10px 0;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .menu-item button {
+            padding: 10px 20px;
+            background-color: #ff6f61;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        .menu-item button:hover {
+            background-color: #ff856f;
+        }
+
+        .action-button {
+            display: block;
+            margin: 30px auto;
+            padding: 10px 20px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+
+        .action-button:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 
 <body>
     <h1>메뉴</h1>
     <div id="menuContainer"></div>
-    <button onclick="goToCart()">장바구니 보기</button>
+    <button class="action-button" onclick="goToCart()">장바구니 보기</button>
 
     <script>
         // 하드코딩된 메뉴 데이터
@@ -26,7 +101,7 @@
         const loadMenus = () => {
             const container = document.getElementById('menuContainer');
             container.innerHTML = menus.map(menu => `
-                <div>
+                <div class="menu-item">
                     <h2>${menu.name}</h2>
                     <p>가격: ${menu.price}원</p>
                     <button onclick="addToCart(${menu.id})">장바구니에 추가</button>
@@ -43,7 +118,16 @@
             }
 
             const cart = JSON.parse(localStorage.getItem("cart")) || []; // 기존 장바구니 데이터
-            cart.push(menu);
+            const existingItem = cart.find(item => item.id === menu.id);
+
+            if (existingItem) {
+                // 이미 장바구니에 있으면 수량 증가
+                existingItem.quantity = (existingItem.quantity || 1) + 1;
+            } else {
+                // 장바구니에 새로 추가
+                cart.push({ ...menu, quantity: 1 });
+            }
+
             localStorage.setItem("cart", JSON.stringify(cart)); // localStorage에 저장
             alert(`${menu.name}이(가) 장바구니에 추가되었습니다!`);
         };

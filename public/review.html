@@ -5,6 +5,110 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>리뷰 작성 및 관리</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fef4e8;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1,
+        h2 {
+            text-align: center;
+            margin: 20px 0;
+            color: #333;
+        }
+
+        form {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        input[type="text"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px 20px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .review-item {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            margin: 20px auto;
+            max-width: 600px;
+        }
+
+        .review-item p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .review-item button {
+            margin-top: 10px;
+            margin-right: 5px;
+            padding: 8px 12px;
+            font-size: 14px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .review-item .edit-btn {
+            background-color: #5ea7fa;
+            color: white;
+            border: none;
+        }
+
+        .review-item .edit-btn:hover {
+            background-color: #5ea7fa;
+        }
+
+        .review-item .delete-btn {
+            background-color: #fd6e64;
+            color: white;
+            border: none;
+        }
+
+        .review-item .delete-btn:hover {
+            background-color: #fd6e64;
+        }
+    </style>
 </head>
 
 <body>
@@ -12,7 +116,7 @@
 
     <form id="reviewForm">
         <label for="orderId">주문 ID:</label>
-        <input type="text" id="orderId" name="orderId" value="12345" readonly><br>
+        <input type="text" id="orderId" name="orderId" placeholder="주문 ID를 입력하세요" required>
 
         <label for="starRating">별점:</label>
         <select id="starRating" name="starRating" required>
@@ -21,10 +125,10 @@
             <option value="3">⭐⭐⭐</option>
             <option value="2">⭐⭐</option>
             <option value="1">⭐</option>
-        </select><br>
+        </select>
 
         <label for="content">리뷰 내용:</label>
-        <textarea id="content" name="content" required>이 레스토랑은 정말 좋았습니다!</textarea><br>
+        <textarea id="content" name="content" placeholder="리뷰를 작성하세요" required></textarea>
 
         <button type="submit">리뷰 작성</button>
     </form>
@@ -35,48 +139,53 @@
     </div>
 
     <script>
-        // 하드코딩된 리뷰 데이터
-        const reviews = [
-            { orderId: "12345", starRating: 5, content: "정말 맛있어요!" },
-            { orderId: "67890", starRating: 4, content: "서비스가 좋았습니다." },
-        ];
+        // 로컬스토리지에서 리뷰 데이터 가져오기
+        const reviews = JSON.parse(localStorage.getItem("reviews")) || [];
 
+        // 리뷰 목록 렌더링
         const renderReviews = () => {
             const reviewContainer = document.getElementById("reviewContainer");
 
             if (reviews.length === 0) {
-                reviewContainer.innerHTML = "<p>작성된 리뷰가 없습니다.</p>";
+                reviewContainer.innerHTML = "<p style='text-align: center;'>작성된 리뷰가 없습니다.</p>";
                 return;
             }
 
-            reviewContainer.innerHTML = reviews.map((review, index) => `
+            reviewContainer.innerHTML = reviews
+                .map(
+                    (review, index) => `
                 <div class="review-item">
                     <p><strong>주문 ID:</strong> ${review.orderId}</p>
-                    <p><strong>별점:</strong> ${'⭐'.repeat(review.starRating)}</p>
+                    <p><strong>별점:</strong> ${"⭐".repeat(review.starRating)}</p>
                     <p><strong>리뷰 내용:</strong> ${review.content}</p>
-                    <button onclick="editReview(${index})">수정</button>
-                    <button onclick="deleteReview(${index})">삭제</button>
+                    <button class="edit-btn" onclick="editReview(${index})">수정</button>
+                    <button class="delete-btn" onclick="deleteReview(${index})">삭제</button>
                 </div>
-            `).join('');
+            `
+                )
+                .join("");
         };
 
+        // 리뷰 삭제
         const deleteReview = (index) => {
             if (confirm("이 리뷰를 삭제하시겠습니까?")) {
-                reviews.splice(index, 1); // 리뷰 제거
+                reviews.splice(index, 1);
+                localStorage.setItem("reviews", JSON.stringify(reviews));
                 renderReviews();
                 alert("리뷰가 삭제되었습니다.");
             }
         };
 
+        // 리뷰 수정
         const editReview = (index) => {
             const review = reviews[index];
-
             const newContent = prompt("수정할 리뷰 내용을 입력하세요:", review.content);
             if (newContent !== null && newContent.trim() !== "") {
                 const newStarRating = prompt("수정할 별점을 입력하세요 (1~5):", review.starRating);
                 if (newStarRating >= 1 && newStarRating <= 5) {
                     review.content = newContent.trim();
                     review.starRating = parseInt(newStarRating, 10);
+                    localStorage.setItem("reviews", JSON.stringify(reviews));
                     renderReviews();
                     alert("리뷰가 수정되었습니다.");
                 } else {
@@ -85,15 +194,18 @@
             }
         };
 
+        // 리뷰 작성
         document.getElementById("reviewForm").onsubmit = (e) => {
             e.preventDefault();
-            const orderId = document.getElementById("orderId").value;
+            const orderId = document.getElementById("orderId").value.trim();
             const starRating = parseInt(document.getElementById("starRating").value, 10);
-            const content = document.getElementById("content").value;
+            const content = document.getElementById("content").value.trim();
 
             reviews.push({ orderId, starRating, content });
+            localStorage.setItem("reviews", JSON.stringify(reviews));
             renderReviews();
             alert("리뷰가 저장되었습니다!");
+            document.getElementById("reviewForm").reset();
         };
 
         // 초기 렌더링
