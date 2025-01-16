@@ -1,4 +1,3 @@
-
 export class UserRestaurantController {
   #service;
 
@@ -13,7 +12,7 @@ export class UserRestaurantController {
     } catch (error) {
       next(error);
     }
-  }
+  };
 
   // 키워드 검색
   getRestaurantsByKeyword = async (req, res, next) => {
@@ -30,10 +29,8 @@ export class UserRestaurantController {
         data,
       });
     } catch (error) {
-      console.error(error);
       res.status(500).json({ message: '업장 목록을 불러오는 데 실패했습니다.' });
       next(error);
     }
   };
 }
-
