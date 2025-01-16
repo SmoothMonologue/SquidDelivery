@@ -70,6 +70,15 @@ export class OrderRepository {
         },
       });
 
+      await tx.restaurant.update({
+        where: {
+          id: cart.restaurantId,
+        },
+        data: {
+          sales: { increment: priceSum },
+        },
+      });
+
       return order;
     });
   };
@@ -93,6 +102,13 @@ export class OrderRepository {
         },
       });
 
+      //매출액 차감
+      await tx.restaurant.update({
+        where: { partnerId: partnerId },
+        data: {
+          sales: { decrement: priceSum },
+        },
+      });
       // 결제 정보 저장
       // await tx.payment.update({
       //   where: { id: +orderId },
