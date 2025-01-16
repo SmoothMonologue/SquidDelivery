@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals'
-import {ReviewRepository} from '../repositories/user/review.repository.js';
+import {ReviewRepository} from './review.repository.js';
 
 describe('ReviewRepository test', () => {
     let fakePrisma;

@@ -47,7 +47,6 @@ model Restaurant {
   updatedAt      DateTime @updatedAt
   businessNumber String?  @unique
   number         String?
-  sales          Int
   Cart           Cart[]
   Menu           Menu[]
   Partner        Partner  @relation(fields: [partnerId], references: [id])

@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "nodemon src/app.js",
     "format": "prettier --write '**/*.js'",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config src/services/user/jest.config.js",
     "test:watch": "jest --watch"
   },
   "repository": {

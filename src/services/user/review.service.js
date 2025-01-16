@@ -17,12 +17,13 @@ export class ReviewService {
   createReview = async ({ userId, orderId, image, content, starRating }) => {
     // 주문 존재 여부 확인
     const order = await this.#reviewRepository.findOrderById(orderId);
-    const restaurantId = order.restaurantId;
     if (!order) {
       const error = new Error(MESSAGES.REVIEWS.COMMON.NOT_FOUND);
       error.status = HTTP_STATUS.NOT_FOUND;
       throw error;
     }
+    
+    const restaurantId = order.restaurantId;
 
     // 리뷰 중복 작성 확인
     const existingReview = await this.#reviewRepository.findReviewByOrderId(orderId);
