@@ -20,27 +20,31 @@ class AuthController {
     res.status(HTTP_STATUS.CREATED).json(MESSAGES.AUTH.SIGN_UP.SUCCEED);
   };
 
-  signIn = async (req, res) => {
-    const { email, password, catchBox } = req.body;
+  signIn = async (req, res, next) => {
+    try {
+      const { email, password, catchBox } = req.body;
 
-    if (catchBox) {
-      const partner = await this.#service.signInPartner({ email, password });
-      // console.log(partner)
-      const { accessToken } = partner.data;
-      if (accessToken) {
-        res.setHeader('Authorization', `Bearer ${accessToken}`);
-        console.log('사장님 로그인 성공!');
+      if (catchBox) {
+        const partner = await this.#service.signInPartner({ email, password });
+        // console.log(partner)
+        const { accessToken } = partner.data;
+        if (accessToken) {
+          res.setHeader('Authorization', `Bearer ${accessToken}`);
+          console.log('사장님 로그인 성공!');
+        }
+        res.status(HTTP_STATUS.OK).json(partner.data);
+      } else {
+        const user = await this.#service.signInUser({ email, password });
+        // console.log(user);
+        const { accessToken } = user.data;
+        if (accessToken) {
+          res.setHeader('authorization', `Bearer ${accessToken}`);
+          console.log('사용자 로그인 성공!');
+        }
+        res.status(HTTP_STATUS.CREATED).json(user.data);
       }
-      res.status(HTTP_STATUS.OK).json(partner.data);
-    } else {
-      const user = await this.#service.signInUser({ email, password });
-      // console.log(user);
-      const { accessToken } = user.data;
-      if (accessToken) {
-        res.setHeader('authorization', `Bearer ${accessToken}`);
-        console.log('사용자 로그인 성공!');
-      }
-      res.status(HTTP_STATUS.CREATED).json(user.data);
+    } catch (error) {
+      next(error);
     }
   };
 
