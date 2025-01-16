@@ -24,6 +24,7 @@ describe('OrderService test', () => {
             findFirstRestaurant: jest.fn(),
             findManyOrder: jest.fn(),
             findFirstOrder: jest.fn(),
+            findCart: jest.fn(),
             updateOrder: jest.fn(),
             createTransaction: jest.fn()
         };
@@ -131,8 +132,12 @@ describe('OrderService test', () => {
 
     describe('cancelOrder', () => {
         it('주문 취소 성공', async () => {
+
             const partner = { id: 1 };
+            const mockCart = { menuInfo: [{ menuName: '떡볶이', price: 15000 }] };
             mockRepository.findFirstRestaurant.mockResolvedValue(mockRestaurant);
+            mockRepository.findFirstOrder.mockResolvedValue(mockOrder);
+            mockRepository.findCart.mockResolvedValue(mockCart);
             mockRepository.createTransaction.mockResolvedValue({
                 ...mockOrder,
                 status: '주문 취소'
@@ -157,8 +162,12 @@ describe('OrderService test', () => {
 
         it('주문이 존재하지 않을 경우 실패', async () => {
             const partner = { id: 1 };
+            const mockCart = { menuInfo: [{  price: 15000 }] };
+            const mockOrder = { id: 999, restaurantId: 1, status: '주문 요청', menuName: '떡볶이', totalPrice: 15000 };
             mockRepository.findFirstRestaurant.mockResolvedValue(mockRestaurant);
-            mockRepository.createTransaction.mockResolvedValue(null);
+            mockRepository.findFirstOrder.mockResolvedValue(mockOrder);
+            mockRepository.findCart.mockResolvedValue(mockCart);
+            // mockRepository.createTransaction.mockResolvedValue(null);
 
             const result = await orderService.cancelOrder(999, partner);
 

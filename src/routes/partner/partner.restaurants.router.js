@@ -9,6 +9,8 @@ router.post('/', authenticatePartner, partnerRestaurantController.createRestaura
 router.get('/', authenticatePartner, partnerRestaurantController.getRestaurants);
 router.put('/:restaurantsId', authenticatePartner, partnerRestaurantController.updateRestaurant);
 router.delete('/:restaurantsId', authenticatePartner, partnerRestaurantController.deleteRestaurant);
-router.get('/menu', authenticatePartner, partnerRestaurantController.getMenu);
+router.get('/menu', authenticatePartner, (req, res, next) => {
+  partnerRestaurantController.getMenu(req, res, next);
+});
 
 export default router;

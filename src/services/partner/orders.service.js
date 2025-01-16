@@ -1,4 +1,3 @@
-// import orderRepository from '../../repositories/partner/orders.repository.js';
 
 export class OrderService {
   #repository;
@@ -87,7 +86,6 @@ export class OrderService {
 
   cancelOrder = async (orderId, partner) => {
     const restaurant = await this.#repository.findFirstRestaurant(partner);
-
     if (!restaurant) {
       return {
         status: 404,
@@ -95,7 +93,6 @@ export class OrderService {
       };
     }
     const user = await this.#repository.findFirstOrder(orderId, restaurant);
-    console.log(`-----`, user);
     if (!user) {
       return {
         status: 404,
@@ -127,4 +124,3 @@ export class OrderService {
   };
 }
 
-// export default new OrderService(orderRepository);
