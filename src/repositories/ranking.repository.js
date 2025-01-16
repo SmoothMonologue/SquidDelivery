@@ -1,6 +1,6 @@
 import { prisma } from '../../utils/prisma/index.js';
 
-export class OrderRepository {
+export class RankingRepository {
   #orm;
   constructor(orm) {
     this.#orm = orm;
