@@ -9,7 +9,10 @@
 
 <body>
     <h1>주문 현황 (고객)</h1>
-    <p id="status">잠시 기다려주세요...</p>
+    <div id="statusMessage">잠시 기다려주세요...</div>
+    <div id="statusImage">
+        <!-- 배달 상태 이미지가 여기에 표시됩니다 -->
+    </div>
     <button id="orderComplete">주문 완료</button>
 
     <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"
@@ -54,9 +57,25 @@
                     alert('주문이 완료되었습니다!');
                 };
 
-                // 사장님이 상태 업데이트를 보내는 경우
+                // 배달 상태 업데이트 수신
                 socket.on('status_update', (data) => {
-                    document.getElementById('status').innerText = `배달 상태: ${data.status}`;
+                    const statusMessage = document.getElementById('statusMessage');
+                    const statusImage = document.getElementById('statusImage');
+
+                    if (data.status === '배달중') {
+                        statusMessage.innerText = '배달이 진행 중입니다.';
+                        statusImage.innerHTML = `
+                            <img src="/public/images/delivery_squid.png" alt="배달 중" style="width:150px; height:auto;" />
+                        `;
+                    } else if (data.status === '배달완료') {
+                        statusMessage.innerText = '배달이 완료되었습니다!';
+                        statusImage.innerHTML = `
+                            <img src="/public/images/delivery_complete.png" alt="배달 완료" style="width:150px; height:auto;" />
+                        `;
+                    } else {
+                        statusMessage.innerText = '조리 중입니다.';
+                        statusImage.innerHTML = ''; // 다른 상태에서는 이미지를 제거
+                    }
                 });
             })
             .catch((error) => {

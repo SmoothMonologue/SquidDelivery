@@ -14,10 +14,13 @@
         <option value="배달중">배달중</option>
         <option value="배달완료">배달완료</option>
     </select>
-    <button>Update Status</button>
+    <button onclick="updateStatus()">Update Status</button>
 
     <main>
         <div id="orderContainer"></div>
+        <div id="statusImage">
+            <!-- 배달 상태 이미지가 여기에 표시됩니다 -->
+        </div>
     </main>
 
     <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"
@@ -60,10 +63,31 @@
                 });
 
                 // 상태 업데이트 전송
-                document.querySelector('button').onclick = () => {
+                const updateStatus = () => {
                     const status = document.getElementById('status').value;
+                    const statusImage = document.getElementById('statusImage');
+
+                    // 상태에 따라 이미지 업데이트
+                    if (status === '배달중') {
+                        statusImage.innerHTML = `
+                            <img src="/public/images/delivery_squid.png" alt="배달 중" style="width:150px; height:auto;" />
+                            <p>배달 중입니다!</p>
+                        `;
+                    } else if (status === '배달완료') {
+                        statusImage.innerHTML = `
+                            <img src="/public/images/delivery_complete.png" alt="배달 완료" style="width:150px; height:auto;" />
+                            <p>배달이 완료되었습니다!</p>
+                        `;
+                    } else {
+                        statusImage.innerHTML = ''; // 다른 상태에서는 이미지를 제거
+                    }
+
+                    // WebSocket으로 상태 전송
                     socket.emit('status_update', { status });
                 };
+
+                // 버튼 클릭 시 상태 업데이트
+                document.querySelector('button').onclick = updateStatus;
             })
             .catch((error) => {
                 console.error('파트너 ID를 가져오는 중 오류 발생:', error.message);
