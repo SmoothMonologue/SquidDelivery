@@ -22,35 +22,32 @@
         <label for="phoneNumber">전화번호:</label>
         <input type="text" id="phoneNumber" name="phoneNumber" required><br>
 
-        <!-- <label for="description">설명:</label> -->
-        <!-- <textarea id="description" name="description" required></textarea><br> -->
+        <label for="description">설명:</label>
+        <textarea id="description" name="description" required></textarea><br>
 
-        <!-- <label for="image">이미지 업로드:</label>
-        <input type="file" id="image" name="image" accept="image/*"><br> -->
+        <label for="image">이미지 업로드:</label>
+        <input type="file" id="image" name="image" accept="image/*"><br>
 
         <button type="submit">등록</button>
     </form>
 
     <script>
         const token = localStorage.getItem('accessToken');
-        if (!token) {
-            alert('로그인이 필요합니다.');
+
+        if (!token || !token) {
+            alert('권한이 없습니다. 로그인 페이지로 이동합니다.');
             window.location.href = '/public/login.html';
         }
 
         const API_URL = 'http://localhost:3001/api/partners/restaurants';
+
         document.getElementById('registerRestaurantForm').onsubmit = async (e) => {
             e.preventDefault();
 
             const formData = new FormData(e.target);
 
-            // 디버깅: FormData 내용 확인
-            for (let pair of formData.entries()) {
-                console.log(pair[0], pair[1]);
-            }
-
             try {
-                const response = await fetch(API_URL, {
+                const response = await fetch('http://localhost:3001/api/partners/restaurants', {
                     method: 'POST',
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
@@ -66,7 +63,7 @@
                 alert('업장이 등록되었습니다!');
                 window.location.href = '/public/partnerMain.html';
             } catch (error) {
-                console.error('업장 등록 중 오류:', error);
+                console.error('업장 등록 중 오류:', error.message);
                 alert(error.message || '업장 등록 중 문제가 발생했습니다.');
             }
         };
