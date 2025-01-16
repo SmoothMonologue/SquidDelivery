@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>사장님 메인 페이지</title>
+</head>
+
+<body>
+    <h1>사장님 메인 페이지</h1>
+    <div>
+        <button onclick="location.href='/public/restaurantRegister.html'">업장 등록</button>
+        <button onclick="location.href='/public/menuRegister.html'">메뉴 등록</button>
+        <button onclick="location.href='/public/partner.html'">주문 현황</button>
+    </div>
+
+    <script>
+        const token = localStorage.getItem('accessToken');
+        if (!token) {
+            alert('로그인이 필요합니다.');
+            window.location.href = '/public/login.html';
+        }
+    </script>
+</body>
+
+</html>
