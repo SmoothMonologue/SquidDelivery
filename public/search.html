@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>메뉴 검색</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+
+        #searchResults div {
+            border: 1px solid #ddd;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+    <h1>메뉴 검색</h1>
+    <input type="text" id="searchInput" placeholder="검색어를 입력하세요">
+    <button id="searchButton">검색</button>
+    <div id="searchResults"></div>
+
+    <script>
+        // 하드코딩된 메뉴 데이터
+        const menus = [
+            {
+                name: "참치 김밥",
+                description: "신선한 참치와 야채로 만든 김밥",
+                price: 3500,
+            },
+            {
+                name: "라면",
+                description: "한국 전통의 맛있는 라면",
+                price: 4000,
+            },
+            {
+                name: "떡볶이",
+                description: "매콤달콤한 떡볶이",
+                price: 4500,
+            },
+            {
+                name: "치즈 라면",
+                description: "치즈가 듬뿍 들어간 라면",
+                price: 5000,
+            },
+        ];
+
+        // 검색 버튼 클릭 이벤트
+        document.getElementById("searchButton").onclick = () => {
+            const keyword = document.getElementById("searchInput").value.trim().toLowerCase();
+
+            if (!keyword) {
+                alert("검색어를 입력하세요.");
+                return;
+            }
+
+            // 검색 결과 필터링
+            const results = menus.filter(menu =>
+                menu.name.toLowerCase().includes(keyword) ||
+                menu.description.toLowerCase().includes(keyword)
+            );
+
+            const container = document.getElementById("searchResults");
+
+            // 검색 결과 표시
+            if (results.length > 0) {
+                container.innerHTML = results.map(item => `
+                    <div>
+                        <h2>${item.name}</h2>
+                        <p>${item.description}</p>
+                        <p>${item.price}원</p>
+                    </div>
+                `).join('');
+            } else {
+                container.innerHTML = "<p>검색 결과가 없습니다.</p>";
+            }
+        };
+    </script>
+</body>
+
+</html>
