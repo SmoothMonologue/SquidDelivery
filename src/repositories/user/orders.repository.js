@@ -70,6 +70,15 @@ class OrderRepository {
         },
       });
 
+      await tx.restaurant.update({
+        where: {
+          id: cart.restaurantId,
+        },
+        data: {
+          sales: { increment: priceSum },
+        },
+      });
+
       return order;
     });
   };
