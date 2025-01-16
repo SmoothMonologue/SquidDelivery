@@ -8,17 +8,12 @@ export class PartnerRestaurantRepository {
   }
 
   async createRestaurant(data, id) {
-    const requiredFields = {
-      partnerId: id,
-      restaurantName: data.restaurantName,
-    };
+    console.log('data : ', data);
+
     return this.#prisma.restaurant.create({
       data: {
-        ...requiredFields,
-        keyword: data.keyword,
-        starRating: data.starRating,
-        businessNumber: data.businessNumber,
-        number: data.number,
+        ...data,
+        partnerId: id,
       },
     });
   }
@@ -83,5 +78,14 @@ export class PartnerRestaurantRepository {
     }
     return restaurant;
   }
-}
 
+  // 메뉴 목록 조회(사장님)
+  restaurantIdMenu = async ({ restaurantId }) => {
+    const restaurantIdMenu = await this.#prisma.menu.findMany({
+      where: {
+        restaurantId: { equals: Number(restaurantId) },
+      },
+    });
+    return restaurantIdMenu;
+  };
+}
