@@ -1,8 +1,7 @@
 import { HTTP_STATUS } from '../../constants/http-status.constant.js';
 import { MESSAGES } from '../../constants/message.constant.js';
-import cartService from '../../services/user/cart.service.js';
 
-class cartController {
+export class CartController {
   #service;
 
   constructor(service) {
@@ -117,4 +116,3 @@ class cartController {
   };
 }
 
-export default new cartController(cartService);

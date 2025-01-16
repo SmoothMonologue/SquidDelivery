@@ -1,6 +1,5 @@
-import cartRepository from '../../repositories/user/cart.repository.js';
 
-class cartService {
+export class CartService {
   #repository;
 
   constructor(repository) {
@@ -44,4 +43,3 @@ class cartService {
   };
 }
 
-export default new cartService(cartRepository);

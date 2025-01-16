@@ -1,4 +1,3 @@
-import { prisma } from '../../utils/prisma/index.js';
 
 
 /**
@@ -6,7 +5,7 @@ import { prisma } from '../../utils/prisma/index.js';
  * 데이터베이스와의 직접적인 상호작용을 담당하는 계층
  * Prisma를 통한 데이터 CRUD 작업 수행
  */
-class CommentRepository {
+export class CommentRepository {
   #prisma;
   constructor(prisma) {
     this.#prisma = prisma;
@@ -81,7 +80,3 @@ class CommentRepository {
   };
 }
 
-// 클래스를 export 테스트 용
-export { CommentRepository };
-// 인스턴스도 export
-export default new CommentRepository(prisma);

@@ -1,9 +1,8 @@
-import PartnerRestaurantService from '../../services/partner/partner.restaurants.service.js';
 import { HTTP_STATUS } from '../../constants/http-status.constant.js';
 import { RESTAURANT_MESSAGES } from '../../constants/message.constant.js';
 import { MESSAGES } from '../../constants/message.constant.js';
 
-class PartnerRestaurantController {
+export class PartnerRestaurantController {
   // 업장 등록
   async createRestaurant(req, res, next) {
     try {
@@ -75,5 +74,3 @@ class PartnerRestaurantController {
     }
   }
 }
-
-export default new PartnerRestaurantController();

@@ -1,4 +1,3 @@
-//import rankingService from '../services/ranking.service.js';
 
 export class RankingController {
   #service;
@@ -8,7 +7,7 @@ export class RankingController {
 
   getRanking = async (req, res) => {
     try {
-      const data = await this.#service.getOrders();
+      const data = await this.#service.getRanking();
 
       return res.status(data.status).json(data);
     } catch (err) {
@@ -18,4 +17,3 @@ export class RankingController {
   };
 }
 
-// export default new RankingController(rankingService);

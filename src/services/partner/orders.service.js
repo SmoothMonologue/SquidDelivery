@@ -1,6 +1,6 @@
-import orderRepository from '../../repositories/partner/orders.repository.js';
+// import orderRepository from '../../repositories/partner/orders.repository.js';
 
-class OrderService {
+export class OrderService {
   #repository;
 
   constructor(repository) {
@@ -94,8 +94,23 @@ class OrderService {
         message: '음식점이 존재하지 않습니다.',
       };
     }
-
-    const order = await this.#repository.createTransaction(orderId, restaurant);
+    const user = await this.#repository.findFirstOrder(orderId, restaurant);
+    console.log(`-----`, user);
+    if (!user) {
+      return {
+        status: 404,
+        message: '유저정보를 찾을 수 없습니다',
+      };
+    }
+    const cart = await this.#repository.findCart(user);
+    const priceSum = cart.menuInfo.reduce((prev, current) => prev + current.price, 0);
+    const order = await this.#repository.createTransaction(
+      partner,
+      orderId,
+      restaurant,
+      user,
+      priceSum,
+    );
 
     if (!order) {
       return {
@@ -103,6 +118,7 @@ class OrderService {
         message: '주문을 찾을 수 없습니다.',
       };
     }
+
     return {
       status: 200,
       message: '주문이 취소되었습니다.',
@@ -111,4 +127,4 @@ class OrderService {
   };
 }
 
-export default new OrderService(orderRepository);
+// export default new OrderService(orderRepository);
