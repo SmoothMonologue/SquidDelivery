@@ -3,11 +3,17 @@ import { RESTAURANT_MESSAGES } from '../../constants/message.constant.js';
 import { MESSAGES } from '../../constants/message.constant.js';
 
 export class PartnerRestaurantController {
+  #service;
+
+  constructor(service) {
+    this.#service = service;
+  }
+
   // 업장 등록
   async createRestaurant(req, res, next) {
     try {
       const { id } = req.partner;
-      const restaurant = await PartnerRestaurantService.createRestaurant(req.body, id);
+      const restaurant = await this.#service.createRestaurant(req.body, id);
       res.status(HTTP_STATUS.CREATED).json({
         message: MESSAGES.RESTAURANTS.CREATE.SUCCEED,
         data: restaurant,
@@ -21,7 +27,7 @@ export class PartnerRestaurantController {
   async getRestaurants(req, res, next) {
     try {
       const { id } = req.partner;
-      const restaurants = await PartnerRestaurantService.getRestaurantsByPartner(id);
+      const restaurants = await this.#service.getRestaurantsByPartner(id);
       res.status(HTTP_STATUS.OK).json({ data: restaurants });
     } catch (error) {
       next(error);
@@ -39,10 +45,10 @@ export class PartnerRestaurantController {
       console.log('Type of restaurantId:', typeof restaurantsId);
 
       // 소유권 검증
-      await PartnerRestaurantService.verifyRestaurantOwnership(+restaurantsId, partnerId);
+      await this.#service.verifyRestaurantOwnership(+restaurantsId, partnerId);
 
       // 업장 수정
-      const updatedRestaurant = await PartnerRestaurantService.updateRestaurant(
+      const updatedRestaurant = await this.#service.updateRestaurant(
         parseInt(+restaurantsId),
         req.body,
       );
@@ -63,12 +69,26 @@ export class PartnerRestaurantController {
       const { restaurantsId } = req.params;
       const partnerId = req.partner.id;
       // console.log(restaurantsId, partnerId);
-      await PartnerRestaurantService.verifyRestaurantOwnership(+restaurantsId, partnerId);
+      await this.#service.verifyRestaurantOwnership(+restaurantsId, partnerId);
 
-      await PartnerRestaurantService.deleteRestaurant(+restaurantsId);
+      await this.#service.deleteRestaurant(+restaurantsId);
       res.status(HTTP_STATUS.OK).json({
         message: MESSAGES.RESTAURANTS.DELETE.SUCCEED,
       });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  // 본인 가게 메뉴 조회
+  async getMenu(req, res, next) {
+    try {
+      const partnerId = req.partner.id;
+      const restaurantData = await this.#service.getRestaurantsByPartner(partnerId);
+      const restaurantId = restaurantData.id;
+      const menu = await this.#service.restaurantIdMenu({ restaurantId });
+
+      res.status(HTTP_STATUS.OK).json({ data: menu });
     } catch (error) {
       next(error);
     }
