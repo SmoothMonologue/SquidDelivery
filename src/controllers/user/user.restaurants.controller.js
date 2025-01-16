@@ -33,4 +33,26 @@ export class UserRestaurantController {
       next(error);
     }
   };
+
+  // 레스토랑 리뷰 조회
+  getRestaurantReviews = async (req, res, next) => {
+    try {
+      const { restaurantId } = req.params;
+      const data = await this.#service.getReviews(restaurantId);
+      res.status(200).json({ data: data });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  // 레스토랑 메뉴 조회
+  getRestaurantMenu = async (req, res, next) => {
+    try {
+      const { restaurantId } = req.params;
+      const data = await this.#service.getReviews(restaurantId);
+      res.status(200).json({ data: data });
+    } catch (error) {
+      next(error);
+    }
+  };
 }
