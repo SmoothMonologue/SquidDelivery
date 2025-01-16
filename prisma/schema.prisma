@@ -47,6 +47,7 @@ model Restaurant {
   updatedAt      DateTime @updatedAt
   businessNumber String?  @unique
   number         String?
+  sales          Int
   Cart           Cart[]
   Menu           Menu[]
   Review         Review[]
