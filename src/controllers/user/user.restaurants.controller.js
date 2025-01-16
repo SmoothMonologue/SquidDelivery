@@ -1,4 +1,3 @@
-// import UserRestaurantService from '../../services/user/user.restaurants.service.js';
 
 export class UserRestaurantController {
   #service;
@@ -38,4 +37,3 @@ export class UserRestaurantController {
   };
 }
 
-// export default new UserRestaurantController(UserRestaurantService);

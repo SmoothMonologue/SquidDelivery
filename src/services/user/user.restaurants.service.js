@@ -1,4 +1,3 @@
-// import UserRestaurantRepository from '../../repositories/user/user.restaurants.repository.js';
 
 export class UserRestaurantService {
   #repository;
@@ -40,4 +39,3 @@ export class UserRestaurantService {
   };
 }
 
-// export default new UserRestaurantService(UserRestaurantRepository);

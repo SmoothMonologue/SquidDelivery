@@ -1,4 +1,3 @@
-// import { prisma } from '../../utils/prisma/index.js';
 
 export class Menurepository {
   #orm;
@@ -54,4 +53,3 @@ export class Menurepository {
     return deleteMenu;
   };
 }
-// export default new Menurepository(prisma);

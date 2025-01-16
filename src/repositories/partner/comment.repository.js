@@ -1,4 +1,3 @@
-// import { prisma } from '../../utils/prisma/index.js';
 
 
 /**
@@ -81,7 +80,3 @@ export class CommentRepository {
   };
 }
 
-// 클래스를 export 테스트 용
-// export { CommentRepository };
-// 인스턴스도 export
-// export default new CommentRepository(prisma);

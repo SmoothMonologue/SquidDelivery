@@ -1,4 +1,3 @@
-// import cartRepository from '../../repositories/user/cart.repository.js';
 
 export class CartService {
   #repository;
@@ -44,4 +43,3 @@ export class CartService {
   };
 }
 
-// export default new cartService(cartRepository);

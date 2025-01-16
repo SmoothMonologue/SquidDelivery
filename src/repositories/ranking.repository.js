@@ -19,4 +19,3 @@ export class RankingRepository {
   };
 }
 
-// export default new OrderRepository(prisma);

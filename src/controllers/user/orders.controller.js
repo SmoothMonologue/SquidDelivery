@@ -1,4 +1,3 @@
-// import orderService from '../../services/user/orders.services.js';
 
 export class OrderController {
   #service;
@@ -34,4 +33,3 @@ export class OrderController {
   };
 }
 
-// export default new OrderController(orderService);

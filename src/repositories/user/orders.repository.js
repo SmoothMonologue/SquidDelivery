@@ -1,4 +1,3 @@
-// import { prisma } from '../../utils/prisma/index.js';
 
 export class OrderRepository {
   #prisma;
@@ -130,4 +129,3 @@ export class OrderRepository {
   };
 }
 
-// export default new OrderRepository(prisma);

@@ -1,4 +1,3 @@
-// import { prisma } from '../../utils/prisma/index.js';
 
 export class CartRepository {
   #orm;
@@ -79,4 +78,3 @@ export class CartRepository {
   };
 }
 
-// export default new cartRepository(prisma);

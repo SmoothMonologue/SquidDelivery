@@ -1,4 +1,3 @@
-// import menuService from '../../services/partner/menu.service.js';
 export class Menucontrollerpartner {
   #service;
 
@@ -55,4 +54,3 @@ export class Menucontrollerpartner {
   };
 }
 
-// export default new Menucontrollerpartner(menuService);
