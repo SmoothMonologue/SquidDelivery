@@ -33,7 +33,7 @@ export class PartnerRestaurantService {
 
   async getRestaurantsByPartner(partnerId) {
     const data = await this.#repository.findRestaurantsByPartnerId(partnerId);
-    if (!data || data === null) {
+    if (!data) {
       throw new Error('업장이 존재하지 않습니다.');
     }
 
@@ -53,10 +53,8 @@ export class PartnerRestaurantService {
   }
 
   // 메뉴 목록 조회(사장님)
-  restaurantIdMenu = async ({ restaurantId }) => {
-    const data = await this.#repository.restaurantIdMenu({
-      restaurantId: +restaurantId,
-    });
+  restaurantIdMenu = async (restaurantId) => {
+    const data = await this.#repository.restaurantIdMenu(restaurantId);
 
     if (!data) {
       throw new Error('업장에 메뉴가 존재하지 않습니다.');
