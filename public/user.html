@@ -9,21 +9,82 @@
 
 <body>
     <h1>주문 현황 (고객)</h1>
-    <p id="status">잠시 기다려주세요...</p>
+    <div id="statusMessage">잠시 기다려주세요...</div>
+    <div id="statusImage">
+        <!-- 배달 상태 이미지가 여기에 표시됩니다 -->
+    </div>
+    <button id="orderComplete">주문 완료</button>
 
-    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"
+        integrity="sha384-mkQ3/7FUtcGyoppY6bz/PORYoGqOl7/aSUMn2ymDOJcapfS6PHqxhRTMh1RR0Q6+"
+        crossorigin="anonymous"></script>
     <script>
-        const userId = 2 /* 테스트용 코드 */
-        const socket = io();
+        const token = localStorage.getItem('accessToken');
 
-        // 유저 역할 등록
-        socket.emit('register', { role: 'user', userId: userId });
+        if (!token) {
+            alert('로그인이 필요합니다.');
+            window.location.href = '/public/login.html';
+        }
 
-        // 상태 업데이트 수신
-        socket.on('status_update', (data) => {
-            document.getElementById('status').innerText = `배달 상태: ${data.status}`;
-        });
+        fetch('http://localhost:3001/api/auth/user-id', {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('인증 실패');
+                }
+                return response.json();
+            })
+            .then((data) => {
+                const userId = data.userId;
+                console.log(`현재 로그인된 사용자 ID: ${userId}`);
 
+                const socket = io('http://localhost:3001', { auth: { token } });
+                socket.emit('register', { role: 'user', userId });
+
+                document.getElementById('orderComplete').onclick = () => {
+                    const orderDetails = {
+                        userId,
+                        menu: '치킨',
+                        quantity: 1,
+                    };
+                    socket.emit('order_complete', orderDetails);
+                    alert('주문이 완료되었습니다!');
+                };
+
+                socket.on('status_update', (data) => {
+                    const statusMessage = document.getElementById('statusMessage');
+                    const statusImage = document.getElementById('statusImage');
+
+                    if (data.status === '조리중') {
+                        statusMessage.innerText = '조리 중입니다.';
+                        statusImage.innerHTML = `
+                            <img src="/public/images/cook_squid.png" alt="조리 중" style="width:150px; height:auto;" />
+                        `;
+                    } else if (data.status === '배달중') {
+                        statusMessage.innerText = '배달이 진행 중입니다.';
+                        statusImage.innerHTML = `
+                            <img src="/public/images/delivery_squid.png" alt="배달 중" style="width:150px; height:auto;" />
+                        `;
+                    } else if (data.status === '배달완료') {
+                        statusMessage.innerText = '배달이 완료되었습니다!';
+                        statusImage.innerHTML = `
+                            <img src="/public/images/delivery_complete.png" alt="배달 완료" style="width:150px; height:auto;" />
+                        `;
+                    } else {
+                        statusMessage.innerText = '';
+                        statusImage.innerHTML = '';
+                    }
+                });
+            })
+            .catch((error) => {
+                console.error('사용자 ID를 가져오는 중 오류 발생:', error.message);
+                alert('로그인이 필요합니다.');
+                window.location.href = '/public/login.html';
+            });
     </script>
 </body>
 

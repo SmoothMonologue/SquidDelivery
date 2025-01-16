@@ -92,7 +92,8 @@
     "editor.defaultFormatter": "ms-dotnettools.csharp",
     "editor.tabSize": 2,
     "editor.insertSpaces": true
-  }
+  },
+  "liveServer.settings.port": 5501
   // "typescript.inlayHints.enumMemberValues.enabled": true,
   // "javascript.inlayHints.enumMemberValues.enabled": true,
   // "javascript.inlayHints.functionLikeReturnTypes.enabled": true,

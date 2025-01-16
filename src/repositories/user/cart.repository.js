@@ -1,6 +1,5 @@
-import { prisma } from '../../utils/prisma/index.js';
 
-class cartRepository {
+export class CartRepository {
   #orm;
 
   constructor(orm) {
@@ -79,4 +78,3 @@ class cartRepository {
   };
 }
 
-export default new cartRepository(prisma);

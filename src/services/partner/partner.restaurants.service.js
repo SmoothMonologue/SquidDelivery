@@ -1,7 +1,6 @@
-import PartnerRestaurantRepository from '../../repositories/partner/partner.restaurants.repository.js';
 import { MESSAGES } from '../../constants/message.constant.js';
 
-class PartnerRestaurantService {
+export class PartnerRestaurantService {
   #repository;
 
   constructor(repository) {
@@ -48,4 +47,3 @@ class PartnerRestaurantService {
   }
 }
 
-export default new PartnerRestaurantService(PartnerRestaurantRepository);
