@@ -9,7 +9,6 @@ class PartnerRestaurantService {
   }
 
   async createRestaurant(data, id) {
-  async createRestaurant(data, id) {
     if (!data.restaurantName) {
       throw new Error(MESSAGES.RESTAURANTS.COMMON.REQUIRED_FIELDS);
     }
