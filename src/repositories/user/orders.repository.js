@@ -1,4 +1,3 @@
-
 export class OrderRepository {
   #prisma;
 
@@ -7,19 +6,19 @@ export class OrderRepository {
   }
 
   findCart = async (userId) => {
-    return await prisma.cart.findFirst({
+    return await this.#prisma.cart.findFirst({
       where: { userId: +userId },
     });
   };
 
   // 유저ID가 일치하는 데이터 조회
   findUser = async (userId) => {
-    return await prisma.user.findUnique({ where: { id: userId } });
+    return await this.#prisma.user.findUnique({ where: { id: userId } });
   };
 
   //유저ID의 카트의 레스토랑의 파트너 데이터를 조회
   findPartner = async (userId) => {
-    return await prisma.cart.findFirst({
+    return await this.#prisma.cart.findFirst({
       where: { userId: +userId },
       include: {
         Restaurant: {
@@ -32,7 +31,7 @@ export class OrderRepository {
   };
 
   createTransaction = async (userId, cart, priceSum, menuName, method, partnerId) => {
-    return await prisma.$transaction(async (tx) => {
+    return await this.#prisma.$transaction(async (tx) => {
       //결제api
       // 사용자 캐시 차감
       await tx.user.update({
@@ -83,7 +82,7 @@ export class OrderRepository {
   };
 
   cancelOrderTransaction = async (orderId, userId, partnerId, priceSum) => {
-    return await prisma.$transaction(async (tx) => {
+    return await this.#prisma.$transaction(async (tx) => {
       //결제취소 api
       // 유저 캐시 환불
       await tx.user.update({
@@ -122,10 +121,9 @@ export class OrderRepository {
   };
 
   checkOrderStatus = async (orderId) => {
-    return await prisma.order.findFirst({
+    return await this.#prisma.order.findFirst({
       where: { id: +orderId },
       select: { status: true },
     });
   };
 }
-
