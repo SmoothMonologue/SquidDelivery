@@ -1,5 +1,4 @@
 import { HTTP_STATUS } from '../../constants/http-status.constant.js';
-// import commentService from '../../services/partner/comment.service.js';
 /**
  * CommentController
  * HTTP 요청/응답 처리를 담당하는 계층
@@ -78,4 +77,3 @@ export class CommentController {
   };
 }
 
-// export default new CommentController(commentService);

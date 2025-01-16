@@ -81,4 +81,3 @@ export class UserRestaurantRepository {
   };
 }
 
-// export default new UserRestaurantRepository(prisma);

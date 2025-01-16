@@ -1,4 +1,3 @@
-//import rankingService from '../services/ranking.service.js';
 
 export class RankingController {
   #service;
@@ -18,4 +17,3 @@ export class RankingController {
   };
 }
 
-// export default new RankingController(rankingService);

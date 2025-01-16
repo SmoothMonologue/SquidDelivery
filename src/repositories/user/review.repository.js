@@ -1,4 +1,3 @@
-// import { prisma } from '../../utils/prisma/index.js';
 
 /**
  * ReviewRepository
@@ -100,5 +99,3 @@ export class ReviewRepository {
 }
 
 
-// 인스턴스도 export (기존 코드와의 호환성 유지)
-// export default new ReviewRepository(prisma);
