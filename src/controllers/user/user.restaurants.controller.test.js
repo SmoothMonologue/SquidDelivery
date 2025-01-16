@@ -1,5 +1,5 @@
 import { UserRestaurantController } from './user.restaurants.controller.js';
-import { beforeEach, describe, expect, jest } from '@jest/globals';
+import { jest } from '@jest/globals';
 
 class MockRestaurantService {
   getAllRestaurants = jest.fn();

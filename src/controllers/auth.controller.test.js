@@ -1,5 +1,6 @@
 import { HTTP_STATUS } from '../constants/http-status.constant.js';
 import { MESSAGES } from '../constants/message.constant.js';
+import { CustomError } from '../middlewares/error-handler.middleware.js';
 import { AuthController } from './auth.controller.js';
 import { jest } from '@jest/globals';
 
@@ -139,11 +140,14 @@ describe('AuthController', () => {
         },
       };
       const next = jest.fn();
-      mockAuthService.signInUser.mockRejectedValue(new Error('Login error'));
+      mockAuthService.signInUser.mockRejectedValue(
+        new CustomError(HTTP_STATUS.NOT_FOUND, MESSAGES.AUTH.SIGN_IN.FAILED),
+      );
 
-      await authController.signIn(req, {}, next);
+      const test = await authController.signIn(req, {}, next);
+      console.log('--------------------------', test);
 
-      expect(next).toHaveBeenCalledWith(expect.any(Error));
+      expect(next).toHaveBeenCalledWith(expect.any(CustomError));
     });
   });
 
@@ -159,7 +163,7 @@ describe('AuthController', () => {
         json: jest.fn(),
       };
 
-      const mockSignOutResponse = { status: HTTP_STATUS.OK, message: 'Logout successful' };
+      const mockSignOutResponse = { status: HTTP_STATUS.OK, message: '로그아웃에 성공했습니다.' };
       mockAuthService.signOut.mockResolvedValue(mockSignOutResponse);
 
       await authController.signOut(req, res);
