@@ -1,4 +1,3 @@
-// import rankingRepository from '../repositories/ranking.repository.js';
 
 export class RankingService {
   #repository;
@@ -26,4 +25,3 @@ export class RankingService {
   };
 }
 
-// export default new RankingService(rankingRepository);

@@ -1,6 +1,5 @@
-import menuRepository from '../../repositories/partner/menu.repository.js';
 
-class Menuservice {
+export class Menuservice {
   #repository;
 
   constructor(menuRepository) {
@@ -41,4 +40,3 @@ class Menuservice {
   };
 }
 
-export default new Menuservice(menuRepository);

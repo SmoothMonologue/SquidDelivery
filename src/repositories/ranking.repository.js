@@ -1,3 +1,4 @@
+
 export class RankingRepository {
   #orm;
   constructor(orm) {
@@ -18,4 +19,3 @@ export class RankingRepository {
   };
 }
 
-// export default new OrderRepository(prisma);
