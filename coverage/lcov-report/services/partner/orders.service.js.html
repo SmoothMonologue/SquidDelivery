@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">80.95% </span>
+                <span class="strong">95.45% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>34/42</span>
+                <span class='fraction'>42/44</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">75% </span>
+                <span class="strong">87.5% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>12/16</span>
+                <span class='fraction'>14/16</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">83.33% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>5/6</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">82.92% </span>
+                <span class="strong">95.34% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>34/41</span>
+                <span class='fraction'>41/43</span>
             </div>
         
             
@@ -191,7 +191,8 @@
 <a name='L126'></a><a href='#L126'>126</a>
 <a name='L127'></a><a href='#L127'>127</a>
 <a name='L128'></a><a href='#L128'>128</a>
-<a name='L129'></a><a href='#L129'>129</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L129'></a><a href='#L129'>129</a>
+<a name='L130'></a><a href='#L130'>130</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -279,7 +280,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -289,29 +291,29 @@
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -406,8 +408,9 @@ export class OrderService {
   };
 &nbsp;
   cancelOrder = async (orderId, partner) =&gt; {
+    console.log(`-----`, orderId, partner);
     const restaurant = await this.#repository.findFirstRestaurant(partner);
-&nbsp;
+    console.log(`-----1111`, restaurant);
     if (!restaurant) {
       return {
         status: 404,
@@ -415,16 +418,16 @@ export class OrderService {
       };
     }
     const user = await this.#repository.findFirstOrder(orderId, restaurant);
-    console.log(`-----`, user);
-    <span class="missing-if-branch" title="else path not taken" >E</span>if (!user) {
-      return {
+    console.log(`-----2222`, user);
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (!user) {
+<span class="cstat-no" title="statement not covered" >      return {</span>
         status: 404,
         message: '유저정보를 찾을 수 없습니다',
       };
     }
-    const cart = <span class="cstat-no" title="statement not covered" >await this.#repository.findCart(user);</span>
-    const priceSum = <span class="cstat-no" title="statement not covered" >cart.menuInfo.reduce(<span class="fstat-no" title="function not covered" >(p</span>rev, current) =&gt; <span class="cstat-no" title="statement not covered" >prev + current.price,</span> 0);</span>
-    const order = <span class="cstat-no" title="statement not covered" >await this.#repository.createTransaction(</span>
+    const cart = await this.#repository.findCart(user);
+    const priceSum = cart.menuInfo.reduce((prev, current) =&gt; prev + current.price, 0);
+    const order = await this.#repository.createTransaction(
       partner,
       orderId,
       restaurant,
@@ -432,14 +435,14 @@ export class OrderService {
       priceSum,
     );
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (!order) {</span>
-<span class="cstat-no" title="statement not covered" >      return {</span>
+    if (!order) {
+      return {
         status: 404,
         message: '주문을 찾을 수 없습니다.',
       };
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    return {</span>
+    return {
       status: 200,
       message: '주문이 취소되었습니다.',
       order,
@@ -454,7 +457,7 @@ export class OrderService {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-01-16T08:39:35.988Z
+                at 2025-01-16T09:08:58.666Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1737016776032" clover="3.2.0">
-  <project timestamp="1737016776032" name="All files">
-    <metrics statements="283" coveredstatements="273" conditionals="85" coveredconditionals="79" methods="68" coveredmethods="66" elements="436" coveredelements="418" complexity="0" loc="283" ncloc="283" packages="5" files="14" classes="14"/>
+<coverage generated="1737018538720" clover="3.2.0">
+  <project timestamp="1737018538720" name="All files">
+    <metrics statements="285" coveredstatements="280" conditionals="85" coveredconditionals="81" methods="68" coveredmethods="67" elements="438" coveredelements="428" complexity="0" loc="285" ncloc="285" packages="5" files="14" classes="14"/>
     <package name="constants">
       <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <file name="auth.constant.js" path="C:\Users\USER\Desktop\github\SquidDelivery\src\constants\auth.constant.js">
@@ -84,7 +84,7 @@
       </file>
     </package>
     <package name="services.partner">
-      <metrics statements="120" coveredstatements="113" conditionals="45" coveredconditionals="41" methods="22" coveredmethods="21"/>
+      <metrics statements="122" coveredstatements="120" conditionals="45" coveredconditionals="43" methods="22" coveredmethods="22"/>
       <file name="comment.service.js" path="C:\Users\USER\Desktop\github\SquidDelivery\src\services\partner\comment.service.js">
         <metrics statements="46" coveredstatements="46" conditionals="14" coveredconditionals="14" methods="5" coveredmethods="5"/>
         <line num="13" count="11" type="stmt"/>
@@ -153,7 +153,7 @@
         <line num="39" count="1" type="stmt"/>
       </file>
       <file name="orders.service.js" path="C:\Users\USER\Desktop\github\SquidDelivery\src\services\partner\orders.service.js">
-        <metrics statements="41" coveredstatements="34" conditionals="16" coveredconditionals="12" methods="6" coveredmethods="5"/>
+        <metrics statements="43" coveredstatements="41" conditionals="16" coveredconditionals="14" methods="6" coveredmethods="6"/>
         <line num="6" count="11" type="stmt"/>
         <line num="9" count="11" type="stmt"/>
         <line num="10" count="3" type="stmt"/>
@@ -183,18 +183,20 @@
         <line num="80" count="1" type="stmt"/>
         <line num="87" count="11" type="stmt"/>
         <line num="88" count="3" type="stmt"/>
-        <line num="90" count="3" type="cond" truecount="2" falsecount="0"/>
-        <line num="91" count="1" type="stmt"/>
-        <line num="96" count="2" type="stmt"/>
+        <line num="89" count="3" type="stmt"/>
+        <line num="90" count="3" type="stmt"/>
+        <line num="91" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="92" count="1" type="stmt"/>
         <line num="97" count="2" type="stmt"/>
-        <line num="98" count="2" type="cond" truecount="1" falsecount="1"/>
-        <line num="99" count="2" type="stmt"/>
-        <line num="104" count="0" type="stmt"/>
-        <line num="105" count="0" type="stmt"/>
-        <line num="106" count="0" type="stmt"/>
-        <line num="114" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="115" count="0" type="stmt"/>
-        <line num="121" count="0" type="stmt"/>
+        <line num="98" count="2" type="stmt"/>
+        <line num="99" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="100" count="0" type="stmt"/>
+        <line num="105" count="2" type="stmt"/>
+        <line num="106" count="2" type="stmt"/>
+        <line num="107" count="2" type="stmt"/>
+        <line num="115" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="116" count="1" type="stmt"/>
+        <line num="122" count="1" type="stmt"/>
       </file>
       <file name="partner.restaurants.service.js" path="C:\Users\USER\Desktop\github\SquidDelivery\src\services\partner\partner.restaurants.service.js">
         <metrics statements="18" coveredstatements="18" conditionals="10" coveredconditionals="10" methods="6" coveredmethods="6"/>
