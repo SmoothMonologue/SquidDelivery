@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>주문 현황 (고객)</title>
+</head>
+
+<body>
+    <h1>주문 현황 (고객)</h1>
+    <p id="status">잠시 기다려주세요...</p>
+    <button id="orderComplete">주문 완료</button>
+
+    <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"
+        integrity="sha384-mkQ3/7FUtcGyoppY6bz/PORYoGqOl7/aSUMn2ymDOJcapfS6PHqxhRTMh1RR0Q6+"
+        crossorigin="anonymous"></script>
+    <script>
+        const token = localStorage.getItem('accessToken');
+
+        if (!token) {
+            alert('로그인이 필요합니다.');
+            window.location.href = '/public/login.html';
+        }
+
+        fetch('http://localhost:3001/api/auth/user-id', {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('인증 실패');
+                }
+                return response.json();
+            })
+            .then((data) => {
+                const userId = data.userId;
+                console.log(`현재 로그인된 사용자 ID: ${userId}`);
+
+                // 소켓 연결
+                const socket = io('http://localhost:3001', { auth: { token } });
+                socket.emit('register', { role: 'user', userId });
+
+                // 주문 완료 버튼 클릭 시 알림 전송
+                document.getElementById('orderComplete').onclick = () => {
+                    const orderDetails = {
+                        userId,
+                        menu: '치킨',
+                        quantity: 1,
+                    };
+                    socket.emit('order_complete', orderDetails);
+                    alert('주문이 완료되었습니다!');
+                };
+
+                // 사장님이 상태 업데이트를 보내는 경우
+                socket.on('status_update', (data) => {
+                    document.getElementById('status').innerText = `배달 상태: ${data.status}`;
+                });
+            })
+            .catch((error) => {
+                console.error('사용자 ID를 가져오는 중 오류 발생:', error.message);
+                alert('로그인이 필요합니다.');
+                window.location.href = '/public/login.html';
+            });
+    </script>
+</body>
+
+</html>
