@@ -1,4 +1,3 @@
-// import orderRepository from '../../repositories/partner/orders.repository.js';
 
 export class OrderService {
   #repository;
@@ -127,4 +126,3 @@ export class OrderService {
   };
 }
 
-// export default new OrderService(orderRepository);
