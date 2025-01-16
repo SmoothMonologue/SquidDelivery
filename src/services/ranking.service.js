@@ -1,4 +1,3 @@
-// import rankingRepository from '../repositories/ranking.repository.js';
 
 export class RankingService {
   #repository;
@@ -10,11 +9,10 @@ export class RankingService {
   getRanking = async () => {
     try {
       const salesData = await this.#repository.getRanking();
-
       // 매출 순위 결과를 응답으로 보냅니다.
       const rankedSales = salesData.map((restaurant, index) => ({
         rank: index + 1,
-        name: restaurant.name,
+        restaurantName: restaurant.restaurantName,
         sales: restaurant.sales,
       }));
 
@@ -27,4 +25,3 @@ export class RankingService {
   };
 }
 
-// export default new RankingService(rankingRepository);
