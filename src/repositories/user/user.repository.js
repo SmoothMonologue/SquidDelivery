@@ -1,10 +1,8 @@
-import { PrismaClient } from '@prisma/client';
 import { HTTP_STATUS } from '../../constants/http-status.constant.js';
 import { MESSAGES } from '../../constants/message.constant.js';
 
-const prisma = new PrismaClient();
 
-class UserRepository {
+export class UserRepository {
   #orm;
   constructor(orm) {
     this.#orm = orm;
@@ -39,4 +37,3 @@ class UserRepository {
   };
 }
 
-export default new UserRepository(prisma);

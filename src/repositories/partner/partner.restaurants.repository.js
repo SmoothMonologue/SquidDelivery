@@ -1,7 +1,6 @@
 import { MESSAGES } from '../../constants/message.constant.js';
-import { prisma } from '../../utils/prisma/index.js';
 
-class PartnerRestaurantRepository {
+export class PartnerRestaurantRepository {
   #prisma;
 
   constructor(prisma) {
@@ -86,4 +85,3 @@ class PartnerRestaurantRepository {
   }
 }
 
-export default new PartnerRestaurantRepository(prisma);

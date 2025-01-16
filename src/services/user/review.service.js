@@ -1,17 +1,16 @@
 import { HTTP_STATUS } from '../../constants/http-status.constant.js';
 import { MESSAGES } from '../../constants/message.constant.js';
-import ReviewRepository from '../../repositories/user/review.repository.js';
 
 /**
  * ReviewService
  * 비즈니스 로직을 처리하는 계층
  * 데이터 검증, 권한 확인, 에러 처리 등을 담당
  */
-class ReviewService {
+export class ReviewService {
   #reviewRepository;
 
-  constructor() {
-    this.#reviewRepository = ReviewRepository;
+  constructor(reviewRepository) {
+    this.#reviewRepository = reviewRepository;
   }
 
   // 리뷰 생성 서비스
@@ -123,4 +122,4 @@ class ReviewService {
   };
 }
 
-export default new ReviewService();
+// export default new ReviewService();
