@@ -42,12 +42,12 @@ model Restaurant {
   partnerId      Int      @unique
   restaurantName String   @unique
   keyword        String?
-  starRating     Int?
+  starRating     Int      @default(0)
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
   businessNumber String?  @unique
   number         String?
-  sales          Int?
+  sales          Int      @default(0)
   Cart           Cart[]
   Menu           Menu[]
   Partner        Partner  @relation(fields: [partnerId], references: [id])
