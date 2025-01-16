@@ -1,9 +1,9 @@
 import express from 'express';
 import { prisma } from '../../utils/prisma/index.js';
 import { authenticateUser } from '../../middlewares/auth.middleware.js';
-import {OrderController} from '../../controllers/user/orders.controller.js';
-import {OrderRepository} from '../../repositories/user/orders.repository.js';
-import {OrderService} from '../../services/user/orders.services.js';
+import { OrderController } from '../../controllers/user/orders.controller.js';
+import { OrderRepository } from '../../repositories/user/orders.repository.js';
+import { OrderService } from '../../services/user/orders.service.js';
 
 const ordersRouter = express.Router();
 const orderRepository = new OrderRepository(prisma);

@@ -1,4 +1,5 @@
 import { MESSAGES } from '../../constants/message.constant.js';
+import { HTTP_STATUS } from '../../constants/http-status.constant.js';
 
 export class PartnerRestaurantService {
   #repository;
@@ -7,11 +8,12 @@ export class PartnerRestaurantService {
     this.#repository = repository;
   }
 
-  async createRestaurant(data,id) {
+  async createRestaurant(data, id) {
+    console.log('@@@@@@@@@', data);
     if (!data.restaurantName) {
       throw new Error(MESSAGES.RESTAURANTS.COMMON.REQUIRED_FIELDS);
     }
-    return this.#repository.createRestaurant(data,id);
+    return this.#repository.createRestaurant(data, id);
   }
 
   async updateRestaurant(id, data) {
@@ -45,5 +47,12 @@ export class PartnerRestaurantService {
       throw new Error(MESSAGES.RESTAURANTS.COMMON.NO_PERMISSION);
     }
   }
-}
 
+  // 메뉴 목록 조회(사장님)
+  restaurantIdMenu = async ({ restaurantId }) => {
+    const menus = this.#repository.restaurantIdMenu({
+      restaurantId: +restaurantId,
+    });
+    return menus;
+  };
+}

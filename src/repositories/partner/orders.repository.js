@@ -4,9 +4,11 @@ export class OrderRepository {
     this.#prisma = prisma;
   }
   findFirstRestaurant = async (partner) => {
+
+
     return await this.#prisma.restaurant.findFirst({
       where: {
-        partnerId: partner.id,
+        partnerId: partner,
       },
     });
   };

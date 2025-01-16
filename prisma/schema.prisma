@@ -49,10 +49,10 @@ model Restaurant {
   number         String?
   sales          Int      @default(0)
 
-  Cart           Cart[]
-  Menu           Menu[]
-  Partner        Partner  @relation(fields: [partnerId], references: [id])
-  Review         Review[]
+  Cart    Cart[]
+  Menu    Menu[]
+  Partner Partner  @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+  Review  Review[]
 
   @@map("Restaurant")
 }
@@ -76,7 +76,7 @@ model Cart {
   restaurantId Int
   createdAt    DateTime   @default(now())
   menuInfo     Json
-  Restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  Restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
   MenuCart     MenuCart[]
 
   @@index([restaurantId], map: "Cart_restaurantId_fkey")
@@ -120,7 +120,7 @@ model Review {
   createdAt    DateTime   @default(now())
   Comment      Comment?
   Order        Order      @relation(fields: [orderId], references: [id])
-  Restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  Restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
 
   @@index([restaurantId], map: "Review_restaurantId_fkey")
   @@map("Review")
@@ -132,8 +132,8 @@ model Comment {
   reviewId  Int      @unique
   comment   String
   createdAt DateTime @default(now())
-  Partner   Partner  @relation(fields: [partnerId], references: [id])
-  Review    Review   @relation(fields: [reviewId], references: [id])
+  Partner   Partner  @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+  Review    Review   @relation(fields: [reviewId], references: [id], onDelete: Cascade)
 
   @@index([partnerId], map: "Comment_partnerId_fkey")
   @@map("Comment")

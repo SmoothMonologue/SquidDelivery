@@ -11,9 +11,20 @@ const partnerRestaurantService = new PartnerRestaurantService(partnerRestaurantR
 const partnerRestaurantController = new PartnerRestaurantController(partnerRestaurantService);
 
 // authorization 미들웨어를 통해 파트너 인증 확인
-router.post('/', authenticatePartner, partnerRestaurantController.createRestaurant);
-router.get('/', authenticatePartner, partnerRestaurantController.getRestaurants);
-router.put('/:restaurantsId',  authenticatePartner,partnerRestaurantController.updateRestaurant);
-router.delete('/:restaurantsId',  authenticatePartner,partnerRestaurantController.deleteRestaurant);
+router.post('/', authenticatePartner, (req, res, next) => {
+  partnerRestaurantController.createRestaurant(req, res, next);
+});
+router.get('/', authenticatePartner, (req, res, next) => {
+  partnerRestaurantController.getRestaurants(req, res, next);
+});
+router.put('/:restaurantsId', authenticatePartner, (req, res, next) => {
+  partnerRestaurantController.updateRestaurant(req, res, next);
+});
+router.delete('/:restaurantsId', authenticatePartner, (req, res, next) => {
+  partnerRestaurantController.deleteRestaurant(req, res, next);
+});
+router.get('/menu', authenticatePartner, (req, res, next) => {
+  partnerRestaurantController.getMenu(req, res, next);
+});
 
 export default router;

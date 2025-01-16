@@ -1,4 +1,3 @@
-
 export class OrderController {
   #service;
 
@@ -58,4 +57,3 @@ export class OrderController {
     }
   };
 }
-

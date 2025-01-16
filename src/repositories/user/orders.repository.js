@@ -1,4 +1,3 @@
-
 export class OrderRepository {
   #prisma;
 
@@ -8,7 +7,9 @@ export class OrderRepository {
 
   findCart = async (userId) => {
     return await this.#prisma.cart.findFirst({
-      where: { userId: +userId }, 
+
+      where: { userId: +userId },
+
     });
   };
 
@@ -128,4 +129,3 @@ export class OrderRepository {
     });
   };
 }
-
