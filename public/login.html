@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인</title>
+</head>
+
+<body>
+    <h1>로그인</h1>
+    <form id="loginForm" style="display: block;">
+        <label for="email">이메일:</label>
+        <input type="email" id="email" name="email" required><br>
+
+        <label for="password">비밀번호:</label>
+        <input type="password" id="password" name="password" required><br>
+
+        <label for="isPartner">사장님으로 로그인:</label>
+        <input type="checkbox" id="Partner" name="Partner"><br>
+
+        <button type="submit">로그인</button>
+    </form>
+
+    <div id="loggedIn" style="display: none;">
+        <h2>환영합니다!</h2>
+        <button id="logoutBtn">로그아웃</button>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:3001/api/auth/sign-in';
+
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const isPartner = document.getElementById('Partner').checked; // 체크박스 상태
+
+            try {
+                // 서버로 데이터 전송
+                const response = await fetch(API_BASE_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password, catchBox: isPartner }), // catchBox 추가
+                });
+
+                // 응답 처리
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({ message: '알 수 없는 에러' }));
+                    alert(errorData.message || '로그인 실패');
+                    return;
+                }
+
+                const data = await response.json();
+                alert('로그인 성공!');
+                localStorage.setItem('accessToken', data.accessToken);
+                console.log(data)
+                // 역할에 따라 페이지 이동
+                if (isPartner) {
+                    window.location.href = '/public/partner.html';
+                } else {
+                    window.location.href = '/public/user.html';
+                }
+            } catch (error) {
+                console.error('로그인 요청 실패:', error);
+                alert('로그인 중 문제가 발생했습니다.');
+            }
+        });
+
+        // 로그아웃 이벤트
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            localStorage.removeItem('accessToken');
+            alert('로그아웃 성공!');
+
+            // 로그인 상태로 변경
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('loggedIn').style.display = 'none';
+        });
+
+        // 토큰 상태 확인
+        if (localStorage.getItem('accessToken')) {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('loggedIn').style.display = 'block';
+        }
+    </script>
+</body>
+
+</html>
