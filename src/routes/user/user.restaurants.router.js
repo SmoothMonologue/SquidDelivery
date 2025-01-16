@@ -20,4 +20,7 @@ userRestaurantRouter.get('/search', userRestaurantController.getRestaurantsByKey
 // 레스토랑 리뷰 조회(고객용)
 userRestaurantRouter.get('/:restaurantId/reviews', userRestaurantController.getRestaurantReviews);
 
+// 레스토랑 메뉴 조회(고객용)
+userRestaurantRouter.get('/:restaurantId/menu', userRestaurantController.getRestaurantMenu);
+
 export default userRestaurantRouter;

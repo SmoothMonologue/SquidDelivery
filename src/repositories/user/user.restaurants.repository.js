@@ -52,7 +52,7 @@ export class UserRestaurantRepository {
 
   // 키워드 가게-메뉴 검색
   getRestaurantsByKeyword = async (keyword) => {
-    const data = await prisma.restaurant.findMany({
+    const data = await this.#prisma.restaurant.findMany({
       where: {
         OR: [
           {
@@ -81,10 +81,10 @@ export class UserRestaurantRepository {
   };
 
   // 레스토랑 리뷰 조회
-  findAllReviews = async (restaurantId) => {
-    return this.#prisma.review.findMany({
+  findReviews = async (restaurantId) => {
+    const data = await this.#prisma.review.findMany({
       where: {
-        restaurantId: restaurantId,
+        restaurantId,
       },
       include: {
         Comment: true,
@@ -93,5 +93,16 @@ export class UserRestaurantRepository {
         createdAt: 'desc',
       },
     });
+    return data;
+  };
+
+  // 레스토랑 리뷰 조회
+  findMenu = async (restaurantId) => {
+    const data = await this.#prisma.Menu.findMany({
+      where: {
+        restaurantId,
+      },
+    });
+    return data;
   };
 }
