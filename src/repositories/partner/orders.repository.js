@@ -4,14 +4,14 @@ export class OrderRepository {
     this.#prisma = prisma;
   }
   findFirstRestaurant = async (partner) => {
-    return await prisma.restaurant.findFirst({
+    return await this.#prisma.restaurant.findFirst({
       where: {
         partnerId: partner.id,
       },
     });
   };
   findManyOrder = async (restaurantInfo) => {
-    const order = await prisma.order.findMany({
+    const order = await this.#prisma.order.findMany({
       where: { restaurantId: restaurantInfo.id },
       select: {
         id: true,
@@ -25,7 +25,7 @@ export class OrderRepository {
     return order;
   };
   findFirstOrder = async (orderId, restaurant) => {
-    return await prisma.order.findUnique({
+    return await this.#prisma.order.findUnique({
       where: {
         id: +orderId,
         restaurantId: restaurant.id,
@@ -33,7 +33,7 @@ export class OrderRepository {
     });
   };
   updateOrder = async (orderId, restaurant) => {
-    return await prisma.order.update({
+    return await this.#prisma.order.update({
       where: {
         id: +orderId,
         restaurantId: restaurant.id,
@@ -44,14 +44,14 @@ export class OrderRepository {
     });
   };
   findCart = async (user) => {
-    return await prisma.cart.findFirst({
+    return await this.#prisma.cart.findFirst({
       where: { userId: user.userId },
     });
   };
   createTransaction = async (partner, orderId, restaurant, user, priceSum) => {
     console.log(`user`, user);
     console.log(`partner`, partner);
-    return await prisma.$transaction(async (tx) => {
+    return await this.#prisma.$transaction(async (tx) => {
       //결제취소api
       await tx.user.update({
         where: { id: +user.userId },
