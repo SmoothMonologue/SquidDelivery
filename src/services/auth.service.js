@@ -64,6 +64,9 @@ export class AuthService {
 
   signInUser = async (userData) => {
     const user = await this.#userRepository.signInUser({ email: userData.email });
+    if (user.status) {
+      return user;
+    }
     const isPasswordMatched = bcrypt.compareSync(userData.password, user.password);
 
     if (!isPasswordMatched) {
@@ -98,10 +101,6 @@ export class AuthService {
     }
 
     jwt.verify(token, ACCESS_TOKEN_SECRET);
-    return {
-      status: HTTP_STATUS.OK,
-      message: MESSAGES.AUTH.SIGN_OUT.SUCCEED,
-    };
+    return;
   };
 }
-

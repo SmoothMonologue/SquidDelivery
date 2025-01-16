@@ -1,7 +1,7 @@
 import { HTTP_STATUS } from '../../constants/http-status.constant.js';
 import { MESSAGES } from '../../constants/message.constant.js';
 import { PartnerRestaurantController } from './partner.restaurants.controller.js';
-import { beforeEach, describe, expect, jest } from '@jest/globals';
+import { jest } from '@jest/globals';
 
 class MockPartnerRestaurantService {
   createRestaurant = jest.fn();

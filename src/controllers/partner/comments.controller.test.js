@@ -1,6 +1,6 @@
 import { HTTP_STATUS } from '../../constants/http-status.constant.js';
 import { CommentController } from './comments.controller.js';
-import { beforeEach, describe, expect, jest } from '@jest/globals';
+import { jest } from '@jest/globals';
 
 class MockCommentService {
   createComment = jest.fn();
