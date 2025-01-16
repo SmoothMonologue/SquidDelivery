@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>레스토랑 상세</title>
+</head>
+
+<body>
+    <h1>레스토랑 상세 정보</h1>
+    <div id="restaurantDetails">
+        <!-- 상세 정보가 동적으로 추가됩니다 -->
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3001/api/restaurants';
+
+        const loadRestaurantDetails = async () => {
+            const params = new URLSearchParams(window.location.search);
+            const restaurantId = params.get('id');
+
+            if (!restaurantId) {
+                alert('잘못된 접근입니다.');
+                window.location.href = '/public/userMain.html';
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/${restaurantId}`, {
+                    headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
+                });
+
+                if (!response.ok) throw new Error('레스토랑 상세 정보 불러오기 실패');
+                const restaurant = await response.json();
+
+                const detailsContainer = document.getElementById('restaurantDetails');
+                detailsContainer.innerHTML = `
+                    <h2>${restaurant.name}</h2>
+                    <img src="${restaurant.image}" alt="${restaurant.name}">
+                    <p>${restaurant.address}</p>
+                    <p>${restaurant.description}</p>
+                `;
+            } catch (error) {
+                console.error('상세 정보 로드 오류:', error);
+                alert('레스토랑 상세 정보를 불러오는 중 문제가 발생했습니다.');
+            }
+        };
+
+        // 페이지 로드 시 상세 정보 불러오기
+        document.addEventListener('DOMContentLoaded', loadRestaurantDetails);
+    </script>
+</body>
+
+</html>
