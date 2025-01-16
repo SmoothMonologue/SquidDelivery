@@ -8,9 +8,9 @@ export default class ProfileRepository {
   }
 
   getProfile = async (id) => {
-    return await this.#orm.user.findById({
+    return await this.#orm.user.findFirst({
       where: {
-        id,
+        id: Number(id),
       },
     });
   };

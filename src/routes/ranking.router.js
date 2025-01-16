@@ -1,5 +1,5 @@
 import express from 'express';
-import { prisma } from '../../utils/prisma/index.js';
+import { prisma } from '../utils/prisma/index.js';
 import { RankingController } from '../controllers/ranking.controller.js';
 import { RankingService } from '../services/ranking.service.js';
 import { RankingRepository } from '../repositories/ranking.repository.js';

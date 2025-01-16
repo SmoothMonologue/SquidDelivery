@@ -1,5 +1,3 @@
-import { prisma } from '../../utils/prisma/index.js';
-
 export class RankingRepository {
   #orm;
   constructor(orm) {
