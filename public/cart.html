@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>장바구니</title>
+    <script type="module" src="/path/to/common.js"></script>
+</head>
+
+<body>
+    <h1>장바구니</h1>
+    <div id="cartContainer"></div>
+    <button id="checkoutButton">결제하기</button>
+
+    <script type="module">
+        // 공통 접근 보호 로직 호출
+        import { requireUser } from '/path/to/common.js';
+        requireUser(); // 유저 권한 확인
+
+        const API_URL = 'http://localhost:3001/api/cart';
+
+        // 장바구니 데이터 로드
+        const loadCart = async () => {
+            try {
+                const response = await fetch(API_URL, {
+                    headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
+                });
+
+                if (!response.ok) throw new Error('장바구니를 불러올 수 없습니다.');
+
+                const cartData = await response.json();
+                const container = document.getElementById('cartContainer');
+                container.innerHTML = cartData.map(item => `
+                    <div>
+                        <h2>${item.menuName}</h2>
+                        <p>가격: ${item.price}원</p>
+                        <p>수량: ${item.quantity}</p>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('장바구니 오류:', error);
+                alert('장바구니를 로드하는 중 문제가 발생했습니다.');
+            }
+        };
+
+        // 결제 페이지로 이동
+        document.getElementById('checkoutButton').onclick = () => {
+            alert('결제 페이지로 이동합니다.');
+            window.location.href = '/public/payment.html';
+        };
+
+        // 초기 데이터 로드
+        loadCart();
+    </script>
+</body>
+
+</html>

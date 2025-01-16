@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>업장 등록</title>
+</head>
+
+<body>
+    <h1>업장 등록</h1>
+    <form id="registerRestaurantForm">
+        <label for="restaurantName">업장 이름:</label>
+        <input type="text" id="restaurantName" name="restaurantName" required><br>
+
+        <label for="keywords">키워드:</label>
+        <input type="text" id="keywords" name="keywords" required><br>
+
+        <label for="address">주소:</label>
+        <input type="text" id="address" name="address" required><br>
+
+        <label for="phoneNumber">전화번호:</label>
+        <input type="text" id="phoneNumber" name="phoneNumber" required><br>
+
+        <!-- <label for="description">설명:</label> -->
+        <!-- <textarea id="description" name="description" required></textarea><br> -->
+
+        <!-- <label for="image">이미지 업로드:</label>
+        <input type="file" id="image" name="image" accept="image/*"><br> -->
+
+        <button type="submit">등록</button>
+    </form>
+
+    <script>
+        const token = localStorage.getItem('accessToken');
+        if (!token) {
+            alert('로그인이 필요합니다.');
+            window.location.href = '/public/login.html';
+        }
+
+        const API_URL = 'http://localhost:3001/api/partners/restaurants';
+        document.getElementById('registerRestaurantForm').onsubmit = async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(e.target);
+
+            // 디버깅: FormData 내용 확인
+            for (let pair of formData.entries()) {
+                console.log(pair[0], pair[1]);
+            }
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+                    },
+                    body: formData,
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({ message: '알 수 없는 에러' }));
+                    throw new Error(errorData.message || '업장 등록 실패');
+                }
+
+                alert('업장이 등록되었습니다!');
+                window.location.href = '/public/partnerMain.html';
+            } catch (error) {
+                console.error('업장 등록 중 오류:', error);
+                alert(error.message || '업장 등록 중 문제가 발생했습니다.');
+            }
+        };
+    </script>
+</body>
+
+</html>

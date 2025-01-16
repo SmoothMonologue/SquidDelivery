@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>매출 통계</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <h1>매출 통계</h1>
+    <canvas id="salesChart" width="400" height="200"></canvas>
+
+    <script>
+        const API_URL = 'http://localhost:3001/api/ranking/sales';
+
+        const loadSalesData = async () => {
+            const token = localStorage.getItem('accessToken');
+            if (!token) {
+                alert('로그인이 필요합니다.');
+                window.location.href = '/public/login.html';
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}`, {
+                    method: 'GET',
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+
+                if (!response.ok) throw new Error('매출 데이터를 불러올 수 없습니다.');
+
+                const salesData = await response.json();
+                const labels = salesData.map(item => item.month);
+                const data = salesData.map(item => item.totalSales);
+
+                const ctx = document.getElementById('salesChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: '월별 매출',
+                            data: data,
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1,
+                        }],
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                            },
+                        },
+                    },
+                });
+            } catch (error) {
+                console.error(error);
+                alert('매출 통계를 로드하는 중 문제가 발생했습니다.');
+            }
+        };
+
+        loadSalesData();
+    </script>
+</body>
+
+</html>
