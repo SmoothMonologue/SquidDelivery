@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>결제</title>
+</head>
+
+<body>
+    <h1>결제</h1>
+    <div id="orderSummary"></div>
+    <p id="totalPrice"></p>
+    <button id="completePaymentButton">결제 완료</button>
+
+    <script>
+        const loadOrderSummary = () => {
+            const cart = JSON.parse(localStorage.getItem("cart")) || [];
+            const container = document.getElementById("orderSummary");
+
+            if (cart.length === 0) {
+                container.innerHTML = "<p>장바구니가 비어 있습니다.</p>";
+                document.getElementById("completePaymentButton").disabled = true;
+                return;
+            }
+
+            container.innerHTML = cart.map(item => `
+                <div>
+                    <h2>${item.name}</h2>
+                    <p>가격: ${item.price}원</p>
+                </div>
+            `).join('');
+
+            const totalPrice = cart.reduce((total, item) => total + item.price, 0);
+            document.getElementById("totalPrice").innerText = `총 금액: ${totalPrice}원`;
+        };
+
+        const completePayment = () => {
+            const cart = JSON.parse(localStorage.getItem("cart")) || [];
+            if (cart.length === 0) {
+                alert("결제할 항목이 없습니다.");
+                return;
+            }
+
+            // 임시 하드코딩된 주문 ID 생성
+            const orderId = Date.now(); // 간단한 고유 ID 생성 (현재 시간 사용)
+
+            // 리뷰 작성 페이지로 이동하며 주문 ID 전달
+            alert("결제가 완료되었습니다!");
+            localStorage.setItem("reviewOrderId", orderId); // 주문 ID 저장
+            localStorage.setItem("cart", JSON.stringify(cart)); // 리뷰 작성을 위해 장바구니 데이터 유지
+            localStorage.removeItem("cart"); // 결제 후 장바구니 비우기
+            window.location.href = "/public/review.html";
+        };
+
+        document.getElementById("completePaymentButton").onclick = completePayment;
+        loadOrderSummary();
+    </script>
+</body>
+
+</html>

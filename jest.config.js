@@ -1,5 +1,7 @@
 export default {
-    transform: {},
+    transform: {
+        '^.+\\.js$': 'babel-jest',
+    },
     moduleNameMapper: {
         "^(\\.{1,2}/.*)\\.js$": "$1"
     },
@@ -16,5 +18,6 @@ export default {
     // 테스트 제외 디렉토리
     testPathIgnorePatterns: [
         "/node_modules/"
-    ]
+    ],
+    moduleFileExtensions: ['js', 'jsx', 'json', 'node'],
 }; 

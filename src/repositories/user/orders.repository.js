@@ -7,7 +7,9 @@ export class OrderRepository {
 
   findCart = async (userId) => {
     return await this.#prisma.cart.findFirst({
+
       where: { userId: +userId },
+
     });
   };
 

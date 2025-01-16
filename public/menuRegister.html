@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>메뉴 등록</title>
+</head>
+
+<body>
+    <h1>메뉴 등록</h1>
+    <form id="menuRegisterForm">
+        <label for="name">메뉴 이름:</label>
+        <input type="text" id="name" name="name" required><br>
+
+        <label for="price">가격:</label>
+        <input type="number" id="price" name="price" required><br>
+
+        <label for="spicyLevel">매운 정도 (0-10):</label>
+        <input type="number" id="spicyLevel" name="spicyLevel" min="0" max="10" required /><br /><br />
+
+        <label for="image">이미지 업로드:</label>
+        <input type="file" id="image" name="image" accept="image/*"><br>
+
+        <button type="submit">등록</button>
+    </form>
+
+    <h2>등록된 메뉴</h2>
+    <div id="menuList"></div>
+
+    <script>
+        // 메뉴 데이터 저장소
+        const menus = JSON.parse(localStorage.getItem("menus")) || [];
+
+        // 메뉴 리스트 렌더링
+        const renderMenuList = () => {
+            const menuList = document.getElementById("menuList");
+            if (menus.length === 0) {
+                menuList.innerHTML = "<p>등록된 메뉴가 없습니다.</p>";
+                return;
+            }
+
+            menuList.innerHTML = menus.map((menu, index) => `
+                <div>
+                    <h3>${menu.name}</h3>
+                    <p>가격: ${menu.price}원</p>
+                    <p>매운 정도: ${menu.spicyLevel}</p>
+                    ${menu.image ? `<img src="${menu.image}" alt="${menu.name}" style="max-width: 150px; height: auto;" />` : ""}
+                    <button onclick="deleteMenu(${index})">삭제</button>
+                </div>
+                <hr>
+            `).join('');
+        };
+
+        // 메뉴 삭제
+        const deleteMenu = (index) => {
+            menus.splice(index, 1);
+            localStorage.setItem("menus", JSON.stringify(menus));
+            renderMenuList();
+        };
+
+        // 메뉴 등록
+        document.getElementById("menuRegisterForm").onsubmit = (e) => {
+            e.preventDefault();
+
+            const name = document.getElementById("name").value;
+            const price = document.getElementById("price").value;
+            const spicyLevel = document.getElementById("spicyLevel").value;
+            const imageFile = document.getElementById("image").files[0];
+
+            let imageUrl = null;
+            if (imageFile) {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    imageUrl = reader.result;
+                    saveMenu(name, price, spicyLevel, imageUrl);
+                };
+                reader.readAsDataURL(imageFile);
+            } else {
+                saveMenu(name, price, spicyLevel, null);
+            }
+        };
+
+        const saveMenu = (name, price, spicyLevel, imageUrl) => {
+            menus.push({ name, price, spicyLevel, image: imageUrl });
+            localStorage.setItem("menus", JSON.stringify(menus));
+            alert("메뉴가 등록되었습니다!");
+            renderMenuList();
+        };
+
+        // 초기 렌더링
+        renderMenuList();
+    </script>
+</body>
+
+</html>
