@@ -3,10 +3,10 @@ export default {
     moduleNameMapper: {
         "^(\\.{1,2}/.*)\\.js$": "$1"
     },
-    // 테스트 파일 패턴 설정
+    testEnvironment: 'node',
+    // 모든 테스트 파일을 찾을 수 있도록 패턴 설정
     testMatch: [
-        "**/__tests__/**/*.js",
-        "**/?(*.)+(spec|test).js"
+        "**/src/**/*.test.js"
     ],
     // 테스트 환경 설정
     testEnvironment: "node",

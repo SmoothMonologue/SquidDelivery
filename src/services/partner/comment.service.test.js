@@ -1,6 +1,5 @@
 import { jest } from '@jest/globals';
 import { CommentService } from './comment.service.js';
-import { HTTP_STATUS } from '../../constants/http-status.constant.js';
 import { MESSAGES } from '../../constants/message.constant.js';
 
 describe('CommentService test', () => {
@@ -57,7 +56,7 @@ describe('CommentService test', () => {
 
             await expect(async () => {
                 await commentService.createComment(commentData);
-            }).rejects.toThrow(MESSAGES.COMMENTS.COMMON.NOT_FOUND);
+            }).rejects.toThrow(MESSAGES.REVIEWS.COMMON.NOT_FOUND);
         });
 
         it('다른 식당의 리뷰에 댓글 작성 실패', async () => {
