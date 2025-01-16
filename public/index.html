@@ -21,9 +21,16 @@
             font-size: 16px;
             margin: 10px;
             cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #007BFF;
+            color: white;
+        }
+
+        button:hover {
+            background-color: #0056b3;
         }
     </style>
-    <script type="module" src="/path/to/common.js"></script>
 </head>
 
 <body>
@@ -32,27 +39,31 @@
 
     <div class="button-container">
         <button onclick="location.href='/public/login.html'">로그인</button>
-        <button onclick="checkRole()">내 메인 페이지로 이동</button>
+        <button onclick="location.href='/public/partnerSignup.html'">사장님 회원가입</button>
+        <button onclick="location.href='/public/userSignup.html'">고객 회원가입</button>
+        <button id="checkRoleButton">내 메인 페이지</button>
     </div>
 
-    <script type="module">
-        // 공통 로직에서 requireAuth 함수 가져오기
-        import { requireAuth } from '/path/to/common.js';
-        requireAuth(); // 유저 또는 사장님 로그인 상태 확인
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 로그인 여부 확인
+            function checkRole() {
+                const userId = localStorage.getItem('userId');
+                const partnerId = localStorage.getItem('partnerId');
 
-        function checkRole() {
-            const userId = localStorage.getItem('userId');
-            const partnerId = localStorage.getItem('partnerId');
-
-            if (partnerId) {
-                window.location.href = '/public/partnerMain.html';
-            } else if (userId) {
-                window.location.href = '/public/userMain.html';
-            } else {
-                alert('로그인이 필요합니다.');
-                window.location.href = '/public/login.html';
+                if (partnerId) {
+                    window.location.href = '/public/partnerMain.html';
+                } else if (userId) {
+                    window.location.href = '/public/userMain.html';
+                } else {
+                    alert('로그인이 필요합니다.');
+                    window.location.href = '/public/login.html';
+                }
             }
-        }
+
+            // 버튼 클릭 이벤트 연결
+            document.getElementById('checkRoleButton').onclick = checkRole;
+        });
     </script>
 </body>
 

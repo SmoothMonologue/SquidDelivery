@@ -16,6 +16,7 @@ function requireUser() {
  */
 function requirePartner() {
   const partnerId = localStorage.getItem('partnerId');
+  console.log('partnerId:', localStorage.getItem('partnerId'));
   if (!partnerId) {
     alert('권한이 없습니다. 로그인 페이지로 이동합니다.');
     window.location.href = '/public/login.html';

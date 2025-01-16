@@ -5,44 +5,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>유저 메인 페이지</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .button-container {
-            margin-top: 30px;
-        }
-
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            margin: 10px;
-            cursor: pointer;
-        }
-    </style>
-    <script type="module" src="/path/to/common.js"></script>
+    <script type="module" src="/public/common.js"></script>
 </head>
 
 <body>
     <h1>유저 메인 페이지</h1>
-    <p>아래에서 원하는 작업을 선택하세요:</p>
-
     <div class="button-container">
         <button onclick="location.href='/public/menu.html'">메뉴 보기</button>
         <button onclick="location.href='/public/cart.html'">장바구니</button>
         <button onclick="location.href='/public/orderHistory.html'">주문 내역</button>
         <button onclick="location.href='/public/review.html'">리뷰 작성</button>
+        <button onclick="location.href='/public/search.html'">메뉴 검색</button>
     </div>
 
     <script>
-        // 공통 로직에서 requireUser 함수 가져오기
-        import { requireUser } from '/path/to/common.js';
-        requireUser(); // 유저 권한 확인
+        const token = localStorage.getItem('accessToken');
+        if (!token) {
+            alert('로그인이 필요합니다.');
+            window.location.href = '/public/login.html';
+        }
     </script>
-
 </body>
 
 </html>
