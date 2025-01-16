@@ -5,6 +5,11 @@ import { AuthService } from './auth.service.js';
 import { MESSAGES } from '../constants/message.constant.js';
 import { HTTP_STATUS } from '../constants/http-status.constant.js';
 
+// mock 대신 직접 함수를 mock으로 만듦
+jwt.sign = jest.fn();
+jwt.verify = jest.fn();
+bcrypt.hashSync = jest.fn();
+bcrypt.compareSync = jest.fn();
 
 describe('AuthService', () => {
   let authService;
@@ -21,7 +26,9 @@ describe('AuthService', () => {
       signInPartner: jest.fn(),
     };
     authService = new AuthService(mockUserRepository, mockPartnerRepository);
-    bcrypt.hashSync = jest.fn();
+    
+    // 모든 mock 함수들을 명시적으로 초기화
+    jest.clearAllMocks();
   });
 
   describe('createUser', () => {
@@ -45,6 +52,20 @@ describe('AuthService', () => {
         interest: userData.interest,
         phoneNumber: userData.phoneNumber,
       });
+    });
+
+    it('should handle database errors during user creation', async () => {
+      const userData = {
+        email: 'test@example.com',
+        password: 'password123',
+        name: 'Test User',
+        interest: ['korean', 'japanese'],
+        phoneNumber: '010-1234-5678',
+      };
+      
+      mockUserRepository.createUser.mockRejectedValue(new Error('Database error'));
+      
+      await expect(authService.createUser(userData)).rejects.toThrow('Database error');
     });
   });
 
@@ -81,7 +102,6 @@ describe('AuthService', () => {
         password: 'hashedPassword123',
       };
       const accessToken = 'valid.access.token';
-
       mockPartnerRepository.signInPartner.mockResolvedValue(partner);
       bcrypt.compareSync.mockReturnValue(true);
       jwt.sign.mockReturnValue(accessToken);
@@ -130,6 +150,13 @@ describe('AuthService', () => {
 
       const result = await authService.signInUser(userData);
 
+      expect(mockUserRepository.signInUser).toHaveBeenCalledWith({
+        email: userData.email
+      });
+      expect(bcrypt.compareSync).toHaveBeenCalledWith(
+        userData.password,
+        user.password
+      );
       expect(result).toEqual({ data: { accessToken } });
     });
 
@@ -145,6 +172,22 @@ describe('AuthService', () => {
 
       mockUserRepository.signInUser.mockResolvedValue(user);
       bcrypt.compareSync.mockReturnValue(false);
+
+      const result = await authService.signInUser(userData);
+
+      expect(result).toEqual({
+        status: HTTP_STATUS.UNAUTHORIZED,
+        message: MESSAGES.AUTH.COMMON.UNAUTHORIZED,
+      });
+    });
+
+    it('should return unauthorized when user not found', async () => {
+      const userData = {
+        email: 'nonexistent@example.com',
+        password: 'password123',
+      };
+
+      mockUserRepository.signInUser.mockResolvedValue(userData);
 
       const result = await authService.signInUser(userData);
 

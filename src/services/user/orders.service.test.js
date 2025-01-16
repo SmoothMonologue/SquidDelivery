@@ -1,6 +1,6 @@
 import { jest } from '@jest/globals';
 import { OrderService } from './orders.service.js';
-console.log( OrderService);
+
 describe('OrderService test', () => {
     let mockRepository;
     let orderService;

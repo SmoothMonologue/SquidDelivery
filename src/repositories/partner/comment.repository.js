@@ -1,5 +1,3 @@
-
-
 /**
  * CommentRepository
  * 데이터베이스와의 직접적인 상호작용을 담당하는 계층
@@ -36,17 +34,13 @@ export class CommentRepository {
   };
 
   // 새로운 댓글 생성
-  createComment = async ({  reviewId, comment ,partnerId}) => {
+  createComment = async ({ partnerId, reviewId, comment }) => {
     const newComment = await this.#prisma.comment.create({
       data: {
-        partnerId, 
-        reviewId,
+        partnerId: Number(partnerId), 
+        reviewId: Number(reviewId),
         comment,
       },
-      // include: {
-      //   restaurantId: true,
-      //   reviewId: true,
-      // },
     });
 
     return newComment;

@@ -1,5 +1,4 @@
-
-export class Menurepository {
+export class MenuRepository {
   #orm;
   constructor(prisma) {
     this.#orm = prisma;
