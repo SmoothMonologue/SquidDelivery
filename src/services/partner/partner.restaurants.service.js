@@ -1,7 +1,6 @@
-import PartnerRestaurantRepository from '../../repositories/partner/partner.restaurants.repository.js';
 import { MESSAGES } from '../../constants/message.constant.js';
 
-class PartnerRestaurantService {
+export class PartnerRestaurantService {
   #repository;
 
   constructor(repository) {
@@ -12,7 +11,6 @@ class PartnerRestaurantService {
     if (!data.restaurantName) {
       throw new Error(MESSAGES.RESTAURANTS.COMMON.REQUIRED_FIELDS);
     }
-    return this.#repository.createRestaurant(data, id);
     return this.#repository.createRestaurant(data, id);
   }
 
@@ -47,4 +45,12 @@ class PartnerRestaurantService {
       throw new Error(MESSAGES.RESTAURANTS.COMMON.NO_PERMISSION);
     }
   }
+
+  // 메뉴 목록 조회(소비자/사장님 공용)
+  restaurantIdMenu = async ({ restaurantId }) => {
+    const menus = this.#repository.restaurantIdMenu({
+      restaurantId: +restaurantId,
+    });
+    return menus;
+  };
 }

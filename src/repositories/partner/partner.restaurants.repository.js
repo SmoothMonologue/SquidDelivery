@@ -83,5 +83,14 @@ export class PartnerRestaurantRepository {
     }
     return restaurant;
   }
-}
 
+  // 메뉴 목록 조회(사장님)
+  restaurantIdMenu = async ({ restaurantId }) => {
+    const restaurantIdMenu = await this.#prisma.menu.findMany({
+      where: {
+        restaurantId: { equals: Number(restaurantId) },
+      },
+    });
+    return restaurantIdMenu;
+  };
+}

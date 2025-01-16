@@ -1,5 +1,3 @@
-import PartnerRestaurantService from '../../services/partner/partner.restaurants.service.js';
-import menuService from '../../services/partner/menu.service.js';
 import { HTTP_STATUS } from '../../constants/http-status.constant.js';
 import { RESTAURANT_MESSAGES } from '../../constants/message.constant.js';
 import { MESSAGES } from '../../constants/message.constant.js';
