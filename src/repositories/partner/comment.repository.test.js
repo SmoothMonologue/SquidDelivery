@@ -88,7 +88,11 @@ describe('CommentRepository test', () => {
             const result = await commentRepository.createComment(commentData);
 
             expect(fakePrisma.comment.create).toHaveBeenCalledWith({
-                data: commentData
+                data: {
+                    partnerId: commentData.partnerId,
+                    reviewId: commentData.reviewId,
+                    comment: commentData.comment,
+                }
             });
             expect(result).toEqual(mockComment);
         });

@@ -4,14 +4,14 @@ export class OrderRepository {
     this.#prisma = prisma;
   }
   findFirstRestaurant = async (partner) => {
-    return await prisma.restaurant.findFirst({
+    return await this.#prisma.restaurant.findFirst({
       where: {
-        partnerId: partner.id,
+        partnerId: partner,
       },
     });
   };
   findManyOrder = async (restaurantInfo) => {
-    const order = await prisma.order.findMany({
+    const order = await this.#prisma.order.findMany({
       where: { restaurantId: restaurantInfo.id },
       select: {
         id: true,
@@ -25,7 +25,7 @@ export class OrderRepository {
     return order;
   };
   findFirstOrder = async (orderId, restaurant) => {
-    return await prisma.order.findUnique({
+    return await this.#prisma.order.findUnique({
       where: {
         id: +orderId,
         restaurantId: restaurant.id,
@@ -33,7 +33,7 @@ export class OrderRepository {
     });
   };
   updateOrder = async (orderId, restaurant) => {
-    return await prisma.order.update({
+    return await this.#prisma.order.update({
       where: {
         id: +orderId,
         restaurantId: restaurant.id,
@@ -44,33 +44,31 @@ export class OrderRepository {
     });
   };
   findCart = async (user) => {
-    return await prisma.cart.findFirst({
+    return await this.#prisma.cart.findFirst({
       where: { userId: user.userId },
     });
   };
   createTransaction = async (partner, orderId, restaurant, user, priceSum) => {
-    console.log(`user`, user);
-    console.log(`partner`, partner);
-    return await prisma.$transaction(async (tx) => {
-      //결제취소api
+    return await this.#prisma.$transaction(async (tx) => {
+      // 유저 캐시 증가
       await tx.user.update({
-        where: { id: +user.userId },
+        where: { id: Number(user.userId) },
         data: {
           cash: { increment: priceSum },
         },
       });
 
-      // 파트너 캐시 차감
+      // 파트너 캐시 감소
       await tx.partner.update({
-        where: { id: +partner },
+        where: { id: Number(partner) },
         data: {
           cash: { decrement: priceSum },
         },
       });
 
-      //매출액 차감
+      // 매출액 감소
       await tx.restaurant.update({
-        where: { partnerId: partner },
+        where: { partnerId: Number(partner) },
         data: {
           sales: { decrement: priceSum },
         },
@@ -78,7 +76,7 @@ export class OrderRepository {
 
       return await tx.order.update({
         where: {
-          id: +orderId,
+          id: Number(orderId),
           restaurantId: restaurant.id,
         },
         data: { status: '주문 취소' },

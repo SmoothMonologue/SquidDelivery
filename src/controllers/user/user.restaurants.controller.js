@@ -1,4 +1,3 @@
-
 export class UserRestaurantController {
   #service;
 
@@ -13,7 +12,7 @@ export class UserRestaurantController {
     } catch (error) {
       next(error);
     }
-  }
+  };
 
   // 키워드 검색
   getRestaurantsByKeyword = async (req, res, next) => {
@@ -30,10 +29,30 @@ export class UserRestaurantController {
         data,
       });
     } catch (error) {
-      console.error(error);
       res.status(500).json({ message: '업장 목록을 불러오는 데 실패했습니다.' });
       next(error);
     }
   };
-}
 
+  // 레스토랑 리뷰 조회
+  getRestaurantReviews = async (req, res, next) => {
+    try {
+      const { restaurantId } = req.params;
+      const data = await this.#service.getReviews(restaurantId);
+      res.status(200).json({ data: data });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  // 레스토랑 메뉴 조회
+  getRestaurantMenu = async (req, res, next) => {
+    try {
+      const { restaurantId } = req.params;
+      const data = await this.#service.getReviews(restaurantId);
+      res.status(200).json({ data: data });
+    } catch (error) {
+      next(error);
+    }
+  };
+}

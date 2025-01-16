@@ -9,6 +9,7 @@ export class PartnerRestaurantService {
   }
 
   async createRestaurant(data, id) {
+    console.log('@@@@@@@@@', data);
     if (!data.restaurantName) {
       throw new Error(MESSAGES.RESTAURANTS.COMMON.REQUIRED_FIELDS);
     }
@@ -46,4 +47,12 @@ export class PartnerRestaurantService {
       throw new Error(MESSAGES.RESTAURANTS.COMMON.NO_PERMISSION);
     }
   }
+
+  // 메뉴 목록 조회(사장님)
+  restaurantIdMenu = async ({ restaurantId }) => {
+    const menus = this.#repository.restaurantIdMenu({
+      restaurantId: +restaurantId,
+    });
+    return menus;
+  };
 }

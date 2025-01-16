@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>장바구니</title>
+</head>
+
+<body>
+    <h1>장바구니</h1>
+    <div id="cartContainer"></div>
+    <button onclick="clearCart()">장바구니 비우기</button>
+    <button onclick="checkout()">결제하기</button>
+
+    <script>
+        // 장바구니 데이터 로드
+        const loadCart = () => {
+            const cart = JSON.parse(localStorage.getItem("cart")) || [];
+            const container = document.getElementById("cartContainer");
+
+            if (cart.length === 0) {
+                container.innerHTML = "<p>장바구니가 비어 있습니다.</p>";
+                return;
+            }
+
+            container.innerHTML = cart.map((item, index) => `
+                <div>
+                    <h2>${item.name}</h2>
+                    <p>가격: ${item.price}원</p>
+                    <button onclick="removeFromCart(${index})">제거</button>
+                </div>
+            `).join('');
+        };
+
+        // 장바구니에서 항목 제거
+        const removeFromCart = (index) => {
+            const cart = JSON.parse(localStorage.getItem("cart")) || [];
+            cart.splice(index, 1); // 선택한 항목 제거
+            localStorage.setItem("cart", JSON.stringify(cart));
+            loadCart(); // UI 갱신
+        };
+
+        // 장바구니 비우기
+        const clearCart = () => {
+            localStorage.removeItem("cart");
+            alert("장바구니가 비워졌습니다.");
+            loadCart();
+        };
+
+        // 결제 페이지로 이동
+        const checkout = () => {
+            if (!localStorage.getItem("cart") || JSON.parse(localStorage.getItem("cart")).length === 0) {
+                alert("장바구니가 비어 있습니다.");
+                return;
+            }
+            alert("결제 페이지로 이동합니다.");
+            window.location.href = "/public/payment.html";
+        };
+
+        loadCart();
+    </script>
+</body>
+
+</html>

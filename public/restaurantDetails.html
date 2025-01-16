@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>레스토랑 상세</title>
+</head>
+
+<body>
+    <h1>레스토랑 상세 정보</h1>
+    <div id="restaurantDetails">
+        <!-- 레스토랑 상세 정보 -->
+    </div>
+    <h2>메뉴</h2>
+    <div id="menuContainer">
+        <!-- 레스토랑 메뉴 -->
+    </div>
+    <h2>리뷰</h2>
+    <div id="reviewContainer">
+        <!-- 리뷰 -->
+    </div>
+    <button id="addReviewButton">리뷰 작성</button>
+
+    <script>
+        const restaurants = [
+            {
+                id: 1,
+                name: "참치 김밥 전문점",
+                address: "서울 강남구",
+                description: "참치 김밥이 맛있는 집",
+                image: "/path/to/image1.jpg",
+                menu: [
+                    { name: "참치 김밥", price: 3500 },
+                    { name: "치즈 김밥", price: 4000 },
+                ],
+            },
+            // 다른 레스토랑들 추가
+        ];
+
+        const reviews = JSON.parse(localStorage.getItem("reviews")) || [];
+
+        const renderDetails = () => {
+            const params = new URLSearchParams(window.location.search);
+            const restaurantId = parseInt(params.get("id"), 10);
+
+            const restaurant = restaurants.find(r => r.id === restaurantId);
+
+            if (!restaurant) {
+                alert("레스토랑을 찾을 수 없습니다.");
+                window.location.href = "/public/restaurantList.html";
+                return;
+            }
+
+            // 상세 정보 렌더링
+            const details = `
+                <h2>${restaurant.name}</h2>
+                <img src="${restaurant.image}" alt="${restaurant.name}">
+                <p>${restaurant.address}</p>
+                <p>${restaurant.description}</p>
+            `;
+            const menu = restaurant.menu.map(item => `<p>${item.name}: ${item.price}원</p>`).join('');
+
+            document.getElementById("restaurantDetails").innerHTML = details;
+            document.getElementById("menuContainer").innerHTML = menu;
+
+            // 리뷰 렌더링
+            const restaurantReviews = reviews.filter(r => r.restaurantId === restaurantId);
+            const reviewList = restaurantReviews.map(r => `
+                <div class="review-item">
+                    <p><strong>별점:</strong> ${'⭐'.repeat(r.starRating)}</p>
+                    <p><strong>내용:</strong> ${r.content}</p>
+                </div>
+            `).join('');
+
+            document.getElementById("reviewContainer").innerHTML = reviewList || "<p>작성된 리뷰가 없습니다.</p>";
+        };
+
+        document.getElementById("addReviewButton").onclick = () => {
+            const params = new URLSearchParams(window.location.search);
+            const restaurantId = params.get("id");
+
+            if (restaurantId) {
+                localStorage.setItem("reviewOrderId", restaurantId);
+                window.location.href = "/public/review.html";
+            } else {
+                alert("레스토랑을 찾을 수 없습니다.");
+            }
+        };
+
+        // 초기화
+        document.addEventListener("DOMContentLoaded", renderDetails);
+    </script>
+</body>
+
+</html>
