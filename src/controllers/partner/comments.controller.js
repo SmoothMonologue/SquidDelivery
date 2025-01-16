@@ -14,8 +14,8 @@ export class CommentController {
   createComment = async (req, res, next) => {
     try {
       const { reviewId, comment } = req.body;
-      const restaurantId = req.restaurant.id;// 레스토랑 미들웨어에서 설정된 레스토랑 정보
-      const partnerId = req.partner.id; 
+      const restaurantId = req.restaurant.id; // 레스토랑 미들웨어에서 설정된 레스토랑 정보
+      const partnerId = req.partner.id;
 
       const result = await this.#commentService.createComment({
         restaurantId,
@@ -30,10 +30,11 @@ export class CommentController {
     }
   };
 
-  // 전체 댓글 조회 컨트롤러
+  // 사장님 댓글 조회 컨트롤러
   getAllComments = async (req, res, next) => {
     try {
-      const result = await this.#commentService.getAllComments();
+      const restaurantId = req.partner.id;
+      const result = await this.#commentService.getAllComments(restaurantId);
       return res.status(HTTP_STATUS.OK).json(result);
     } catch (error) {
       next(error);
@@ -76,4 +77,3 @@ export class CommentController {
     }
   };
 }
-

@@ -49,7 +49,7 @@ export class UserRestaurantController {
   getRestaurantMenu = async (req, res, next) => {
     try {
       const { restaurantId } = req.params;
-      const data = await this.#service.getReviews(restaurantId);
+      const data = await this.#service.getMenu(restaurantId);
       res.status(200).json({ data: data });
     } catch (error) {
       next(error);

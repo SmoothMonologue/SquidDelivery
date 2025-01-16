@@ -104,7 +104,7 @@ export class UserRestaurantRepository {
     return data;
   };
 
-  // 레스토랑 리뷰 조회
+  // 레스토랑 메뉴 조회
   findMenu = async (restaurantId) => {
     const data = await this.#prisma.Menu.findMany({
       where: {

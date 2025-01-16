@@ -48,8 +48,11 @@ export class CommentRepository {
   };
 
   // 모든 댓글 조회 (리뷰 포함, 최신순 정렬)
-  findAllComments = async () => {
+  findAllComments = async (restaurantId) => {
     return this.#prisma.comment.findMany({
+      where: {
+        partnerId: restaurantId,
+      },
       include: {
         Review: true,
       },
