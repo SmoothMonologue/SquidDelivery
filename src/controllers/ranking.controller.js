@@ -7,7 +7,7 @@ export class RankingController {
 
   getRanking = async (req, res) => {
     try {
-      const data = await this.#service.getOrders();
+      const data = await this.#service.getRanking();
 
       return res.status(data.status).json(data);
     } catch (err) {

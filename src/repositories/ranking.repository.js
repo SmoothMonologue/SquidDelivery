@@ -11,6 +11,10 @@ export class RankingRepository {
         sales: 'desc',
       },
       take: 5, // 최대 5개 항목만 가져오기
+      select: {
+        sales: true,
+        restaurantName: true,
+      },
     });
   };
 }
