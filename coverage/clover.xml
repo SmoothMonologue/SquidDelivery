@@ -1,71 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1737028766881" clover="3.2.0">
-  <project timestamp="1737028766882" name="All files">
-    <metrics statements="48" coveredstatements="44" conditionals="10" coveredconditionals="10" methods="5" coveredmethods="5" elements="63" coveredelements="59" complexity="0" loc="48" ncloc="48" packages="2" files="4" classes="4"/>
+<coverage generated="1737029480648" clover="3.2.0">
+  <project timestamp="1737029480648" name="All files">
+    <metrics statements="30" coveredstatements="30" conditionals="0" coveredconditionals="0" methods="5" coveredmethods="5" elements="35" coveredelements="35" complexity="0" loc="30" ncloc="30" packages="2" files="2" classes="2"/>
     <package name="constants">
-      <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-      <file name="auth.constant.js" path="C:\Users\kim50\OneDrive\바탕 화면\RS-Daily-Challenge\sparta\Delivery\src\constants\auth.constant.js">
-        <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="3" count="1" type="stmt"/>
-        <line num="6" count="1" type="stmt"/>
-        <line num="9" count="1" type="stmt"/>
-      </file>
+      <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <file name="http-status.constant.js" path="C:\Users\kim50\OneDrive\바탕 화면\RS-Daily-Challenge\sparta\Delivery\src\constants\http-status.constant.js">
         <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="2" count="1" type="stmt"/>
       </file>
-      <file name="message.constant.js" path="C:\Users\kim50\OneDrive\바탕 화면\RS-Daily-Challenge\sparta\Delivery\src\constants\message.constant.js">
-        <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="3" count="1" type="stmt"/>
-        <line num="163" count="1" type="stmt"/>
-      </file>
     </package>
-    <package name="controllers.user">
-      <metrics statements="42" coveredstatements="38" conditionals="10" coveredconditionals="10" methods="5" coveredmethods="5"/>
-      <file name="cart.controller.js" path="C:\Users\kim50\OneDrive\바탕 화면\RS-Daily-Challenge\sparta\Delivery\src\controllers\user\cart.controller.js">
-        <metrics statements="42" coveredstatements="38" conditionals="10" coveredconditionals="10" methods="5" coveredmethods="5"/>
-        <line num="8" count="10" type="stmt"/>
-        <line num="12" count="10" type="stmt"/>
-        <line num="13" count="2" type="stmt"/>
-        <line num="14" count="2" type="stmt"/>
+    <package name="controllers.partner">
+      <metrics statements="29" coveredstatements="29" conditionals="0" coveredconditionals="0" methods="5" coveredmethods="5"/>
+      <file name="comments.controller.js" path="C:\Users\kim50\OneDrive\바탕 화면\RS-Daily-Challenge\sparta\Delivery\src\controllers\partner\comments.controller.js">
+        <metrics statements="29" coveredstatements="29" conditionals="0" coveredconditionals="0" methods="5" coveredmethods="5"/>
+        <line num="10" count="8" type="stmt"/>
+        <line num="14" count="8" type="stmt"/>
+        <line num="15" count="2" type="stmt"/>
         <line num="16" count="2" type="stmt"/>
+        <line num="17" count="2" type="stmt"/>
         <line num="18" count="2" type="stmt"/>
         <line num="20" count="2" type="stmt"/>
-        <line num="25" count="0" type="stmt"/>
-        <line num="32" count="10" type="stmt"/>
-        <line num="33" count="3" type="stmt"/>
-        <line num="34" count="3" type="stmt"/>
-        <line num="35" count="3" type="stmt"/>
-        <line num="36" count="3" type="stmt"/>
-        <line num="37" count="3" type="stmt"/>
-        <line num="41" count="3" type="cond" truecount="2" falsecount="0"/>
-        <line num="42" count="1" type="stmt"/>
-        <line num="45" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="46" count="1" type="stmt"/>
-        <line num="51" count="1" type="stmt"/>
-        <line num="53" count="1" type="stmt"/>
-        <line num="55" count="1" type="stmt"/>
-        <line num="60" count="0" type="stmt"/>
-        <line num="67" count="10" type="stmt"/>
+        <line num="27" count="1" type="stmt"/>
+        <line num="29" count="1" type="stmt"/>
+        <line num="34" count="8" type="stmt"/>
+        <line num="35" count="2" type="stmt"/>
+        <line num="36" count="2" type="stmt"/>
+        <line num="37" count="1" type="stmt"/>
+        <line num="39" count="1" type="stmt"/>
+        <line num="44" count="8" type="stmt"/>
+        <line num="45" count="2" type="stmt"/>
+        <line num="46" count="2" type="stmt"/>
+        <line num="47" count="2" type="stmt"/>
+        <line num="48" count="2" type="stmt"/>
+        <line num="50" count="2" type="stmt"/>
+        <line num="56" count="1" type="stmt"/>
+        <line num="58" count="1" type="stmt"/>
+        <line num="63" count="8" type="stmt"/>
+        <line num="64" count="2" type="stmt"/>
+        <line num="65" count="2" type="stmt"/>
+        <line num="66" count="2" type="stmt"/>
         <line num="68" count="2" type="stmt"/>
-        <line num="69" count="2" type="stmt"/>
-        <line num="70" count="2" type="stmt"/>
-        <line num="71" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="72" count="1" type="stmt"/>
-        <line num="77" count="1" type="stmt"/>
-        <line num="82" count="0" type="stmt"/>
-        <line num="89" count="10" type="stmt"/>
-        <line num="90" count="3" type="stmt"/>
-        <line num="91" count="3" type="stmt"/>
-        <line num="92" count="3" type="stmt"/>
-        <line num="93" count="3" type="stmt"/>
-        <line num="96" count="3" type="cond" truecount="2" falsecount="0"/>
-        <line num="97" count="1" type="stmt"/>
-        <line num="100" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="101" count="1" type="stmt"/>
-        <line num="106" count="1" type="stmt"/>
-        <line num="108" count="1" type="stmt"/>
-        <line num="112" count="0" type="stmt"/>
+        <line num="73" count="1" type="stmt"/>
+        <line num="75" count="1" type="stmt"/>
       </file>
     </package>
   </project>
