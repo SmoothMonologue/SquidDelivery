@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for repositories/partner/partner.repository.js</title>
+    <title>Code coverage report for controllers/user/orders.controller.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,20 +19,20 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">repositories/partner</a> partner.repository.js</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">controllers/user</a> orders.controller.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>11/11</span>
+                <span class='fraction'>18/18</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>4/4</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>11/11</span>
+                <span class='fraction'>18/18</span>
             </div>
         
             
@@ -98,9 +98,7 @@
 <a name='L33'></a><a href='#L33'>33</a>
 <a name='L34'></a><a href='#L34'>34</a>
 <a name='L35'></a><a href='#L35'>35</a>
-<a name='L36'></a><a href='#L36'>36</a>
-<a name='L37'></a><a href='#L37'>37</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L36'></a><a href='#L36'>36</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -110,68 +108,67 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { HTTP_STATUS } from '../../constants/http-status.constant.js';
-import { MESSAGES } from '../../constants/message.constant.js';
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">&nbsp;
+export class OrderController {
+  #service;
 &nbsp;
-export class PartnerRepository {
-  #orm;
-  constructor(orm) {
-    this.#orm = orm;
+  constructor(service) {
+    this.#service = service;
   }
 &nbsp;
-  createPartner = async ({ name, email, password, phoneNumber }) =&gt; {
-    const existedPartner = await this.#orm.partner.findUnique({ where: { email } });
-&nbsp;
-    if (existedPartner) {
-      return {
-        status: HTTP_STATUS.CONFLICT,
-        message: MESSAGES.AUTH.COMMON.EMAIL.DUPLICATED,
-      };
+  postOrder = async (req, res) =&gt; {
+    try {
+      const userId = req.user.id;
+      const { method } = req.body;
+      const data = await this.#service.createOrder(userId, method);
+      console.log(`--------------&gt;`, data);
+      return res.status(data.status).json(data);
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({ message: '주문 처리 중 오류가 발생했습니다.' });
     }
-&nbsp;
-    return this.#orm.partner.create({
-      data: { name, email, password, phoneNumber },
-    });
   };
-  signInPartner = async ({ email }) =&gt; {
-    const partner = await this.#orm.partner.findUnique({ where: { email } });
-    // console.log('signInPartner ==', partner);
-    if (!partner) {
-      return {
-        status: HTTP_STATUS.NOT_FOUND,
-        message: MESSAGES.AUTH.SIGN_IN.FAILED,
-      };
-    }
 &nbsp;
-    return partner;
+  cancelOrder = async (req, res) =&gt; {
+    try {
+      const { orderId } = req.params;
+      const userId = req.user.id;
+&nbsp;
+      const data = await this.#service.cancelOrder(orderId, userId);
+      return res.status(data.status).json(data);
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({ message: '주문 취소 중 오류가 발생했습니다.' });
+    }
   };
 }
-  </pre></td></tr></table></pre>
+&nbsp;
+&nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->

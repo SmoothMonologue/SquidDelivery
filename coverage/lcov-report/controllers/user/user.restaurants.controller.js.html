@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for repositories/partner/partner.repository.js</title>
+    <title>Code coverage report for controllers/user/user.restaurants.controller.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,20 +19,20 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">repositories/partner</a> partner.repository.js</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">controllers/user</a> user.restaurants.controller.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>11/11</span>
+                <span class='fraction'>13/13</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>4/4</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>11/11</span>
+                <span class='fraction'>13/13</span>
             </div>
         
             
@@ -103,22 +103,16 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -126,52 +120,58 @@
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { HTTP_STATUS } from '../../constants/http-status.constant.js';
-import { MESSAGES } from '../../constants/message.constant.js';
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">export class UserRestaurantController {
+  #service;
 &nbsp;
-export class PartnerRepository {
-  #orm;
-  constructor(orm) {
-    this.#orm = orm;
+  constructor(service) {
+    this.#service = service;
   }
 &nbsp;
-  createPartner = async ({ name, email, password, phoneNumber }) =&gt; {
-    const existedPartner = await this.#orm.partner.findUnique({ where: { email } });
-&nbsp;
-    if (existedPartner) {
-      return {
-        status: HTTP_STATUS.CONFLICT,
-        message: MESSAGES.AUTH.COMMON.EMAIL.DUPLICATED,
-      };
+  getAllRestaurants = async (req, res, next) =&gt; {
+    try {
+      const restaurants = await this.#service.getAllRestaurants();
+      res.status(200).json({ data: restaurants });
+    } catch (error) {
+      next(error);
     }
-&nbsp;
-    return this.#orm.partner.create({
-      data: { name, email, password, phoneNumber },
-    });
   };
-  signInPartner = async ({ email }) =&gt; {
-    const partner = await this.#orm.partner.findUnique({ where: { email } });
-    // console.log('signInPartner ==', partner);
-    if (!partner) {
-      return {
-        status: HTTP_STATUS.NOT_FOUND,
-        message: MESSAGES.AUTH.SIGN_IN.FAILED,
-      };
-    }
 &nbsp;
-    return partner;
+  // 키워드 검색
+  getRestaurantsByKeyword = async (req, res, next) =&gt; {
+    try {
+      // 키워드 쿼리
+      const { keyword } = req.query;
+&nbsp;
+      // 키워드 검색 서비스
+      const data = await this.#service.getRestaurantsByKeyword(keyword);
+&nbsp;
+      // 응답
+      res.status(200).json({
+        message: '검색 결과',
+        data,
+      });
+    } catch (error) {
+      res.status(500).json({ message: '업장 목록을 불러오는 데 실패했습니다.' });
+      next(error);
+    }
   };
 }
-  </pre></td></tr></table></pre>
+&nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
