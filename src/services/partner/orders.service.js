@@ -40,7 +40,7 @@ class OrderService {
     if (!restaurant) {
       return {
         status: 404,
-        message: '업장을 찾을 수 없습니다.',
+        message: '음식점이 존재하지 않습니다.',
       };
     }
 
@@ -65,7 +65,7 @@ class OrderService {
     if (!restaurant) {
       return {
         status: 404,
-        message: '업장을 찾을 수 없습니다.',
+        message: '음식점이 존재하지 않습니다.',
       };
     }
 
@@ -91,7 +91,7 @@ class OrderService {
     if (!restaurant) {
       return {
         status: 404,
-        message: '업장을 찾을 수 없습니다.',
+        message: '음식점이 존재하지 않습니다.',
       };
     }
 
