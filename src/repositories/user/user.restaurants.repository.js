@@ -52,7 +52,7 @@ export class UserRestaurantRepository {
 
   // 키워드 가게-메뉴 검색
   getRestaurantsByKeyword = async (keyword) => {
-    const data = await prisma.restaurant.findMany({
+    const data = await this.#prisma.restaurant.findMany({
       where: {
         OR: [
           {
