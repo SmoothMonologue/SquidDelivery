@@ -13,7 +13,10 @@ const partnerRestaurantController = new PartnerRestaurantController(partnerResta
 // authorization 미들웨어를 통해 파트너 인증 확인
 router.post('/', authenticatePartner, partnerRestaurantController.createRestaurant);
 router.get('/', authenticatePartner, partnerRestaurantController.getRestaurants);
-router.put('/:restaurantsId',  authenticatePartner,partnerRestaurantController.updateRestaurant);
-router.delete('/:restaurantsId',  authenticatePartner,partnerRestaurantController.deleteRestaurant);
+router.put('/:restaurantsId', authenticatePartner, partnerRestaurantController.updateRestaurant);
+router.delete('/:restaurantsId', authenticatePartner, partnerRestaurantController.deleteRestaurant);
+router.get('/menu', authenticatePartner, (req, res, next) => {
+  partnerRestaurantController.getMenu(req, res, next);
+});
 
 export default router;
