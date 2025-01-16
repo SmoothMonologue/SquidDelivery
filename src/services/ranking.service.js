@@ -1,6 +1,6 @@
-import rankingRepository from '../repositories/ranking.repository.js';
+// import rankingRepository from '../repositories/ranking.repository.js';
 
-class RankingService {
+export class RankingService {
   #repository;
 
   constructor(repository) {
@@ -27,4 +27,4 @@ class RankingService {
   };
 }
 
-export default new RankingService(rankingRepository);
+// export default new RankingService(rankingRepository);

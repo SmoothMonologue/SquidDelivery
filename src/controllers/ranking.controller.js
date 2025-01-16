@@ -1,6 +1,6 @@
-import rankingService from '';
+//import rankingService from '../services/ranking.service.js';
 
-class RankingController {
+export class RankingController {
   #service;
   constructor(service) {
     this.#service = service;
@@ -18,4 +18,4 @@ class RankingController {
   };
 }
 
-export default new RankingController(rankingService);
+// export default new RankingController(rankingService);
