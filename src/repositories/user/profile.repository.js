@@ -12,6 +12,16 @@ export default class ProfileRepository {
       where: {
         id: Number(id),
       },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        interest: true,
+        createdAt: true,
+        updatedAt: true,
+        cash: true,
+        phoneNumber: true,
+      },
     });
   };
 
@@ -20,7 +30,12 @@ export default class ProfileRepository {
       where: {
         id,
       },
-      data: { profileData },
+      data: {
+        name: profileData.name,
+        email: profileData.email,
+        phoneNumber: profileData.phoneNumber,
+        interest: profileData.interest,
+      },
     });
   };
 
