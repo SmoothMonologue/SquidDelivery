@@ -38,7 +38,7 @@ describe('OrderRepository', () => {
     const result = await orderRepository.findFirstRestaurant(mockPartner);
     
     expect(mockPrisma.restaurant.findFirst).toHaveBeenCalledWith({
-      where: { partnerId: mockPartner.id },
+      where: { partnerId: mockPartner },
     });
     expect(result).toEqual(mockRestaurant);
   });
@@ -89,5 +89,31 @@ describe('OrderRepository', () => {
       },
     });
     expect(result).toEqual(mockUpdatedOrder);
+  });
+
+  test('cancelOrder', async () => {
+    const orderId = 1;
+    const mockRestaurant = { id: 1 };
+    const mockUser = { userId: 1 };
+    const mockCart = { menuInfo: [{ price: 15000 }] };
+    
+    mockPrisma.restaurant = {
+      ...mockPrisma.restaurant,
+      update: jest.fn()
+    };
+    
+    mockPrisma.order.update.mockResolvedValue({ id: orderId, status: '주문 취소' });
+    mockPrisma.$transaction.mockImplementation(callback => callback(mockPrisma));
+    
+    const result = await orderRepository.createTransaction(
+      mockUser.userId,
+      orderId,
+      mockRestaurant,
+      mockUser,
+      15000
+    );
+    
+    expect(mockPrisma.$transaction).toHaveBeenCalled();
+    expect(result).toEqual({ id: orderId, status: '주문 취소' });
   });
 }); 
