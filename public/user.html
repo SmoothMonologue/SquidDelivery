@@ -42,11 +42,9 @@
                 const userId = data.userId;
                 console.log(`현재 로그인된 사용자 ID: ${userId}`);
 
-                // 소켓 연결
                 const socket = io('http://localhost:3001', { auth: { token } });
                 socket.emit('register', { role: 'user', userId });
 
-                // 주문 완료 버튼 클릭 시 알림 전송
                 document.getElementById('orderComplete').onclick = () => {
                     const orderDetails = {
                         userId,
@@ -57,12 +55,16 @@
                     alert('주문이 완료되었습니다!');
                 };
 
-                // 배달 상태 업데이트 수신
                 socket.on('status_update', (data) => {
                     const statusMessage = document.getElementById('statusMessage');
                     const statusImage = document.getElementById('statusImage');
 
-                    if (data.status === '배달중') {
+                    if (data.status === '조리중') {
+                        statusMessage.innerText = '조리 중입니다.';
+                        statusImage.innerHTML = `
+                            <img src="/public/images/cook_squid.png" alt="조리 중" style="width:150px; height:auto;" />
+                        `;
+                    } else if (data.status === '배달중') {
                         statusMessage.innerText = '배달이 진행 중입니다.';
                         statusImage.innerHTML = `
                             <img src="/public/images/delivery_squid.png" alt="배달 중" style="width:150px; height:auto;" />
@@ -73,8 +75,8 @@
                             <img src="/public/images/delivery_complete.png" alt="배달 완료" style="width:150px; height:auto;" />
                         `;
                     } else {
-                        statusMessage.innerText = '조리 중입니다.';
-                        statusImage.innerHTML = ''; // 다른 상태에서는 이미지를 제거
+                        statusMessage.innerText = '';
+                        statusImage.innerHTML = '';
                     }
                 });
             })
