@@ -1,4 +1,3 @@
-
 export class UserRestaurantController {
   #service;
 
@@ -13,7 +12,7 @@ export class UserRestaurantController {
     } catch (error) {
       next(error);
     }
-  }
+  };
 
   // 키워드 검색
   getRestaurantsByKeyword = async (req, res, next) => {
@@ -35,5 +34,15 @@ export class UserRestaurantController {
       next(error);
     }
   };
-}
 
+  // 레스토랑 리뷰 조회 API
+  getRestaurantReviews = async (req, res, next) => {
+    try {
+      const restaurantId = req.params;
+      const data = await this.#service.getReviews(restaurantId);
+      res.status(200).json({ data: data });
+    } catch (error) {
+      next(error);
+    }
+  };
+}

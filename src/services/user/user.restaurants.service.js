@@ -1,4 +1,3 @@
-
 export class UserRestaurantService {
   #repository;
 
@@ -37,5 +36,11 @@ export class UserRestaurantService {
     }));
     return newData;
   };
-}
 
+  // 레스토랑 리뷰 조회
+  async getReviews(restaurantId) {
+    const data = await this.#repository.findReviews(restaurantId);
+
+    return data;
+  }
+}
