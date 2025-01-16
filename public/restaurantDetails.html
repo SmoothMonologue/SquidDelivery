@@ -10,45 +10,86 @@
 <body>
     <h1>레스토랑 상세 정보</h1>
     <div id="restaurantDetails">
-        <!-- 상세 정보가 동적으로 추가됩니다 -->
+        <!-- 레스토랑 상세 정보 -->
     </div>
+    <h2>메뉴</h2>
+    <div id="menuContainer">
+        <!-- 레스토랑 메뉴 -->
+    </div>
+    <h2>리뷰</h2>
+    <div id="reviewContainer">
+        <!-- 리뷰 -->
+    </div>
+    <button id="addReviewButton">리뷰 작성</button>
 
     <script>
-        const API_URL = 'http://localhost:3001/api/restaurants';
+        const restaurants = [
+            {
+                id: 1,
+                name: "참치 김밥 전문점",
+                address: "서울 강남구",
+                description: "참치 김밥이 맛있는 집",
+                image: "/path/to/image1.jpg",
+                menu: [
+                    { name: "참치 김밥", price: 3500 },
+                    { name: "치즈 김밥", price: 4000 },
+                ],
+            },
+            // 다른 레스토랑들 추가
+        ];
 
-        const loadRestaurantDetails = async () => {
+        const reviews = JSON.parse(localStorage.getItem("reviews")) || [];
+
+        const renderDetails = () => {
             const params = new URLSearchParams(window.location.search);
-            const restaurantId = params.get('id');
+            const restaurantId = parseInt(params.get("id"), 10);
 
-            if (!restaurantId) {
-                alert('잘못된 접근입니다.');
-                window.location.href = '/public/userMain.html';
+            const restaurant = restaurants.find(r => r.id === restaurantId);
+
+            if (!restaurant) {
+                alert("레스토랑을 찾을 수 없습니다.");
+                window.location.href = "/public/restaurantList.html";
                 return;
             }
 
-            try {
-                const response = await fetch(`${API_URL}/${restaurantId}`, {
-                    headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
-                });
+            // 상세 정보 렌더링
+            const details = `
+                <h2>${restaurant.name}</h2>
+                <img src="${restaurant.image}" alt="${restaurant.name}">
+                <p>${restaurant.address}</p>
+                <p>${restaurant.description}</p>
+            `;
+            const menu = restaurant.menu.map(item => `<p>${item.name}: ${item.price}원</p>`).join('');
 
-                if (!response.ok) throw new Error('레스토랑 상세 정보 불러오기 실패');
-                const restaurant = await response.json();
+            document.getElementById("restaurantDetails").innerHTML = details;
+            document.getElementById("menuContainer").innerHTML = menu;
 
-                const detailsContainer = document.getElementById('restaurantDetails');
-                detailsContainer.innerHTML = `
-                    <h2>${restaurant.name}</h2>
-                    <img src="${restaurant.image}" alt="${restaurant.name}">
-                    <p>${restaurant.address}</p>
-                    <p>${restaurant.description}</p>
-                `;
-            } catch (error) {
-                console.error('상세 정보 로드 오류:', error);
-                alert('레스토랑 상세 정보를 불러오는 중 문제가 발생했습니다.');
+            // 리뷰 렌더링
+            const restaurantReviews = reviews.filter(r => r.restaurantId === restaurantId);
+            const reviewList = restaurantReviews.map(r => `
+                <div class="review-item">
+                    <p><strong>별점:</strong> ${'⭐'.repeat(r.starRating)}</p>
+                    <p><strong>내용:</strong> ${r.content}</p>
+                </div>
+            `).join('');
+
+            document.getElementById("reviewContainer").innerHTML = reviewList || "<p>작성된 리뷰가 없습니다.</p>";
+        };
+
+        document.getElementById("addReviewButton").onclick = () => {
+            const params = new URLSearchParams(window.location.search);
+            const restaurantId = params.get("id");
+
+            if (restaurantId) {
+                localStorage.setItem("reviewOrderId", restaurantId);
+                window.location.href = "/public/review.html";
+            } else {
+                alert("레스토랑을 찾을 수 없습니다.");
             }
         };
 
-        // 페이지 로드 시 상세 정보 불러오기
-        document.addEventListener('DOMContentLoaded', loadRestaurantDetails);
+        // 초기화
+        document.addEventListener("DOMContentLoaded", renderDetails);
     </script>
 </body>
 

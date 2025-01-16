@@ -25,32 +25,71 @@
         <button type="submit">등록</button>
     </form>
 
-    <script>
-        const API_URL = 'http://localhost:3001/api/menu';
+    <h2>등록된 메뉴</h2>
+    <div id="menuList"></div>
 
-        document.getElementById('menuRegisterForm').onsubmit = async (e) => {
+    <script>
+        // 메뉴 데이터 저장소
+        const menus = JSON.parse(localStorage.getItem("menus")) || [];
+
+        // 메뉴 리스트 렌더링
+        const renderMenuList = () => {
+            const menuList = document.getElementById("menuList");
+            if (menus.length === 0) {
+                menuList.innerHTML = "<p>등록된 메뉴가 없습니다.</p>";
+                return;
+            }
+
+            menuList.innerHTML = menus.map((menu, index) => `
+                <div>
+                    <h3>${menu.name}</h3>
+                    <p>가격: ${menu.price}원</p>
+                    <p>매운 정도: ${menu.spicyLevel}</p>
+                    ${menu.image ? `<img src="${menu.image}" alt="${menu.name}" style="max-width: 150px; height: auto;" />` : ""}
+                    <button onclick="deleteMenu(${index})">삭제</button>
+                </div>
+                <hr>
+            `).join('');
+        };
+
+        // 메뉴 삭제
+        const deleteMenu = (index) => {
+            menus.splice(index, 1);
+            localStorage.setItem("menus", JSON.stringify(menus));
+            renderMenuList();
+        };
+
+        // 메뉴 등록
+        document.getElementById("menuRegisterForm").onsubmit = (e) => {
             e.preventDefault();
 
-            const formData = new FormData(e.target);
+            const name = document.getElementById("name").value;
+            const price = document.getElementById("price").value;
+            const spicyLevel = document.getElementById("spicyLevel").value;
+            const imageFile = document.getElementById("image").files[0];
 
-            try {
-                const response = await fetch(API_URL, {
-                    method: 'POST',
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-                    },
-                    body: formData,
-                });
-
-                if (!response.ok) throw new Error('메뉴 등록 실패');
-
-                alert('메뉴가 등록되었습니다!');
-                window.location.reload();
-            } catch (error) {
-                console.error(error);
-                alert('메뉴 등록 중 문제가 발생했습니다.');
+            let imageUrl = null;
+            if (imageFile) {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    imageUrl = reader.result;
+                    saveMenu(name, price, spicyLevel, imageUrl);
+                };
+                reader.readAsDataURL(imageFile);
+            } else {
+                saveMenu(name, price, spicyLevel, null);
             }
         };
+
+        const saveMenu = (name, price, spicyLevel, imageUrl) => {
+            menus.push({ name, price, spicyLevel, image: imageUrl });
+            localStorage.setItem("menus", JSON.stringify(menus));
+            alert("메뉴가 등록되었습니다!");
+            renderMenuList();
+        };
+
+        // 초기 렌더링
+        renderMenuList();
     </script>
 </body>
 

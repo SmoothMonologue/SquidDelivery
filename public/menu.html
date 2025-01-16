@@ -10,44 +10,47 @@
 <body>
     <h1>메뉴</h1>
     <div id="menuContainer"></div>
+    <button onclick="goToCart()">장바구니 보기</button>
 
     <script>
-        const API_URL = 'http://localhost:3001/api/menu';
+        // 하드코딩된 메뉴 데이터
+        const menus = [
+            { id: 1, name: "김밥", price: 2500 },
+            { id: 2, name: "떡볶이", price: 3500 },
+            { id: 3, name: "라면", price: 4000 },
+            { id: 4, name: "우동", price: 5000 },
+            { id: 5, name: "돈까스", price: 7000 },
+        ];
 
-        const loadMenus = async () => {
-            try {
-                const response = await fetch(API_URL);
-                const menus = await response.json();
-
-                const container = document.getElementById('menuContainer');
-                container.innerHTML = menus.map(menu => `
-                    <div>
-                        <h2>${menu.name}</h2>
-                        <p>가격: ${menu.price}</p>
-                        <button onclick="addToCart(${menu.id})">장바구니에 추가</button>
-                    </div>
-                `).join('');
-            } catch (error) {
-                console.error('메뉴 로드 실패:', error);
-            }
+        // 메뉴 로드
+        const loadMenus = () => {
+            const container = document.getElementById('menuContainer');
+            container.innerHTML = menus.map(menu => `
+                <div>
+                    <h2>${menu.name}</h2>
+                    <p>가격: ${menu.price}원</p>
+                    <button onclick="addToCart(${menu.id})">장바구니에 추가</button>
+                </div>
+            `).join('');
         };
 
-        const addToCart = async (menuId) => {
-            try {
-                const response = await fetch(`http://localhost:3001/api/cart`, {
-                    method: 'POST',
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ menuId }),
-                });
-
-                if (!response.ok) throw new Error('장바구니 추가 실패');
-                alert('장바구니에 추가되었습니다!');
-            } catch (error) {
-                console.error(error);
+        // 장바구니에 메뉴 추가
+        const addToCart = (menuId) => {
+            const menu = menus.find(item => item.id === menuId);
+            if (!menu) {
+                alert("선택한 메뉴를 찾을 수 없습니다.");
+                return;
             }
+
+            const cart = JSON.parse(localStorage.getItem("cart")) || []; // 기존 장바구니 데이터
+            cart.push(menu);
+            localStorage.setItem("cart", JSON.stringify(cart)); // localStorage에 저장
+            alert(`${menu.name}이(가) 장바구니에 추가되었습니다!`);
+        };
+
+        // 장바구니 페이지로 이동
+        const goToCart = () => {
+            window.location.href = "/public/cart.html";
         };
 
         loadMenus();

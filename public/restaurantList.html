@@ -66,35 +66,52 @@
     </div>
 
     <script>
-        const API_URL = 'http://localhost:3001/api/restaurants';
+        // 하드코딩된 레스토랑 데이터
+        const restaurants = [
+            {
+                id: 1,
+                name: "김밥천국",
+                address: "서울시 강남구 역삼동",
+                description: "다양한 김밥과 한식을 즐길 수 있는 곳",
+                image: "https://via.placeholder.com/300x180?text=김밥천국",
+            },
+            {
+                id: 2,
+                name: "떡볶이 월드",
+                address: "서울시 마포구 상수동",
+                description: "매콤달콤한 떡볶이가 일품인 식당",
+                image: "https://via.placeholder.com/300x180?text=떡볶이+월드",
+            },
+            {
+                id: 3,
+                name: "한우 숯불구이",
+                address: "경기도 성남시 분당구",
+                description: "최고급 한우를 맛볼 수 있는 고급 레스토랑",
+                image: "https://via.placeholder.com/300x180?text=한우+숯불구이",
+            },
+            {
+                id: 4,
+                name: "바다 회 센터",
+                address: "부산광역시 해운대구",
+                description: "신선한 해산물과 회를 제공하는 인기 맛집",
+                image: "https://via.placeholder.com/300x180?text=바다+회+센터",
+            },
+        ];
 
-        const loadRestaurants = async () => {
-            try {
-                const response = await fetch(API_URL, {
-                    headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
-                });
-
-                if (!response.ok) throw new Error('레스토랑 목록 불러오기 실패');
-
-                const restaurants = await response.json();
-
-                const container = document.getElementById('restaurantContainer');
-                container.innerHTML = restaurants.map(restaurant => `
-                    <div class="restaurant-card">
-                        <img src="${restaurant.image}" alt="${restaurant.name}">
-                        <h3>${restaurant.name}</h3>
-                        <p>${restaurant.address}</p>
-                        <p>${restaurant.description}</p>
-                        <button onclick="location.href='/public/restaurantDetails.html?id=${restaurant.id}'">상세 보기</button>
-                    </div>
-                `).join('');
-            } catch (error) {
-                console.error('레스토랑 로드 중 오류:', error);
-                alert('레스토랑 목록을 불러오는 중 문제가 발생했습니다.');
-            }
+        // 레스토랑 데이터 표시
+        const loadRestaurants = () => {
+            const container = document.getElementById("restaurantContainer");
+            container.innerHTML = restaurants.map(restaurant => `
+                <div>
+                    <img src="${restaurant.image}" alt="${restaurant.name}">
+                    <h3>${restaurant.name}</h3>
+                    <p>${restaurant.address}</p>
+                    <p>${restaurant.description}</p>
+                    <button onclick="location.href='/public/restaurantDetails.html?id=${restaurant.id}'">상세 보기</button>
+                </div>
+            `).join('');
         };
-
-        document.addEventListener('DOMContentLoaded', loadRestaurants);
+        document.addEventListener("DOMContentLoaded", loadRestaurants);
     </script>
 </body>
 
