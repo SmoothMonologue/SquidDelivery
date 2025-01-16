@@ -120,7 +120,7 @@ model Review {
   createdAt    DateTime   @default(now())
   Comment      Comment?
   Order        Order      @relation(fields: [orderId], references: [id])
-  Restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  Restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
 
   @@index([restaurantId], map: "Review_restaurantId_fkey")
   @@map("Review")
@@ -132,8 +132,8 @@ model Comment {
   reviewId  Int      @unique
   comment   String
   createdAt DateTime @default(now())
-  Partner   Partner  @relation(fields: [partnerId], references: [id])
-  Review    Review   @relation(fields: [reviewId], references: [id])
+  Partner   Partner  @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+  Review    Review   @relation(fields: [reviewId], references: [id], onDelete: Cascade)
 
   @@index([partnerId], map: "Comment_partnerId_fkey")
   @@map("Comment")
