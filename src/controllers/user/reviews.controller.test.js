@@ -1,6 +1,6 @@
 import { HTTP_STATUS } from '../../constants/http-status.constant.js';
 import { ReviewController } from './reviews.controller.js';
-import { beforeEach, describe, expect, jest } from '@jest/globals';
+import { jest } from '@jest/globals';
 
 class MockReviewService {
   createReview = jest.fn();
