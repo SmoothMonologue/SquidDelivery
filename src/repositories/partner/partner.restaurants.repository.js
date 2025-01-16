@@ -80,10 +80,10 @@ export class PartnerRestaurantRepository {
   }
 
   // 메뉴 목록 조회(사장님)
-  restaurantIdMenu = async ({ restaurantId }) => {
+  restaurantIdMenu = async ({ id }) => {
     const restaurantIdMenu = await this.#prisma.menu.findMany({
       where: {
-        restaurantId: { equals: Number(restaurantId) },
+        restaurantId: Number(id),
       },
     });
     return restaurantIdMenu;

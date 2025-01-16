@@ -9,7 +9,6 @@ export class PartnerRestaurantService {
   }
 
   async createRestaurant(data, id) {
-    console.log('@@@@@@@@@', data);
     if (!data.restaurantName) {
       throw new Error(MESSAGES.RESTAURANTS.COMMON.REQUIRED_FIELDS);
     }
@@ -33,7 +32,12 @@ export class PartnerRestaurantService {
   }
 
   async getRestaurantsByPartner(partnerId) {
-    return this.#repository.findRestaurantsByPartnerId(partnerId);
+    const data = await this.#repository.findRestaurantsByPartnerId(partnerId);
+    if (!data || data === null) {
+      throw new Error('업장이 존재하지 않습니다.');
+    }
+
+    return data;
   }
 
   async verifyRestaurantOwnership(restaurantId, partnerId) {
@@ -50,9 +54,13 @@ export class PartnerRestaurantService {
 
   // 메뉴 목록 조회(사장님)
   restaurantIdMenu = async ({ restaurantId }) => {
-    const menus = this.#repository.restaurantIdMenu({
+    const data = await this.#repository.restaurantIdMenu({
       restaurantId: +restaurantId,
     });
-    return menus;
+
+    if (!data) {
+      throw new Error('업장에 메뉴가 존재하지 않습니다.');
+    }
+    return data;
   };
 }
