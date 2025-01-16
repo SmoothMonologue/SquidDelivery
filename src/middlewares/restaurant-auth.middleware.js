@@ -4,16 +4,16 @@ import { MESSAGES } from '../constants/message.constant.js';
 
 export const restaurantAuthMiddleware = async (req, res, next) => {
   try {
-    const partnerId = req.partner.id;  // authenticatePartner 미들웨어에서 설정된 값
-    
+    const partnerId = req.partner.id; // authenticatePartner 미들웨어에서 설정된 값
+
     // 파트너의 레스토랑 찾기
     const restaurant = await prisma.restaurant.findFirst({
-      where: { partnerId }
+      where: { partnerId },
     });
 
     if (!restaurant) {
       return res.status(HTTP_STATUS.NOT_FOUND).json({
-        message: MESSAGES.RESTAURANTS.COMMON.NOT_FOUND
+        message: MESSAGES.RESTAURANTS.COMMON.NOT_FOUND,
       });
     }
 

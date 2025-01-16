@@ -1,4 +1,5 @@
 import { MESSAGES } from '../../constants/message.constant.js';
+import { HTTP_STATUS } from '../../constants/http-status.constant.js';
 
 export class PartnerRestaurantService {
   #repository;
