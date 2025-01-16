@@ -73,28 +73,28 @@
                 name: "김밥천국",
                 address: "서울시 강남구 역삼동",
                 description: "다양한 김밥과 한식을 즐길 수 있는 곳",
-                image: "https://via.placeholder.com/300x180?text=김밥천국",
+                image: "/public/images/kimbap.png", // 로컬 이미지 경로
             },
             {
                 id: 2,
                 name: "떡볶이 월드",
                 address: "서울시 마포구 상수동",
                 description: "매콤달콤한 떡볶이가 일품인 식당",
-                image: "https://via.placeholder.com/300x180?text=떡볶이+월드",
+                image: "/public/images/tteokbokki.png",
             },
             {
                 id: 3,
                 name: "한우 숯불구이",
                 address: "경기도 성남시 분당구",
                 description: "최고급 한우를 맛볼 수 있는 고급 레스토랑",
-                image: "https://via.placeholder.com/300x180?text=한우+숯불구이",
+                image: "/public/images/boolgogi.png",
             },
             {
                 id: 4,
                 name: "바다 회 센터",
                 address: "부산광역시 해운대구",
                 description: "신선한 해산물과 회를 제공하는 인기 맛집",
-                image: "https://via.placeholder.com/300x180?text=바다+회+센터",
+                image: "/public/images/fish.png",
             },
         ];
 
@@ -102,7 +102,7 @@
         const loadRestaurants = () => {
             const container = document.getElementById("restaurantContainer");
             container.innerHTML = restaurants.map(restaurant => `
-                <div>
+                <div class="restaurant-card">
                     <img src="${restaurant.image}" alt="${restaurant.name}">
                     <h3>${restaurant.name}</h3>
                     <p>${restaurant.address}</p>
@@ -111,6 +111,7 @@
                 </div>
             `).join('');
         };
+
         document.addEventListener("DOMContentLoaded", loadRestaurants);
     </script>
 </body>

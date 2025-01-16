@@ -5,7 +5,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>레스토랑 상세</title>
+    <style>
+        img {
+            max-width: 300px;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .review-item {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+
+        .menu-item {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .menu-item button {
+            margin-top: 5px;
+            padding: 5px 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .menu-item button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
+
 
 <body>
     <h1>레스토랑 상세 정보</h1>
@@ -23,23 +57,60 @@
     <button id="addReviewButton">리뷰 작성</button>
 
     <script>
+        // 하드코딩된 레스토랑 데이터
         const restaurants = [
             {
                 id: 1,
                 name: "참치 김밥 전문점",
                 address: "서울 강남구",
                 description: "참치 김밥이 맛있는 집",
-                image: "/path/to/image1.jpg",
+                image: "/public/images/kimbap.png",
                 menu: [
                     { name: "참치 김밥", price: 3500 },
                     { name: "치즈 김밥", price: 4000 },
                 ],
             },
-            // 다른 레스토랑들 추가
+            {
+                id: 2,
+                name: "떡볶이 월드",
+                address: "서울 마포구 상수동",
+                description: "매콤달콤한 떡볶이가 일품인 식당",
+                image: "/public/images/tteokbokki.png",
+                menu: [
+                    { name: "떡볶이", price: 5000 },
+                    { name: "순대", price: 4000 },
+                    { name: "튀김 세트", price: 6000 },
+                ],
+            },
+            {
+                id: 3,
+                name: "한우 숯불구이",
+                address: "경기도 성남시 분당구",
+                description: "최고급 한우를 맛볼 수 있는 고급 레스토랑",
+                image: "/public/images/boolgogi.png",
+                menu: [
+                    { name: "한우 꽃등심", price: 15000 },
+                    { name: "한우 갈비살", price: 14000 },
+                ],
+            },
+            {
+                id: 4,
+                name: "바다 회 센터",
+                address: "부산광역시 해운대구",
+                description: "신선한 해산물과 회를 제공하는 인기 맛집",
+                image: "/public/images/fish.png",
+                menu: [
+                    { name: "광어 회", price: 25000 },
+                    { name: "참돔 회", price: 28000 },
+                    { name: "전복구이", price: 30000 },
+                ],
+            },
         ];
-
+        // 로컬스토리지에서 리뷰 데이터 및 장바구니 데이터 로드
         const reviews = JSON.parse(localStorage.getItem("reviews")) || [];
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
+        // 상세 정보 렌더링 함수
         const renderDetails = () => {
             const params = new URLSearchParams(window.location.search);
             const restaurantId = parseInt(params.get("id"), 10);
@@ -56,12 +127,18 @@
             const details = `
                 <h2>${restaurant.name}</h2>
                 <img src="${restaurant.image}" alt="${restaurant.name}">
-                <p>${restaurant.address}</p>
-                <p>${restaurant.description}</p>
+                <p><strong>주소:</strong> ${restaurant.address}</p>
+                <p><strong>설명:</strong> ${restaurant.description}</p>
             `;
-            const menu = restaurant.menu.map(item => `<p>${item.name}: ${item.price}원</p>`).join('');
-
             document.getElementById("restaurantDetails").innerHTML = details;
+
+            // 메뉴 렌더링
+            const menu = restaurant.menu.map(item => `
+                <div class="menu-item">
+                    <p><strong>${item.name}</strong>: ${item.price}원</p>
+                    <button onclick="addToCart(${item.id}, '${item.name}', ${item.price}, ${restaurant.id})">장바구니 추가</button>
+                </div>
+            `).join('');
             document.getElementById("menuContainer").innerHTML = menu;
 
             // 리뷰 렌더링
@@ -72,10 +149,24 @@
                     <p><strong>내용:</strong> ${r.content}</p>
                 </div>
             `).join('');
-
             document.getElementById("reviewContainer").innerHTML = reviewList || "<p>작성된 리뷰가 없습니다.</p>";
         };
 
+        // 장바구니에 메뉴 추가 함수
+        const addToCart = (menuId, menuName, menuPrice, restaurantId) => {
+            const existingItem = cart.find(item => item.menuId === menuId);
+
+            if (existingItem) {
+                existingItem.quantity += 1; // 이미 있으면 수량 추가
+            } else {
+                cart.push({ menuId, menuName, menuPrice, restaurantId, quantity: 1 });
+            }
+
+            localStorage.setItem("cart", JSON.stringify(cart));
+            alert(`${menuName}이(가) 장바구니에 추가되었습니다!`);
+        };
+
+        // "리뷰 작성" 버튼 클릭 이벤트
         document.getElementById("addReviewButton").onclick = () => {
             const params = new URLSearchParams(window.location.search);
             const restaurantId = params.get("id");
