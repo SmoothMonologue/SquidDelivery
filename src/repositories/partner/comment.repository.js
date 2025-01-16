@@ -42,10 +42,6 @@ export class CommentRepository {
         reviewId,
         comment,
       },
-      // include: {
-      //   restaurantId: true,
-      //   reviewId: true,
-      // },
     });
 
     return newComment;
