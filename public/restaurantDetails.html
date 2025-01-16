@@ -125,7 +125,6 @@
         </div>
         <button id="addReviewButton">리뷰 작성</button>
         <div class="back-to-main">
-            <a href="/public/index.html">메인 페이지로 돌아가기</a>
         </div>
     </div>
 
@@ -251,6 +250,12 @@
 
         document.addEventListener("DOMContentLoaded", renderDetails);
     </script>
+
+    <div style="text-align: center; margin-top: 20px;">
+        <button
+            style="padding: 10px 20px; font-size: 16px; background-color: #2196f3; color: white; border: none; border-radius: 5px; cursor: pointer;"
+            onclick="history.back()">뒤로가기</button>
+    </div>
 </body>
 
 </html>

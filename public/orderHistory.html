@@ -71,11 +71,29 @@
             font-size: 16px;
             color: #777;
         }
+
+        .back-button {
+            margin: 10px auto;
+            display: block;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #2196f3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .back-button:hover {
+            background-color: #1976d2;
+        }
     </style>
 </head>
 
 <body>
     <h1>주문 내역</h1>
+    <button class="back-button" onclick="history.back()">뒤로가기</button>
     <div id="orderHistory" class="order-container">
         <!-- 주문 내역이 동적으로 추가됩니다 -->
     </div>

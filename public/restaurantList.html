@@ -100,7 +100,6 @@
         <!-- 레스토랑 카드가 동적으로 추가됩니다 -->
     </div>
     <div class="back-to-main">
-        <a href="/public/index.html">메인 페이지로 돌아가기</a>
     </div>
 
     <script>
@@ -156,6 +155,12 @@
 
         document.addEventListener("DOMContentLoaded", loadRestaurants);
     </script>
+
+    <div style="text-align: center; margin-top: 20px;">
+        <button
+            style="padding: 10px 20px; font-size: 16px; background-color: #2196f3; color: white; border: none; border-radius: 5px; cursor: pointer;"
+            onclick="history.back()">뒤로가기</button>
+    </div>
 </body>
 
 </html>

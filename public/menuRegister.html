@@ -140,10 +140,8 @@
     <div id="menuList"></div>
 
     <script>
-        // 메뉴 데이터 저장소
         const menus = JSON.parse(localStorage.getItem("menus")) || [];
 
-        // 메뉴 리스트 렌더링
         const renderMenuList = () => {
             const menuList = document.getElementById("menuList");
             if (menus.length === 0) {
@@ -162,27 +160,34 @@
             `).join('');
         };
 
-        // 메뉴 삭제
         const deleteMenu = (index) => {
             menus.splice(index, 1);
             localStorage.setItem("menus", JSON.stringify(menus));
             renderMenuList();
         };
 
-        // 메뉴 등록
         document.getElementById("menuRegisterForm").onsubmit = (e) => {
             e.preventDefault();
 
-            const name = document.getElementById("name").value;
-            const price = document.getElementById("price").value;
-            const spicyLevel = document.getElementById("spicyLevel").value;
+            const name = document.getElementById("name").value.trim();
+            const price = parseFloat(document.getElementById("price").value);
+            const spicyLevel = parseInt(document.getElementById("spicyLevel").value, 10);
             const imageFile = document.getElementById("image").files[0];
 
-            let imageUrl = null;
+            if (!name || isNaN(price) || isNaN(spicyLevel)) {
+                alert("모든 필드를 올바르게 입력해주세요.");
+                return;
+            }
+
+            if (spicyLevel < 0 || spicyLevel > 10) {
+                alert("매운 정도는 0에서 10 사이의 값이어야 합니다.");
+                return;
+            }
+
             if (imageFile) {
                 const reader = new FileReader();
                 reader.onload = () => {
-                    imageUrl = reader.result;
+                    const imageUrl = reader.result;
                     saveMenu(name, price, spicyLevel, imageUrl);
                 };
                 reader.readAsDataURL(imageFile);
@@ -196,11 +201,18 @@
             localStorage.setItem("menus", JSON.stringify(menus));
             alert("메뉴가 등록되었습니다!");
             renderMenuList();
+            document.getElementById("menuRegisterForm").reset();
         };
 
-        // 초기 렌더링
         renderMenuList();
     </script>
+
+
+    <div style="text-align: center; margin-top: 20px;">
+        <button
+            style="padding: 10px 20px; font-size: 16px; background-color: #2196f3; color: white; border: none; border-radius: 5px; cursor: pointer;"
+            onclick="history.back()">뒤로가기</button>
+    </div>
 </body>
 
 </html>

@@ -81,7 +81,6 @@
     <header>
         <img src="/public/images/squid_icon.png" />
         오징어 제육볶음
-
     </header>
 
     <main>
@@ -92,33 +91,54 @@
             <button onclick="location.href='/public/login.html'">로그인</button>
             <button onclick="location.href='/public/partnerSignup.html'">사장님 회원가입</button>
             <button onclick="location.href='/public/userSignup.html'">고객 회원가입</button>
-            <button id="checkRoleButton">내 메인 페이지</button>
+
         </div>
     </main>
 
     <footer>
-        <p> &copy; 팀 오징어 제육볶음</p>
+        <p>&copy; 팀 오징어 제육볶음</p>
     </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // 로그인 여부 확인
-            function checkRole() {
-                const userId = localStorage.getItem('userId');
-                const partnerId = localStorage.getItem('partnerId');
+            async function checkRole() {
+                try {
+                    const token = localStorage.getItem('accessToken');
+                    if (!token) {
+                        alert('로그인이 필요합니다.');
+                        window.location.href = '/public/login.html';
+                        return;
+                    }
 
-                if (partnerId) {
-                    window.location.href = '/public/partnerMain.html';
-                } else if (userId) {
-                    window.location.href = '/public/userMain.html';
-                } else {
-                    alert('로그인이 필요합니다.');
-                    window.location.href = '/public/index.html';
+                    const response = await fetch('http://localhost:3001/api/auth/me', {
+                        method: 'GET',
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    });
+
+                    if (!response.ok) {
+                        alert('세션이 만료되었거나 로그인이 필요합니다.');
+                        localStorage.removeItem('accessToken');
+                        window.location.href = '/public/login.html';
+                        return;
+                    }
+
+                    const data = await response.json();
+                    alert('환영합니다!');
+
+                    if (data.role === 'partner') {
+                        window.location.href = '/public/partnerMain.html';
+                    } else if (data.role === 'user') {
+                        window.location.href = '/public/userMain.html';
+                    } else {
+                        alert('올바른 역할이 설정되지 않았습니다.');
+                    }
+                } catch (error) {
+                    console.error('역할 확인 중 오류:', error);
+                    alert('오류가 발생했습니다. 다시 시도해주세요.');
                 }
             }
-
-            // 버튼 클릭 이벤트 연결
-            document.getElementById('checkRoleButton').onclick = checkRole;
         });
     </script>
 </body>
