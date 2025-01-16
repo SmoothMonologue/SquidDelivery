@@ -1,4 +1,5 @@
 import PartnerRestaurantService from '../../services/partner/partner.restaurants.service.js';
+import menuService from '../../services/partner/menu.service.js';
 import { HTTP_STATUS } from '../../constants/http-status.constant.js';
 import { RESTAURANT_MESSAGES } from '../../constants/message.constant.js';
 import { MESSAGES } from '../../constants/message.constant.js';
@@ -70,6 +71,20 @@ class PartnerRestaurantController {
       res.status(HTTP_STATUS.OK).json({
         message: MESSAGES.RESTAURANTS.DELETE.SUCCEED,
       });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  // 본인 가게 메뉴 조회
+  async getMenu(req, res, next) {
+    try {
+      const partnerId = req.partner.id;
+      const restaurantData = await PartnerRestaurantService.getRestaurantsByPartner(partnerId);
+      const restaurantId = restaurantData.id;
+      const menus = await menuService.restaurantIdMenu({ restaurantId });
+
+      res.status(HTTP_STATUS.OK).json({ data: menus });
     } catch (error) {
       next(error);
     }
