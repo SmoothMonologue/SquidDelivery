@@ -1,5 +1,8 @@
 import express from 'express';
-import { signUpValidator } from '../middlewares/validators/sign-up-validator.middleware.js';
+import {
+  signUpUserValidator,
+  signUpPartnerValidator,
+} from '../middlewares/validators/sign-up-validator.middleware.js';
 import { signInValidator } from '../middlewares/validators/sign-in-validator.middleware.js';
 import { AuthController } from '../controllers/auth.controller.js';
 import { UserRepository } from '../repositories/user/user.repository.js';
@@ -14,9 +17,9 @@ const authController = new AuthController(authService);
 
 const authRouter = express.Router();
 
-authRouter.post('/users/sign-up', signUpValidator, authController.userSignUp);
+authRouter.post('/users/sign-up', signUpUserValidator, authController.userSignUp);
 
-authRouter.post('/partners/sign-up', authController.partnerSignUp);
+authRouter.post('/partners/sign-up', signUpPartnerValidator, authController.partnerSignUp);
 
 authRouter.post('/sign-in', signInValidator, authController.signIn);
 

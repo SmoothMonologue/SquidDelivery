@@ -8,17 +8,12 @@ export class PartnerRestaurantRepository {
   }
 
   async createRestaurant(data, id) {
-    const requiredFields = {
-      partnerId: id,
-      restaurantName: data.restaurantName,
-    };
+    console.log('data : ', data);
+
     return this.#prisma.restaurant.create({
       data: {
-        ...requiredFields,
-        keyword: data.keyword,
-        starRating: data.starRating,
-        businessNumber: data.businessNumber,
-        number: data.number,
+        ...data,
+        partnerId: id,
       },
     });
   }
