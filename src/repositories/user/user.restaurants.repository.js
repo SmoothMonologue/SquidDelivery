@@ -79,5 +79,30 @@ export class UserRestaurantRepository {
 
     return data;
   };
-}
 
+  // 레스토랑 리뷰 조회
+  findReviews = async (restaurantId) => {
+    const data = await this.#prisma.review.findMany({
+      where: {
+        restaurantId,
+      },
+      include: {
+        Comment: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+    return data;
+  };
+
+  // 레스토랑 리뷰 조회
+  findMenu = async (restaurantId) => {
+    const data = await this.#prisma.Menu.findMany({
+      where: {
+        restaurantId,
+      },
+    });
+    return data;
+  };
+}

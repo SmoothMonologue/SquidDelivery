@@ -17,4 +17,10 @@ userRestaurantRouter.get('/', authenticateUser, userRestaurantController.getAllR
 // 키워드 기반 업장 조회 API
 userRestaurantRouter.get('/search', userRestaurantController.getRestaurantsByKeyword);
 
+// 레스토랑 리뷰 조회(고객용)
+userRestaurantRouter.get('/:restaurantId/reviews', userRestaurantController.getRestaurantReviews);
+
+// 레스토랑 메뉴 조회(고객용)
+userRestaurantRouter.get('/:restaurantId/menu', userRestaurantController.getRestaurantMenu);
+
 export default userRestaurantRouter;

@@ -34,4 +34,3 @@ export class PartnerRepository {
     return partner;
   };
 }
-  

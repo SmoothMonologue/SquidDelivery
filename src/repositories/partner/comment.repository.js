@@ -1,5 +1,3 @@
-
-
 /**
  * CommentRepository
  * 데이터베이스와의 직접적인 상호작용을 담당하는 계층
@@ -16,30 +14,31 @@ export class CommentRepository {
     return this.#prisma.review.findUnique({
       where: { id: Number(reviewId) },
       include: {
-        Comment: true,  // 기존 댓글 정보 포함
-        Restaurant: {   // 레스토랑 정보 포함
+        Comment: true, // 기존 댓글 정보 포함
+        Restaurant: {
+          // 레스토랑 정보 포함
           select: {
             id: true,
             partnerId: true,
-            restaurantName: true
-          }
-        }
-      }
+            restaurantName: true,
+          },
+        },
+      },
     });
   };
 
   // 리뷰에 대한 댓글 존재 여부 확인
   findCommentByReviewId = async (commentId) => {
     return this.#prisma.comment.findUnique({
-      where: { id: Number(commentId) }
+      where: { id: Number(commentId) },
     });
   };
 
   // 새로운 댓글 생성
-  createComment = async ({  reviewId, comment ,partnerId}) => {
+  createComment = async ({ reviewId, comment, partnerId }) => {
     const newComment = await this.#prisma.comment.create({
       data: {
-        partnerId, 
+        partnerId,
         reviewId,
         comment,
       },
@@ -75,8 +74,7 @@ export class CommentRepository {
   // 댓글 삭제
   deleteComment = async (commentId) => {
     return this.#prisma.comment.delete({
-      where: { id: Number(commentId) }
+      where: { id: Number(commentId) },
     });
   };
 }
-
