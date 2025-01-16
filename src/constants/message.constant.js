@@ -50,8 +50,20 @@ export const MESSAGES = {
     },
   },
   USERS: {
+    COMMON: {
+      NOT_FOUND: '내 정보를 찾을 수 없습니다.',
+    },
     READ_ME: {
       SUCCEED: '내 정보 조회에 성공했습니다.',
+      FAILED: '내 정보 조회에 실패했숩나더.',
+    },
+    UPDATE: {
+      SUCCEED: '내 정보 수정에 성공했습니다.',
+      FAILED: '내 정보 수정에 실패했습니다.',
+    },
+    RESIGN: {
+      SUCCEED: '회원 탈퇴에 성공했습니다.',
+      FAILED: '회원 탈퇴에 실패했습니다.',
     },
   },
   REVIEWS: {
@@ -96,7 +108,7 @@ export const MESSAGES = {
       FAILED: '댓글 삭제에 실패했습니다.',
     },
     READ_LIST: {
-      SUCCEED: "댓글 목록을 성공적으로 조회하였습니다."
+      SUCCEED: '댓글 목록을 성공적으로 조회하였습니다.',
     },
   },
   RESTAURANTS: {
