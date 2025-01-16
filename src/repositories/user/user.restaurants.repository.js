@@ -1,7 +1,7 @@
 import { prisma } from '../../utils/prisma/index.js';
 import { MESSAGES } from '../../constants/message.constant.js';
 
-class UserRestaurantRepository {
+export class UserRestaurantRepository {
   #prisma;
 
   constructor(prisma) {
@@ -81,4 +81,4 @@ class UserRestaurantRepository {
   };
 }
 
-export default new UserRestaurantRepository(prisma);
+// export default new UserRestaurantRepository(prisma);

@@ -1,5 +1,3 @@
-import userRepository from '../repositories/user/user.repository.js';
-import partnerRepository from '../repositories/partner/partner.repository.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { HASH_SALT_ROUNDS, ACCESS_TOKEN_EXPIRES_IN } from '../constants/auth.constant.js';
@@ -7,7 +5,7 @@ import { ACCESS_TOKEN_SECRET } from '../constants/env.constant.js';
 import { MESSAGES } from '../constants/message.constant.js';
 import { HTTP_STATUS } from '../constants/http-status.constant.js';
 
-class AuthService {
+export class AuthService {
   #userRepository;
   #partnerRepository;
 
@@ -107,4 +105,3 @@ class AuthService {
   };
 }
 
-export default new AuthService(userRepository, partnerRepository);

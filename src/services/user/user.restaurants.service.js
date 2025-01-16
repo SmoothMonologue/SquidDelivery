@@ -1,6 +1,6 @@
-import UserRestaurantRepository from '../../repositories/user/user.restaurants.repository.js';
+// import UserRestaurantRepository from '../../repositories/user/user.restaurants.repository.js';
 
-class UserRestaurantService {
+export class UserRestaurantService {
   #repository;
 
   constructor(repository) {
@@ -40,4 +40,4 @@ class UserRestaurantService {
   };
 }
 
-export default new UserRestaurantService(UserRestaurantRepository);
+// export default new UserRestaurantService(UserRestaurantRepository);

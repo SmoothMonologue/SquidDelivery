@@ -1,29 +1,29 @@
 import { HTTP_STATUS } from '../../constants/http-status.constant.js';
 import { MESSAGES } from '../../constants/message.constant.js';
-import ReviewRepository from '../../repositories/user/review.repository.js';
 
 /**
  * ReviewService
  * 비즈니스 로직을 처리하는 계층
  * 데이터 검증, 권한 확인, 에러 처리 등을 담당
  */
-class ReviewService {
+export class ReviewService {
   #reviewRepository;
 
-  constructor() {
-    this.#reviewRepository = ReviewRepository;
+  constructor(reviewRepository) {
+    this.#reviewRepository = reviewRepository;
   }
 
   // 리뷰 생성 서비스
   createReview = async ({ userId, orderId, image, content, starRating }) => {
     // 주문 존재 여부 확인
     const order = await this.#reviewRepository.findOrderById(orderId);
-    const restaurantId = order.restaurantId;
     if (!order) {
       const error = new Error(MESSAGES.REVIEWS.COMMON.NOT_FOUND);
       error.status = HTTP_STATUS.NOT_FOUND;
       throw error;
     }
+    
+    const restaurantId = order.restaurantId;
 
     // 리뷰 중복 작성 확인
     const existingReview = await this.#reviewRepository.findReviewByOrderId(orderId);
@@ -123,4 +123,4 @@ class ReviewService {
   };
 }
 
-export default new ReviewService();
+// export default new ReviewService();

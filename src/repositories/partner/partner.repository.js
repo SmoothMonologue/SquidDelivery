@@ -1,8 +1,7 @@
 import { HTTP_STATUS } from '../../constants/http-status.constant.js';
 import { MESSAGES } from '../../constants/message.constant.js';
-import { prisma } from '../../utils/prisma/index.js';
 
-class PartnerRepository {
+export class PartnerRepository {
   #orm;
   constructor(orm) {
     this.#orm = orm;
@@ -35,5 +34,4 @@ class PartnerRepository {
     return partner;
   };
 }
-
-export default new PartnerRepository(prisma);
+  

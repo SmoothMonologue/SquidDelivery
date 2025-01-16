@@ -1,5 +1,5 @@
-import { prisma } from '../../utils/prisma/index.js';
-class OrderRepository {
+// import { prisma } from '../../utils/prisma/index.js';
+export class OrderRepository {
   #prisma;
   constructor(prisma) {
     this.#prisma = prisma;
@@ -57,4 +57,4 @@ class OrderRepository {
     });
   };
 }
-export default new OrderRepository(prisma);
+// export default new OrderRepository(prisma);

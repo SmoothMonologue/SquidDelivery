@@ -1,5 +1,5 @@
-import menuService from '../../services/partner/menu.service.js';
-class Menucontrollerpartner {
+// import menuService from '../../services/partner/menu.service.js';
+export class Menucontrollerpartner {
   #service;
 
   constructor(menuService) {
@@ -55,4 +55,4 @@ class Menucontrollerpartner {
   };
 }
 
-export default new Menucontrollerpartner(menuService);
+// export default new Menucontrollerpartner(menuService);

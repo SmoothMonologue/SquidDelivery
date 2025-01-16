@@ -1,6 +1,6 @@
-import UserRestaurantService from '../../services/user/user.restaurants.service.js';
+// import UserRestaurantService from '../../services/user/user.restaurants.service.js';
 
-class UserRestaurantController {
+export class UserRestaurantController {
   #service;
 
   constructor(service) {
@@ -38,4 +38,4 @@ class UserRestaurantController {
   };
 }
 
-export default new UserRestaurantController(UserRestaurantService);
+// export default new UserRestaurantController(UserRestaurantService);

@@ -5,7 +5,7 @@ import { HTTP_STATUS } from '../../constants/http-status.constant.js';
  * HTTP 요청/응답 처리를 담당하는 계층
  * 요청 데이터 추출, 응답 형식 결정, 에러 처리 미들웨어 연동
  */
-class ReviewController {
+export class ReviewController {
     constructor(reviewService) {
       this.reviewService = reviewService;
     }
@@ -79,4 +79,4 @@ class ReviewController {
     };
 }
 
-export default ReviewController;
+// export default ReviewController;

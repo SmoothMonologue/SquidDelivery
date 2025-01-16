@@ -1,3 +1,4 @@
+
 export class RankingRepository {
   #orm;
   constructor(orm) {
