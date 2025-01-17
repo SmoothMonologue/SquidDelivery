@@ -1,17 +1,16 @@
 import { HTTP_STATUS } from '../../constants/http-status.constant.js';
 import { MESSAGES } from '../../constants/message.constant.js';
-import ReviewRepository from '../../repositories/user/review.repository.js';
 
 /**
  * ReviewService
  * 비즈니스 로직을 처리하는 계층
  * 데이터 검증, 권한 확인, 에러 처리 등을 담당
  */
-class ReviewService {
+export class ReviewService {
   #reviewRepository;
 
-  constructor() {
-    this.#reviewRepository = ReviewRepository;
+  constructor(reviewRepository) {
+    this.#reviewRepository = reviewRepository;
   }
 
   // 리뷰 생성 서비스
@@ -23,6 +22,8 @@ class ReviewService {
       error.status = HTTP_STATUS.NOT_FOUND;
       throw error;
     }
+    
+    const restaurantId = order.restaurantId;
 
     // 리뷰 중복 작성 확인
     const existingReview = await this.#reviewRepository.findReviewByOrderId(orderId);
@@ -32,15 +33,26 @@ class ReviewService {
       throw error;
     }
 
+    // 리뷰 별점 최소 1점 최대 5점
+    if (starRating < 1 || starRating > 5) {
+      const error = new Error(MESSAGES.REVIEWS.COMMON.INVALID_STAR_RATING);
+      error.status = HTTP_STATUS.BAD_REQUEST;
+      throw error;
+    }
+
     // 리뷰 생성
     const review = await this.#reviewRepository.createReview({
       userId,
       orderId,
-      restaurantId: order.Cart.restaurantId,
+      restaurantId,
       image,
       content,
       starRating,
     });
+
+    // 리뷰 별점 평점 계산
+    const newStarRating = await this.#reviewRepository.calStarRateAvg(restaurantId);
+    await this.#reviewRepository.setStarRateAvg(restaurantId, newStarRating._avg.starRating);
 
     return {
       message: MESSAGES.REVIEWS.CREATE.SUCCEED,
@@ -111,4 +123,3 @@ class ReviewService {
   };
 }
 
-export default new ReviewService();

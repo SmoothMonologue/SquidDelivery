@@ -29,10 +29,13 @@ export const MESSAGES = {
         NOT_SUPPORTED_TYPE: '지원하지 않는 인증 방식입니다.',
         EXPIRED: '인증 정보가 만료되었습니다.',
         NO_USER: '인증 정보와 일치하는 사용자가 없습니다.',
-        INVALID: '인증 정보가 유효하지 않습니다.',
+        INVALID: '인증 정보가 23유효하지 않습니다.',
       },
       CATCH_BOX: {
         INVALID_FORMAT: '캐치박스는 문자열로 입력되어야 합니다.',
+      },
+      PHONE_NUMBER: {
+        FAILED: '올바른 전화번호 형식으로 입력해 주세요. ex)010-XXXX-XXXX',
       },
     },
     SIGN_UP: {
@@ -41,14 +44,28 @@ export const MESSAGES = {
     SIGN_IN: {
       SUCCEED: '로그인에 성공했습니다.',
       FAILED: '로그인에 실패했습니다.',
+      NOT_FOUND: '없는 이메일 입니다.',
+      NO_MACHTED: '비밀번호를 확인해 주세요',
     },
     SIGN_OUT: {
       SUCCEED: '로그아웃에 성공했습니다.',
     },
   },
   USERS: {
+    COMMON: {
+      NOT_FOUND: '내 정보를 찾을 수 없습니다.',
+    },
     READ_ME: {
       SUCCEED: '내 정보 조회에 성공했습니다.',
+      FAILED: '내 정보 조회에 실패했숩나더.',
+    },
+    UPDATE: {
+      SUCCEED: '내 정보 수정에 성공했습니다.',
+      FAILED: '내 정보 수정에 실패했습니다.',
+    },
+    RESIGN: {
+      SUCCEED: '회원 탈퇴에 성공했습니다.',
+      FAILED: '회원 탈퇴에 실패했습니다.',
     },
   },
   REVIEWS: {
@@ -92,6 +109,9 @@ export const MESSAGES = {
       SUCCEED: '댓글 삭제에 성공했습니다.',
       FAILED: '댓글 삭제에 실패했습니다.',
     },
+    READ_LIST: {
+      SUCCEED: '댓글 목록을 성공적으로 조회하였습니다.',
+    },
   },
   RESTAURANTS: {
     COMMON: {
@@ -102,15 +122,20 @@ export const MESSAGES = {
     CREATE: {
       SUCCEED: '업장 등록에 성공했습니다.',
       FAILED: '업장 등록에 실패했습니다.',
+      HAVE_RESTAURANT: '이미 등록된 업장이 존재합니다.',
+      DUPLICATED: '이미 등록된 업장이름 입니다.',
+      DUPLICATED_CELL: '이미 등록된 전화번호 입니다.',
     },
     UPDATE: {
       SUCCEED: '업장 정보가 수정되었습니다.',
       FAILED: '업장 수정에 실패했습니다.',
+      NOT_FOUND: '업장이 존재하지 않습니다.',
     },
     DELETE: {
       SUCCEED: '업장이 삭제되었습니다.',
       FAILED: '업장 삭제에 실패했습니다.',
       ERROR: '레스토랑 삭제 중 오류가 발생했습니다.',
+      NOT_FOUND: '업장이 존재하지 않습니다.',
     },
     TRANSACTION: {
       ERROR: '데이터 처리 중 오류가 발생했습니다.',
@@ -120,7 +145,26 @@ export const MESSAGES = {
       FAILED: '업장 목록 조회에 실패했습니다.',
     },
   },
-
+  MENU: {
+    COMMON: {
+      SUCCEED: '메뉴 조회에 성공했습니다.',
+      NOT_FOUND: '메뉴를 찾을 수 없습니다.',
+      NOT_AUTHORIZED: '자신의 가게 매뉴만 접근할 수 있습니다.',
+    },
+    CREATE: {
+      SUCCEED: '메뉴를 추가했습니다.',
+      NOT_MY_RESTAURANTS: '내 가게의 레스토랑아이디가 아닙니다.',
+      MISSING_INFO: '이름, 가격, 레스토랑아이디중 누락된 정보가 있습니다.',
+    },
+    UPDATE: {
+      SUCCEED: '메뉴를 수정하였습니다.',
+      FAILED: '메뉴 추가에 실패했습니다.',
+    },
+    DELETE: {
+      SUCCEED: '메뉴를 삭제했습니다.',
+      FAILED: '장바구니 삭제에 실패했습니다.',
+    },
+  },
   CARTS: {
     COMMON: {
       SUCCEED: '장바구니 조회에 성공했습니다.',

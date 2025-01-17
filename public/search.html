@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>메뉴 검색</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fef4e8;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        #searchInput {
+            width: 300px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        #searchButton {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #searchButton:hover {
+            background-color: #45a049;
+        }
+
+        #searchResults {
+            max-width: 600px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .result-item {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin: 10px auto;
+            padding: 20px;
+            text-align: left;
+        }
+
+        .result-item h2 {
+            margin: 0;
+            font-size: 20px;
+            color: #444;
+        }
+
+        .result-item p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .no-results {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #777;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>메뉴 검색</h1>
+    <input type="text" id="searchInput" placeholder="검색어를 입력하세요">
+    <button id="searchButton">검색</button>
+    <div id="searchResults"></div>
+
+    <script>
+        // 하드코딩된 메뉴 데이터
+        const menus = [
+            {
+                name: "참치 김밥",
+                description: "신선한 참치와 야채로 만든 김밥",
+                price: 3500,
+            },
+            {
+                name: "라면",
+                description: "한국 전통의 맛있는 라면",
+                price: 4000,
+            },
+            {
+                name: "떡볶이",
+                description: "매콤달콤한 떡볶이",
+                price: 4500,
+            },
+            {
+                name: "치즈 라면",
+                description: "치즈가 듬뿍 들어간 라면",
+                price: 5000,
+            },
+        ];
+
+        // 검색 버튼 클릭 이벤트
+        document.getElementById("searchButton").onclick = () => {
+            const keyword = document.getElementById("searchInput").value.trim().toLowerCase();
+
+            if (!keyword) {
+                alert("검색어를 입력하세요.");
+                return;
+            }
+
+            // 검색 결과 필터링
+            const results = menus.filter(menu =>
+                menu.name.toLowerCase().includes(keyword) ||
+                menu.description.toLowerCase().includes(keyword)
+            );
+
+            const container = document.getElementById("searchResults");
+
+            // 검색 결과 표시
+            if (results.length > 0) {
+                container.innerHTML = results.map(item => `
+                    <div class="result-item">
+                        <h2>${item.name}</h2>
+                        <p>${item.description}</p>
+                        <p><strong>${item.price}원</strong></p>
+                    </div>
+                `).join('');
+            } else {
+                container.innerHTML = "<p class='no-results'>검색 결과가 없습니다.</p>";
+            }
+        };
+    </script>
+
+    <div style="text-align: center; margin-top: 20px;">
+        <button
+            style="padding: 10px 20px; font-size: 16px; background-color: #2196f3; color: white; border: none; border-radius: 5px; cursor: pointer;"
+            onclick="history.back()">뒤로가기</button>
+    </div>
+</body>
+
+</html>

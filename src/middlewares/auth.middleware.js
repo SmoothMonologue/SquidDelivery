@@ -25,7 +25,7 @@ export const authenticateUser = async (req, res, next) => {
     const decodedToken = jwt.verify(token, ACCESS_TOKEN_SECRET);
 
     const user = await prisma.user.findUnique({
-      where: { id: decodedToken.userId },
+      where: { id: decodedToken.id },
     });
 
     if (!user) {
@@ -38,7 +38,7 @@ export const authenticateUser = async (req, res, next) => {
     next();
   } catch (error) {
     console.error(error);
-    
+
     if (error.name === 'TokenExpiredError') {
       return res.status(HTTP_STATUS.UNAUTHORIZED).json({
         message: MESSAGES.AUTH.COMMON.JWT.EXPIRED,
@@ -62,7 +62,7 @@ export const authenticatePartner = async (req, res, next) => {
     }
 
     const [tokenType, token] = authorization.split(' ');
-
+    // console.log(tokenType, token);
     if (tokenType !== 'Bearer') {
       return res.status(HTTP_STATUS.UNAUTHORIZED).json({
         message: MESSAGES.AUTH.COMMON.JWT.NOT_SUPPORTED_TYPE,
@@ -70,11 +70,9 @@ export const authenticatePartner = async (req, res, next) => {
     }
 
     const decodedToken = jwt.verify(token, ACCESS_TOKEN_SECRET);
-
     const partner = await prisma.partner.findUnique({
-      where: { id: decodedToken.partnerId },
+      where: { id: decodedToken.id },
     });
-
     if (!partner) {
       return res.status(HTTP_STATUS.NOT_FOUND).json({
         message: MESSAGES.AUTH.COMMON.JWT.NO_USER,
@@ -85,7 +83,7 @@ export const authenticatePartner = async (req, res, next) => {
     next();
   } catch (error) {
     console.error(error);
-    
+
     if (error.name === 'TokenExpiredError') {
       return res.status(HTTP_STATUS.UNAUTHORIZED).json({
         message: MESSAGES.AUTH.COMMON.JWT.EXPIRED,

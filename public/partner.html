@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>주문 현황 (사장)</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f9f9f9;
+        color: #333;
+      }
+
+      header {
+        background-color: #ff8378;
+        color: white;
+        padding: 1rem;
+        text-align: center;
+      }
+
+      main {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 1rem;
+      }
+
+      select,
+      button {
+        display: block;
+        margin: 10px auto;
+        padding: 10px 15px;
+        font-size: 16px;
+        border: 1px solid #d1d1d1;
+        border-radius: 5px;
+        outline: none;
+      }
+
+      button {
+        background-color: #73d0fc;
+        color: white;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #33bbfa;
+      }
+
+      #orderContainer {
+        margin-top: 20px;
+        padding: 10px;
+        border-top: 1px solid #ddd;
+      }
+
+      #orderContainer div {
+        padding: 8px;
+        background-color: #ff8378;
+        margin-bottom: 8px;
+        border-radius: 5px;
+      }
+
+      #statusImage {
+        text-align: center;
+        margin-top: 20px;
+      }
+
+      #statusImage img {
+        margin-top: 10px;
+      }
+
+      footer {
+        text-align: center;
+        margin-top: 20px;
+        padding: 10px 0;
+        background-color: #ff8378;
+        color: white;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <h1>주문 현황 (사장)</h1>
+    </header>
+    <main>
+      <select id="status">
+        <option value="조리중">조리중</option>
+        <option value="배달중">배달중</option>
+        <option value="배달완료">배달완료</option>
+        <option value="주문취소">주문취소</option>
+      </select>
+      <button onclick="updateStatus()">상태 업데이트</button>
+
+      <div id="orderContainer">
+        <!-- 주문 내용이 여기에 추가됩니다 -->
+      </div>
+      <div id="statusImage">
+        <!-- 배달 상태 이미지가 여기에 표시됩니다 -->
+      </div>
+    </main>
+    <footer>&copy; 맛있는 오징어제육볶음!</footer>
+
+    <script
+      src="https://cdn.socket.io/4.8.1/socket.io.min.js"
+      integrity="sha384-mkQ3/7FUtcGyoppY6bz/PORYoGqOl7/aSUMn2ymDOJcapfS6PHqxhRTMh1RR0Q6+"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      const token = localStorage.getItem('accessToken');
+
+      if (!token) {
+        alert('로그인이 필요합니다.');
+        window.location.href = '/public/login.html';
+      }
+
+      fetch('https://yangs.site/api/auth/partner-id', {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('인증 실패');
+          }
+          return response.json();
+        })
+        .then((data) => {
+          const partnerId = data.partnerId;
+          console.log(`현재 로그인된 파트너 ID: ${partnerId}`);
+
+          const socket = io('https://yangs.site', { auth: { token } });
+          socket.emit('register', { role: 'partner', partnerId });
+
+          socket.on('order_complete', (orderDetails) => {
+            const orderContainer = document.getElementById('orderContainer');
+            const orderElement = document.createElement('div');
+            orderElement.innerText = `고객 ${orderDetails.userId}님이 ${orderDetails.menu} (${orderDetails.quantity}개)를 주문했습니다.`;
+            orderContainer.appendChild(orderElement);
+          });
+
+          const updateStatus = () => {
+            const status = document.getElementById('status').value;
+            const statusImage = document.getElementById('statusImage');
+
+            if (status === '조리중') {
+              statusImage.innerHTML = `
+                            <img src="/public/images/cook_squid.png" alt="조리 중" style="width:150px; height:auto;" />
+                            <p>" 조리 중 " 이라고 고객님께 알려드렸습니다!</p>
+                        `;
+            } else if (status === '배달중') {
+              statusImage.innerHTML = `
+                            <img src="/public/images/delivery_squid.png" alt="배달 중" style="width:150px; height:auto;" />
+                            <p>오징어 배달원이 배달 진행 중 입니다!</p>
+                        `;
+            } else if (status === '배달완료') {
+              statusImage.innerHTML = `
+                            <img src="/public/images/delivery_complete.png" alt="배달 완료" style="width:150px; height:auto;" />
+                            <p>오징어 배달원의 배달이 완료되었습니다!</p>
+                        `;
+            } else if (status === '주문취소') {
+              statusImage.innerHTML = `
+                            <img src="/public/images/cry_squid.png" alt="주문취소" style="width:150px; height:auto;" />
+                            <p>주문을 취소하였습니다.</p>
+                        `;
+            } else {
+              statusImage.innerHTML = '';
+            }
+
+            socket.emit('status_update', { status });
+          };
+
+          document.querySelector('button').onclick = updateStatus;
+        })
+        .catch((error) => {
+          console.error('파트너 ID를 가져오는 중 오류 발생:', error.message);
+          alert('로그인이 필요합니다.');
+          window.location.href = '/public/login.html';
+        });
+    </script>
+
+    <div style="text-align: center; margin-top: 20px">
+      <button
+        style="
+          padding: 10px 20px;
+          font-size: 16px;
+          background-color: #2196f3;
+          color: white;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+        "
+        onclick="history.back()"
+      >
+        뒤로가기
+      </button>
+    </div>
+  </body>
+</html>

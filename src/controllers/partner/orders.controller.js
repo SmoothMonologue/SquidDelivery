@@ -1,6 +1,4 @@
-import orderService from '../../services/partner/orders.service.js';
-
-class OrderController {
+export class OrderController {
   #service;
 
   constructor(service) {
@@ -9,7 +7,7 @@ class OrderController {
 
   getOrders = async (req, res) => {
     try {
-      const partner = req.user;
+      const partner = req.partner.id;
 
       const data = await this.#service.getOrders(partner);
       return res.status(data.status).json(data);
@@ -22,7 +20,7 @@ class OrderController {
   selectGetOrder = async (req, res) => {
     try {
       const { orderId } = req.params;
-      const partner = req.user;
+      const partner = req.partner.id;
 
       const data = await this.#service.selectGetOrder(orderId, partner);
       return res.status(data.status).json(data);
@@ -35,9 +33,9 @@ class OrderController {
   patchOrder = async (req, res) => {
     try {
       const { orderId } = req.params;
-      const partner = req.user;
-
-      const data = await this.#service.updateOrder(orderId, partner);
+      const partner = req.partner.id;
+      const { method } = req.body;
+      const data = await this.#service.updateOrder(orderId, partner, method);
       return res.status(data.status).json(data);
     } catch (err) {
       console.log(err);
@@ -48,7 +46,7 @@ class OrderController {
   cancelOrder = async (req, res) => {
     try {
       const { orderId } = req.params;
-      const partner = req.user;
+      const partner = req.partner.id;
 
       const data = await this.#service.cancelOrder(orderId, partner);
 
@@ -59,5 +57,3 @@ class OrderController {
     }
   };
 }
-
-export default new OrderController(orderService);

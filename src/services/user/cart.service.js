@@ -1,6 +1,5 @@
-import cartRepository from '../../repositories/user/cart.repository.js';
 
-class cartService {
+export class CartService {
   #repository;
 
   constructor(repository) {
@@ -29,8 +28,8 @@ class cartService {
 
   //장바구니에 메뉴 추가
   addMenu = async ({ cartId, menuId }) => {
-    let infoOfChosenMenu = usingCart(cartId).menuInfo;
-    infoOfChosenMenu.push(chosenMenu(menuId));
+    let infoOfChosenMenu = (await this.usingCart(cartId)).menuInfo;
+    infoOfChosenMenu.push(await this.chosenMenu(menuId));
 
     return await this.#repository.addMenu({ cartId, infoOfChosenMenu });
   };
@@ -44,4 +43,3 @@ class cartService {
   };
 }
 
-export default new cartService(cartRepository);

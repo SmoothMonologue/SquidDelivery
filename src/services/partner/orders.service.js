@@ -1,6 +1,5 @@
-import orderRepository from '../../repositories/partner/orders.repository.js';
 
-class OrderService {
+export class OrderService {
   #repository;
 
   constructor(repository) {
@@ -9,7 +8,7 @@ class OrderService {
 
   getOrders = async (partner) => {
     try {
-      const restaurantInfo = await this.#repository.findUniqueRestaurant(partner);
+      const restaurantInfo = await this.#repository.findFirstRestaurant(partner);
 
       if (!restaurantInfo) {
         return {
@@ -23,7 +22,7 @@ class OrderService {
       return {
         status: 200,
         message: '주문 조회에 성공했습니다.',
-        data: orders,
+        orders,
       };
     } catch (err) {
       console.error(err);
@@ -35,16 +34,23 @@ class OrderService {
   };
 
   selectGetOrder = async (orderId, partner) => {
-    const restaurant = await this.#repository.findUniqueRestaurant(partner);
+    const restaurant = await this.#repository.findFirstRestaurant(partner);
 
     if (!restaurant) {
       return {
         status: 404,
-        message: '업장을 찾을 수 없습니다.',
+        message: '음식점이 존재하지 않습니다.',
       };
     }
 
-    const order = await this.#repository.findUniqueOrder(orderId, restaurant);
+    const order = await this.#repository.findFirstOrder(orderId, restaurant);
+    if (!order) {
+      return {
+        status: 404,
+        message: '주문을 찾을 수 없습니다.',
+      };
+    }
+
     return {
       status: 200,
       message: '주문 선택 조회 성공',
@@ -53,42 +59,55 @@ class OrderService {
   };
 
   updateOrder = async (orderId, partner) => {
-    const restaurant = await this.#repository.findUniqueRestaurant(partner);
+    const restaurant = await this.#repository.findFirstRestaurant(partner);
 
     if (!restaurant) {
       return {
         status: 404,
-        message: '업장을 찾을 수 없습니다.',
+        message: '음식점이 존재하지 않습니다.',
       };
     }
 
-    const order = await this.#repository.findUniqueOrder(orderId, restaurant);
+    const order = await this.#repository.findFirstOrder(orderId, restaurant);
     if (!order) {
       return {
         status: 404,
         message: '주문을 찾을 수 없습니다.',
       };
     }
-    await this.#repository.updateOrder(orderId, restaurant);
+    const cureentorder = await this.#repository.updateOrder(orderId, restaurant);
 
     return {
       status: 200,
       message: '주문이 접수되었습니다.',
-      order,
+      data: cureentorder,
     };
   };
 
   cancelOrder = async (orderId, partner) => {
-    const restaurant = await this.#repository.findUniqueRestaurant(partner);
-
+    const restaurant = await this.#repository.findFirstRestaurant(partner);
     if (!restaurant) {
       return {
         status: 404,
-        message: '업장을 찾을 수 없습니다.',
+        message: '음식점이 존재하지 않습니다.',
       };
     }
-
-    const order = await this.#repository.createTransaction(orderId, restaurant);
+    const user = await this.#repository.findFirstOrder(orderId, restaurant);
+    if (!user) {
+      return {
+        status: 404,
+        message: '유저정보를 찾을 수 없습니다',
+      };
+    }
+    const cart = await this.#repository.findCart(user);
+    const priceSum = cart.menuInfo.reduce((prev, current) => prev + current.price, 0);
+    const order = await this.#repository.createTransaction(
+      partner,
+      orderId,
+      restaurant,
+      user,
+      priceSum,
+    );
 
     if (!order) {
       return {
@@ -96,6 +115,7 @@ class OrderService {
         message: '주문을 찾을 수 없습니다.',
       };
     }
+
     return {
       status: 200,
       message: '주문이 취소되었습니다.',
@@ -104,4 +124,3 @@ class OrderService {
   };
 }
 
-export default new OrderService(orderRepository);

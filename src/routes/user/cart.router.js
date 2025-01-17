@@ -1,8 +1,14 @@
 import express from 'express';
-import cartController from '../../controllers/user/cart.controller.js';
+import { prisma } from '../../utils/prisma/index.js';
+import { CartController } from '../../controllers/user/cart.controller.js';
 import { authenticateUser } from '../../middlewares/auth.middleware.js';
+import { CartRepository } from '../../repositories/user/cart.repository.js';
+import { CartService } from '../../services/user/cart.service.js';
 
 const cartsRouter = express.Router();
+const cartRepository = new CartRepository(prisma);
+const cartService = new CartService(cartRepository);
+const cartController = new CartController(cartService);
 
 //새로운 장바구니 추가
 cartsRouter.post('/', authenticateUser, cartController.createCart);

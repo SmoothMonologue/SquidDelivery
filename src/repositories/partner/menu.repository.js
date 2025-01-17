@@ -1,18 +1,16 @@
-import { prisma } from '../../utils/prisma/index.js';
-
-class Menurepository {
+export class Menurepository {
   #orm;
   constructor(prisma) {
     this.#orm = prisma;
   }
   // 메뉴 등록(사장님용)
-  createMenu = async ({ name, price, spicyLevel, restaurantId }) => {
+  createMenu = async (data) => {
     const menu = await this.#orm.menu.create({
       data: {
-        name,
-        price: Number(price),
-        spicyLevel: Number(spicyLevel),
-        restaurantId: Number(restaurantId),
+        ...data,
+        price: Number(data.price),
+        spicyLevel: Number(data.spicyLevel),
+        restaurantId: Number(data.restaurantId),
       },
     });
     return menu;
@@ -44,14 +42,13 @@ class Menurepository {
   };
   // 메뉴 삭제(사장님용)
   deleteMenu = async ({ menuId }) => {
-    console.log('메뉴아이디', menuId);
+    // console.log('메뉴아이디', menuId);
     const deleteMenu = await this.#orm.menu.delete({
       where: {
         id: Number(menuId),
       },
     });
-    console.log('메뉴아이디', menuId);
+    // console.log('메뉴아이디', menuId);
     return deleteMenu;
   };
 }
-export default new Menurepository(prisma);

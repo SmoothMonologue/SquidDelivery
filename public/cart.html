@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>장바구니</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fef4e8;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 20px 0;
+            color: #333;
+        }
+
+        #cartContainer {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .cart-item {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-item h2 {
+            margin: 0 0 10px 0;
+            color: #444;
+        }
+
+        .cart-item p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .cart-item button {
+            padding: 8px 12px;
+            font-size: 14px;
+            color: white;
+            background-color: #ff6f61;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .cart-item button:hover {
+            background-color: #ff856f;
+        }
+
+        .total {
+            text-align: right;
+            font-size: 18px;
+            margin-top: 20px;
+            color: #333;
+        }
+
+        .action-buttons {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .action-buttons button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            font-size: 16px;
+            color: white;
+            background-color: #4caf50;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .action-buttons button:hover {
+            background-color: #45a049;
+        }
+
+        .action-buttons .clear {
+            background-color: #f44336;
+        }
+
+        .action-buttons .clear:hover {
+            background-color: #e53935;
+        }
+
+        .back-button {
+            background-color: #2196f3;
+        }
+
+        .back-button:hover {
+            background-color: #1976d2;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>장바구니</h1>
+    <div id="cartContainer"></div>
+    <div class="action-buttons">
+        <button class="clear" onclick="clearCart()">장바구니 비우기</button>
+        <button onclick="checkout()">결제하기</button>
+        <button class="back-button" onclick="goBack()">뒤로가기</button>
+    </div>
+
+    <script>
+        // 샘플 장바구니 데이터
+        const sampleCart = [
+            { id: 1, name: "참치 김밥", price: 3500, quantity: 2 },
+            { id: 2, name: "떡볶이", price: 5000, quantity: 1 },
+            { id: 3, name: "순대", price: 4000, quantity: 3 },
+        ];
+
+        // 로컬스토리지 초기화
+        if (!localStorage.getItem("cart")) {
+            localStorage.setItem("cart", JSON.stringify(sampleCart));
+        }
+
+        // 장바구니 로드
+        const loadCart = () => {
+            const cart = JSON.parse(localStorage.getItem("cart")) || [];
+            const container = document.getElementById("cartContainer");
+
+            if (cart.length === 0) {
+                container.innerHTML = "<p style='text-align:center;'>장바구니가 비어 있습니다.</p>";
+                return;
+            }
+
+            container.innerHTML = cart.map((item, index) => `
+        <div class="cart-item">
+            <div>
+                <h2>${item.name}</h2>
+                <p>가격: ${item.price}원</p>
+                <p>수량: ${item.quantity}개</p>
+                <p>합계: ${item.price * item.quantity}원</p>
+            </div>
+            <button onclick="removeFromCart(${index})">제거</button>
+        </div>
+    `).join('');
+
+            const totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
+            container.innerHTML += `<div class="total">총합: ${totalPrice}원</div>`;
+        };
+
+        // 항목 제거
+        const removeFromCart = (index) => {
+            const cart = JSON.parse(localStorage.getItem("cart")) || [];
+            cart.splice(index, 1);
+            localStorage.setItem("cart", JSON.stringify(cart));
+            loadCart();
+        };
+
+        // 장바구니 비우기
+        const clearCart = () => {
+            localStorage.removeItem("cart");
+            alert("장바구니가 비워졌습니다.");
+            loadCart();
+        };
+
+        // 결제하기
+        const checkout = () => {
+            const cart = JSON.parse(localStorage.getItem("cart")) || [];
+            if (cart.length === 0) {
+                alert("장바구니가 비어 있습니다.");
+                return;
+            }
+            alert("결제 페이지로 이동합니다.");
+            window.location.href = "/public/payment.html";
+        };
+
+        // 뒤로가기
+        const goBack = () => {
+            history.back();
+        };
+
+        // 초기 로드
+        loadCart();
+    </script>
+</body>
+
+</html>
