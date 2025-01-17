@@ -83,6 +83,19 @@ describe('UserRestaurantRepository test', () => {
             console.log('------------33', result);
 
             expect(fakePrisma.restaurant.findMany).toHaveBeenCalledWith({
+                select: {
+                    id: true,
+                    restaurantName: true,
+                    keyword: true,
+                    starRating: true,
+                    Menu: {
+                        select: {
+                            id: true,
+                            name: true,
+                            price: true,
+                        }
+                    }
+                },
                 where: {
                     OR: [
                         { keyword: { contains: '한식' } },

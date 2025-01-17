@@ -85,8 +85,8 @@ export class PartnerRestaurantController {
     try {
       const partnerId = req.partner.id;
       const restaurantData = await this.#service.getRestaurantsByPartner(partnerId);
-      const restaurantId = restaurantData.id;
-      const menu = await this.#service.restaurantIdMenu({ restaurantId });
+      const restaurantId = Number(restaurantData.id);
+      const menu = await this.#service.restaurantIdMenu(restaurantId);
 
       res.status(HTTP_STATUS.OK).json({ data: menu });
     } catch (error) {

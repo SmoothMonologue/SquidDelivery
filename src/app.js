@@ -7,6 +7,9 @@ import routes from './routes/index.js';
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import { prisma } from './utils/prisma/index.js';
+import { errorHandler } from './middlewares/error-handler.middleware.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 // .env 로드
 dotenv.config();
@@ -26,10 +29,14 @@ const io = new Server(server, {
 });
 
 // 정적 파일 제공
-app.use('/public', express.static('public')); // public 폴더 내의 정적 파일을 제공
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use('/public', express.static(path.join(__dirname, '../public'))); // public 폴더 내의 정적 파일을 제공
+
 app.use(cors()); // CORS 미들웨어 추가 >>  다른 도메인에서의 요청을 허용
 app.use(express.json());
 app.use('/api', routes);
+app.use(errorHandler);
 
 // 소켓 연결 관리
 io.on('connection', (socket) => {

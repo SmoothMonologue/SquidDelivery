@@ -1,5 +1,14 @@
 import { HTTP_STATUS } from '../constants/http-status.constant.js';
 import { MESSAGES } from '../constants/message.constant.js';
+export class CustomError extends Error {
+  status;
+  message;
+  constructor(status, message) {
+    super(message);
+    this.status = status;
+    this.message = message;
+  }
+}
 
 export const errorHandler = (err, req, res, next) => {
   console.error('Error:', err);
@@ -28,10 +37,15 @@ export const errorHandler = (err, req, res, next) => {
     });
   }
 
+  // return res.status(err.status).json(err.message);
   // 그 외 예상치 못한 에러
-  return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-    status: HTTP_STATUS.INTERNAL_SERVER_ERROR,
-    message: '서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.',
-    error: process.env.NODE_ENV === 'development' ? err.message : undefined,
+  // return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+  //   status: HTTP_STATUS.INTERNAL_SERVER_ERROR,
+  //   message: '서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.',
+  //   error: process.env.NODE_ENV === 'development' ? err.message : undefined,
+  // });
+  return res.status(err.status).json({
+    status: err.status,
+    message: err.message,
   });
 };
