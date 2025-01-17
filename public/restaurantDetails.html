@@ -226,12 +226,21 @@
         };
 
         const addToCart = (menuId, menuName, menuPrice, restaurantId) => {
-            const existingItem = cart.find(item => item.menuId === menuId);
+            const cart = JSON.parse(localStorage.getItem("cart")) || [];
+            const existingItem = cart.find(item => item.menuId === menuId && item.restaurantId === restaurantId);
+
             if (existingItem) {
                 existingItem.quantity += 1;
             } else {
-                cart.push({ menuId, menuName, menuPrice, restaurantId, quantity: 1 });
+                cart.push({
+                    menuId,
+                    name: menuName,
+                    price: menuPrice,
+                    restaurantId,
+                    quantity: 1
+                });
             }
+
             localStorage.setItem("cart", JSON.stringify(cart));
             alert(`${menuName}이(가) 장바구니에 추가되었습니다!`);
         };
