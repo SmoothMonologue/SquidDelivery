@@ -227,6 +227,7 @@ SquidDelivery
     └─ utils
         └─ prisma
             └─ index.js
+```
 
 ## 필수 기능 개발 체크리스트
 
@@ -247,5 +248,3 @@ SquidDelivery
 - [x] 음식이 배달되었을 경우 손님에게 알림
 - [x] 음식점 랭킹
 - [x] HTTPS
-
-```
