@@ -219,7 +219,3 @@ SquidDelivery
 └─ utils
 └─ prisma
 └─ index.js
-
-```
-
-```
