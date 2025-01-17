@@ -1,5 +1,6 @@
 import { HTTP_STATUS } from '../../constants/http-status.constant.js';
 import { MESSAGES } from '../../constants/message.constant.js';
+import { CustomError } from '../../middlewares/error-handler.middleware.js';
 
 export class PartnerRepository {
   #orm;
@@ -11,10 +12,7 @@ export class PartnerRepository {
     const existedPartner = await this.#orm.partner.findUnique({ where: { email } });
 
     if (existedPartner) {
-      return {
-        status: HTTP_STATUS.CONFLICT,
-        message: MESSAGES.AUTH.COMMON.EMAIL.DUPLICATED,
-      };
+      throw new CustomError(HTTP_STATUS.CONFLICT, MESSAGES.AUTH.COMMON.EMAIL.DUPLICATED);
     }
 
     return this.#orm.partner.create({
@@ -23,12 +21,8 @@ export class PartnerRepository {
   };
   signInPartner = async ({ email }) => {
     const partner = await this.#orm.partner.findUnique({ where: { email } });
-    // console.log('signInPartner ==', partner);
     if (!partner) {
-      return {
-        status: HTTP_STATUS.NOT_FOUND,
-        message: MESSAGES.AUTH.SIGN_IN.FAILED,
-      };
+      throw new CustomError(HTTP_STATUS.NOT_FOUND, MESSAGES.AUTH.SIGN_IN.FAILED);
     }
 
     return partner;
