@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import { MenuRepository } from './menu.repository.js';
+import { Menurepository } from './menu.repository.js';
 
 describe('MenuRepository test', () => {
     let fakePrisma;
@@ -22,7 +22,7 @@ describe('MenuRepository test', () => {
                 delete: jest.fn()
             }
         };
-        menuRepository = new MenuRepository(fakePrisma);
+        menuRepository = new Menurepository(fakePrisma);
     });
 
     describe('createMenu', () => {

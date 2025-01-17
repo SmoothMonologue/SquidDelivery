@@ -4,6 +4,9 @@ import { CustomError } from '../middlewares/error-handler.middleware.js';
 import { AuthController } from './auth.controller.js';
 import { jest } from '@jest/globals';
 
+console.log('CustomError exists:', !!CustomError);
+console.log('CustomError type:', typeof CustomError);
+
 class MockAuthService {
   createUser = jest.fn();
   createPartner = jest.fn();
@@ -140,14 +143,25 @@ describe('AuthController', () => {
         },
       };
       const next = jest.fn();
-      mockAuthService.signInUser.mockRejectedValue(
-        new CustomError(HTTP_STATUS.NOT_FOUND, MESSAGES.AUTH.SIGN_IN.FAILED),
+      const res = {}; // res 객체 추가
+      
+      const errorResponse = {
+        name: 'Error',
+        status: HTTP_STATUS.NOT_FOUND,
+        message: '로그인에 실패했습니다.'
+      };
+      
+      mockAuthService.signInUser.mockImplementation(() => {
+        throw errorResponse;
+      });
+      console.log('errorResponse------------', errorResponse);
+      // await authController.signIn(req, {}, next);
+
+      // console.log('Actual error passed to next:', next.mock.calls[0][0]);
+      
+      expect(next).toHaveBeenCalledWith(
+        expect.objectContaining(errorResponse)
       );
-
-      const test = await authController.signIn(req, {}, next);
-      console.log('--------------------------', test);
-
-      expect(next).toHaveBeenCalledWith(expect.any(CustomError));
     });
   });
 

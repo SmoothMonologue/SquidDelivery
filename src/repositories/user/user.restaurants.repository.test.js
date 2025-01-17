@@ -76,11 +76,9 @@ describe('UserRestaurantRepository test', () => {
     describe('getRestaurantsByKeyword', () => {
         it('키워드로 식당 검색 성공', async () => {
             const mockRestaurants = [mockRestaurant];
-            console.log('--------------33', mockRestaurants);
             fakePrisma.restaurant.findMany.mockResolvedValue(mockRestaurants);
 
             const result = await userRestaurantRepository.getRestaurantsByKeyword('한식');
-            console.log('------------33', result);
 
             expect(fakePrisma.restaurant.findMany).toHaveBeenCalledWith({
                 select: {

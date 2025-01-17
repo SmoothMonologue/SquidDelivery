@@ -99,8 +99,18 @@ export class AuthService {
         message: MESSAGES.AUTH.COMMON.JWT.INVALID,
       };
     }
-
-    jwt.verify(token, ACCESS_TOKEN_SECRET);
-    return;
+    try {
+      jwt.verify(token, ACCESS_TOKEN_SECRET);
+      return {
+          status: HTTP_STATUS.OK,
+          message: MESSAGES.AUTH.SIGN_OUT.SUCCEED,
+        };
+      } catch (error) {
+        return {
+          status: HTTP_STATUS.UNAUTHORIZED,
+        message: MESSAGES.AUTH.COMMON.JWT.INVALID,
+      };
+    }
   };
 }
+

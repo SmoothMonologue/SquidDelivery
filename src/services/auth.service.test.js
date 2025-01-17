@@ -70,7 +70,7 @@ describe('AuthService', () => {
   });
 
   describe('createPartner', () => {
-    it('should create a partner with hashed password', async () => {
+    it('파트너 생성 성공', async () => {
       const partnerData = {
         email: 'partner@example.com',
         password: 'password123',
@@ -92,7 +92,7 @@ describe('AuthService', () => {
   });
 
   describe('signInPartner', () => {
-    it('should return access token when credentials are valid', async () => {
+    it('로그인 성공', async () => {
       const partnerData = {
         email: 'partner@example.com',
         password: 'password123',
@@ -113,7 +113,7 @@ describe('AuthService', () => {
       expect(result).toEqual({ data: { accessToken } });
     });
 
-    it('should return unauthorized when partner not found', async () => {
+    it('이메일이 존재하지 않을 때 로그인 실패', async () => {
       const partnerData = {
         email: 'nonexistent@example.com',
         password: 'password123',
@@ -133,7 +133,7 @@ describe('AuthService', () => {
   });
 
   describe('signInUser', () => {
-    it('should return access token when credentials are valid', async () => {
+    it('로그인 성공', async () => {
       const userData = {
         email: 'user@example.com',
         password: 'password123',
@@ -160,7 +160,7 @@ describe('AuthService', () => {
       expect(result).toEqual({ data: { accessToken } });
     });
 
-    it('should return unauthorized when password does not match', async () => {
+    it('비밀번호가 일치하지 않을 때 로그인 실패', async () => {
       const userData = {
         email: 'user@example.com',
         password: 'wrongpassword',
@@ -181,7 +181,7 @@ describe('AuthService', () => {
       });
     });
 
-    it('should return unauthorized when user not found', async () => {
+    it('이메일이 존재하지 않을 때 로그인 실패', async () => {
       const userData = {
         email: 'nonexistent@example.com',
         password: 'password123',
@@ -199,7 +199,7 @@ describe('AuthService', () => {
   });
 
   describe('signOut', () => {
-    it('should return success message for valid token', async () => {
+    it('로그아웃 성공', async () => {
       const authorization = {
         authorization: 'Bearer valid.token.here',
       };
@@ -207,14 +207,15 @@ describe('AuthService', () => {
       jwt.verify.mockReturnValue({});
 
       const result = await authService.signOut(authorization);
-
+      
       expect(result).toEqual({
         status: HTTP_STATUS.OK,
         message: MESSAGES.AUTH.SIGN_OUT.SUCCEED,
       });
     });
+  
 
-    it('should return unauthorized when no token provided', async () => {
+    it('토큰이 없을 때 로그아웃 실패', async () => {
       const authorization = {};
 
       const result = await authService.signOut(authorization);
@@ -225,7 +226,7 @@ describe('AuthService', () => {
       });
     });
 
-    it('should return unauthorized for invalid token format', async () => {
+    it('토큰 형식이 잘못되었을 때 로그아웃 실패', async () => {
       const authorization = {
         authorization: 'InvalidToken',
       };

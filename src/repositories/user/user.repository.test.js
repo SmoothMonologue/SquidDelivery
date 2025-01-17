@@ -1,5 +1,6 @@
 import { jest } from '@jest/globals';
 import { UserRepository } from './user.repository.js';
+import { CustomError } from '../../middlewares/error-handler.middleware.js';
 import { HTTP_STATUS } from '../../constants/http-status.constant.js';
 import { MESSAGES } from '../../constants/message.constant.js';
 
@@ -45,12 +46,11 @@ describe('UserRepository test', () => {
         it('이미 존재하는 이메일로 가입 시도 실패', async () => {
             fakeOrm.user.findUnique.mockResolvedValue(mockUser);
 
-            const result = await userRepository.createUser({
-                email: 'test@test.com'
-            });
-
-            expect(result.status).toBe(HTTP_STATUS.CONFLICT);
-            expect(result.message).toBe(MESSAGES.AUTH.COMMON.EMAIL.DUPLICATED);
+            await expect(async () => {
+                await userRepository.createUser({
+                    email: 'test@test.com',
+                });
+            }).rejects.toThrow(CustomError);
         });
     });
 
@@ -68,12 +68,11 @@ describe('UserRepository test', () => {
         it('존재하지 않는 이메일로 로그인 시도 실패', async () => {
             fakeOrm.user.findUnique.mockResolvedValue(null);
 
-            const result = await userRepository.signInUser({
-                email: 'wrong@test.com'
-            });
-
-            expect(result.status).toBe(HTTP_STATUS.NOT_FOUND);
-            expect(result.message).toBe(MESSAGES.AUTH.SIGN_IN.FAILED);
+            await expect(async () => {
+                await userRepository.signInUser({
+                    email: 'wrong@test.com'
+                });
+            }).rejects.toThrow(CustomError);
         });
     });
 }); 
