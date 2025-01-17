@@ -1,7 +1,7 @@
 import { prisma } from '../../utils/prisma/index.js';
 import { Menurepository } from '../../repositories/partner/menu.repository.js';
 import { Menuservice } from '../../services/partner/menu.service.js';
-import { Menucontrollerpartner } from '../../controllers/partner/menu.controller.js';
+import { MenuControllerPartner } from '../../controllers/partner/menu.controller.js';
 import express from 'express';
 import { authenticatePartner } from '../../middlewares/auth.middleware.js';
 import { restaurantAuthMiddleware } from '../../middlewares/restaurant-auth.middleware.js';
@@ -9,7 +9,7 @@ import { restaurantAuthMiddleware } from '../../middlewares/restaurant-auth.midd
 const menuRouter = express.Router();
 const menuRepository = new Menurepository(prisma);
 const menuService = new Menuservice(menuRepository);
-const menuController = new Menucontrollerpartner(menuService);
+const menuController = new MenuControllerPartner(menuService);
 
 // 메뉴 생성
 menuRouter.post('/', authenticatePartner, restaurantAuthMiddleware, menuController.createMenu);

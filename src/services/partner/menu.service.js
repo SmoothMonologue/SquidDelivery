@@ -9,31 +9,46 @@ export class Menuservice {
     this.#repository = menuRepository;
   }
   createMenu = async (data) => {
-    if (!data.name || !data.price || !data.restaurantId) {
+    if (!data.name || !data.price) {
       throw new CustomError(HTTP_STATUS.BAD_REQUEST, MESSAGES.MENU.CREATE.MISSING_INFO);
     }
     const menu = await this.#repository.createMenu(data);
     return menu;
   };
+
   // 메뉴 목록 조회(소비자/사장님 공용)
-  restaurantIdMenu = async ({ restaurantId }) => {
+  restaurantIdMenu = async (restaurantId) => {
     const menus = this.#repository.restaurantIdMenu({
-      restaurantId: +restaurantId,
+      restaurantId: Number(restaurantId),
     });
     return menus;
   };
-  updateMenu = async ({ menuId, data }) => {
-    const menu = this.#repository.updateMenu({
-      menuId: +menuId,
-      data,
-    });
+
+  getMenu = async (data) => {
+    const menu = await this.#repository.getMenu(data);
+    if (!menu) {
+      throw new CustomError(HTTP_STATUS.NOT_FOUND, MESSAGES.MENU.DELETE.NOT_FOUND);
+    }
+    if (data.restaurantId !== menu.restaurantId) {
+      throw new CustomError(HTTP_STATUS.BAD_REQUEST, MESSAGES.MENU.DELETE.NOT_RESTAURANT_ID);
+    }
     return menu;
   };
 
-  deleteMenu = async ({ menuId }) => {
-    const menu = this.#repository.deleteMenu({
-      menuId: +menuId,
-    });
+  updateMenu = async (data) => {
+    const myRestaurantId = data.restaurantId;
+    const menu = await this.#repository.updateMenu(data);
+    if (!menu) {
+      throw new CustomError(HTTP_STATUS.NOT_FOUND, MESSAGES.MENU.UPDATE.NOT_FOUND);
+    }
+    if (myRestaurantId !== menu.restaurantId) {
+      throw new CustomError(HTTP_STATUS.BAD_REQUEST, MESSAGES.MENU.UPDATE.NOT_RESTAURANT_ID);
+    }
     return menu;
+  };
+
+  deleteMenu = async (data) => {
+    await this.#repository.deleteMenu(data);
+    return;
   };
 }

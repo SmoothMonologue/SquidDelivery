@@ -17,13 +17,6 @@ export class UserRestaurantRepository {
         keyword: true,
         createdAt: true,
         number: true,
-        Menu: {
-          select: {
-            id: true,
-            name: true,
-            price: true,
-          },
-        },
       },
     });
   }
