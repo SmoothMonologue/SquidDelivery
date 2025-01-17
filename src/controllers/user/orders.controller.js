@@ -1,6 +1,5 @@
-import orderService from '../../services/user/orders.services.js';
 
-class OrderController {
+export class OrderController {
   #service;
 
   constructor(service) {
@@ -9,9 +8,10 @@ class OrderController {
 
   postOrder = async (req, res) => {
     try {
-      const userId = req.user;
-
-      const data = await this.#service.createOrder(userId);
+      const userId = req.user.id;
+      const { method } = req.body;
+      const data = await this.#service.createOrder(userId, method);
+      console.log(`-------------->`, data);
       return res.status(data.status).json(data);
     } catch (error) {
       console.log(error);
@@ -22,7 +22,7 @@ class OrderController {
   cancelOrder = async (req, res) => {
     try {
       const { orderId } = req.params;
-      const userId = req.user;
+      const userId = req.user.id;
 
       const data = await this.#service.cancelOrder(orderId, userId);
       return res.status(data.status).json(data);
@@ -33,4 +33,3 @@ class OrderController {
   };
 }
 
-export default new OrderController(orderService);

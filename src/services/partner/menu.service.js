@@ -1,21 +1,18 @@
-import menuRepository from '../../repositories/partner/menu.repository.js';
+import { HTTP_STATUS } from '../../constants/http-status.constant.js';
+import { MESSAGES } from '../../constants/message.constant.js';
+import { CustomError } from '../../middlewares/error-handler.middleware.js';
 
-class Menuservice {
+export class Menuservice {
   #repository;
 
   constructor(menuRepository) {
     this.#repository = menuRepository;
   }
-  createMenu = async ({ name, price, spicyLevel, restaurantId }) => {
-    if (!name || price === undefined || restaurantId === undefined) {
-      throw new Error('메뉴 이름, 가격, 레스토랑 ID는 필수입니다.');
+  createMenu = async (data) => {
+    if (!data.name || !data.price || !data.restaurantId) {
+      throw new CustomError(HTTP_STATUS.BAD_REQUEST, MESSAGES.MENU.CREATE.MISSING_INFO);
     }
-    const menu = this.#repository.createMenu({
-      name,
-      price: +price,
-      spicyLevel: +spicyLevel,
-      restaurantId: +restaurantId,
-    });
+    const menu = await this.#repository.createMenu(data);
     return menu;
   };
   // 메뉴 목록 조회(소비자/사장님 공용)
@@ -40,5 +37,3 @@ class Menuservice {
     return menu;
   };
 }
-
-export default new Menuservice(menuRepository);

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>레스토랑 목록</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fef4e8;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .restaurant-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .restaurant-card {
+            background-color: white;
+            width: 300px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            text-align: center;
+            transition: transform 0.2s ease, box-shadow 0.3s ease;
+        }
+
+        .restaurant-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .restaurant-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .restaurant-card h3 {
+            margin: 10px 0;
+            color: #444;
+        }
+
+        .restaurant-card p {
+            margin: 5px 0;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .restaurant-card button {
+            margin-top: 10px;
+            padding: 10px 15px;
+            background-color: #ff8378;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .restaurant-card button:hover {
+            background-color: #ff9a8d;
+        }
+
+        .back-to-main {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .back-to-main a {
+            font-size: 14px;
+            color: #555;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .back-to-main a:hover {
+            color: #ff8378;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>레스토랑 목록</h1>
+    <div id="restaurantContainer" class="restaurant-container">
+        <!-- 레스토랑 카드가 동적으로 추가됩니다 -->
+    </div>
+    <div class="back-to-main">
+    </div>
+
+    <script>
+        // 하드코딩된 레스토랑 데이터
+        const restaurants = [
+            {
+                id: 1,
+                name: "김밥천국",
+                address: "서울시 강남구 역삼동",
+                description: "다양한 김밥과 한식을 즐길 수 있는 곳",
+                image: "/public/images/kimbap.png", // 로컬 이미지 경로
+            },
+            {
+                id: 2,
+                name: "떡볶이 월드",
+                address: "서울시 마포구 상수동",
+                description: "매콤달콤한 떡볶이가 일품인 식당",
+                image: "/public/images/tteokbokki.png",
+            },
+            {
+                id: 3,
+                name: "한우 숯불구이",
+                address: "경기도 성남시 분당구",
+                description: "최고급 한우를 맛볼 수 있는 고급 레스토랑",
+                image: "/public/images/boolgogi.png",
+            },
+            {
+                id: 4,
+                name: "바다 회 센터",
+                address: "부산광역시 해운대구",
+                description: "신선한 해산물과 회를 제공하는 인기 맛집",
+                image: "/public/images/fish.png",
+            },
+        ];
+
+        // 레스토랑 데이터 표시
+        const loadRestaurants = () => {
+            const container = document.getElementById("restaurantContainer");
+            container.innerHTML = restaurants
+                .map(
+                    (restaurant) => `
+                <div class="restaurant-card">
+                    <img src="${restaurant.image}" alt="${restaurant.name}">
+                    <h3>${restaurant.name}</h3>
+                    <p>${restaurant.address}</p>
+                    <p>${restaurant.description}</p>
+                    <button onclick="location.href='/public/restaurantDetails.html?id=${restaurant.id}'">상세 보기</button>
+                </div>
+            `
+                )
+                .join("");
+        };
+
+        document.addEventListener("DOMContentLoaded", loadRestaurants);
+    </script>
+
+    <div style="text-align: center; margin-top: 20px;">
+        <button
+            style="padding: 10px 20px; font-size: 16px; background-color: #2196f3; color: white; border: none; border-radius: 5px; cursor: pointer;"
+            onclick="history.back()">뒤로가기</button>
+    </div>
+</body>
+
+</html>

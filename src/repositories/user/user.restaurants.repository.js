@@ -1,14 +1,14 @@
 import { prisma } from '../../utils/prisma/index.js';
 import { MESSAGES } from '../../constants/message.constant.js';
 
-class UserRestaurantRepository {
+export class UserRestaurantRepository {
   #prisma;
 
   constructor(prisma) {
     this.#prisma = prisma;
   }
 
-  async findAllRestaurants() {
+  async getAllRestaurants() {
     return this.#prisma.restaurant.findMany({
       select: {
         id: true,
@@ -16,7 +16,6 @@ class UserRestaurantRepository {
         starRating: true,
         keyword: true,
         createdAt: true,
-        updatedAt: true,
         number: true,
         Menu: {
           select: {
@@ -29,7 +28,7 @@ class UserRestaurantRepository {
     });
   }
 
-  async findRestaurantById(id) {
+  async getAllRestaurantsById(id) {
     const restaurant = await this.#prisma.restaurant.findUnique({
       where: { id },
       select: {
@@ -50,6 +49,68 @@ class UserRestaurantRepository {
     }
     return restaurant;
   }
-}
 
-export default new UserRestaurantRepository(prisma);
+  // 키워드 가게-메뉴 검색
+  getRestaurantsByKeyword = async (keyword) => {
+    return await this.#prisma.restaurant.findMany({
+      where: {
+        OR: [
+          {
+            keyword: {
+              contains: String(keyword),
+            },
+          },
+          {
+            Menu: {
+              some: {
+                name: {
+                  contains: String(keyword),
+                },
+              },
+            },
+          },
+        ],
+      },
+      distinct: ['id'],
+      select: {
+        id: true,
+        restaurantName: true,
+        starRating: true,
+        keyword: true,
+        Menu: {
+          select: {
+            id: true,
+            name: true,
+            price: true,
+          },
+        },
+      },
+    });
+  };
+
+  // 레스토랑 리뷰 조회
+  findReviews = async (restaurantId) => {
+    const data = await this.#prisma.review.findMany({
+      where: {
+        restaurantId,
+      },
+      include: {
+        Comment: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+    return data;
+  };
+
+  // 레스토랑 메뉴 조회
+  findMenu = async (restaurantId) => {
+    const data = await this.#prisma.Menu.findMany({
+      where: {
+        restaurantId,
+      },
+    });
+    return data;
+  };
+}

@@ -1,25 +1,26 @@
+import { HTTP_STATUS } from '../../constants/http-status.constant.js';
 import { MESSAGES } from '../../constants/message.constant.js';
-import { prisma } from '../../utils/prisma/index.js';
+import { CustomError } from '../../middlewares/error-handler.middleware.js';
 
-class PartnerRestaurantRepository {
+export class PartnerRestaurantRepository {
   #prisma;
 
   constructor(prisma) {
     this.#prisma = prisma;
   }
+  async getMyRestaurant(id) {
+    return this.#prisma.restaurant.findUnique({ where: { partnerId: id } });
+  }
 
-  async createRestaurant(data) {
-    const requiredFields = {
-      partnerId: data.partnerId,
-      restaurantName: data.restaurantName,
-    };
+  async getRestaurantBysinessNum(data) {
+    return this.#prisma.restaurant.findUnique({ where: { businessNumber: data.businessNumber } });
+  }
+
+  async createRestaurant(data, id) {
     return this.#prisma.restaurant.create({
       data: {
-        ...requiredFields,
-        keyword: data.keyword,
-        starRating: data.starRating,
-        businessNumber: data.businessNumber,
-        number: data.number,
+        ...data,
+        partnerId: id,
       },
     });
   }
@@ -27,7 +28,7 @@ class PartnerRestaurantRepository {
   async updateRestaurant(id, data) {
     const restaurant = await this.#prisma.restaurant.findUnique({ where: { id } });
     if (!restaurant) {
-      throw new Error(MESSAGES.RESTAURANTS.COMMON.NOT_FOUND);
+      throw new CustomError(HTTP_STATUS.NOT_FOUND, MESSAGES.RESTAURANTS.COMMON.NOT_FOUND);
     }
     return this.#prisma.restaurant.update({
       where: { id },
@@ -42,26 +43,21 @@ class PartnerRestaurantRepository {
   }
 
   async deleteRestaurant(id) {
-    try {
-      return await this.#prisma.$transaction(async (tx) => {
-        await tx.comment.deleteMany({
-          where: {
-            Review: { restaurantId: id },
-          },
-        });
-        await tx.review.deleteMany({ where: { restaurantId: id } });
-        await tx.cart.deleteMany({ where: { restaurantId: id } });
-        await tx.menu.deleteMany({ where: { restaurantId: id } });
-        return tx.restaurant.delete({ where: { id } });
+    return await this.#prisma.$transaction(async (tx) => {
+      await tx.comment.deleteMany({
+        where: {
+          Review: { restaurantId: id },
+        },
       });
-    } catch (error) {
-      throw new Error(MESSAGES.RESTAURANTS.DELETE.ERROR);
-    }
-    return prisma.restaurant.delete({ where: { id } });
+      await tx.review.deleteMany({ where: { restaurantId: id } });
+      await tx.cart.deleteMany({ where: { restaurantId: id } });
+      await tx.menu.deleteMany({ where: { restaurantId: id } });
+      return tx.restaurant.delete({ where: { id } });
+    });
   }
 
   async findRestaurantsByPartnerId(partnerId) {
-    return this.#prisma.restaurant.findMany({ where: { partnerId } });
+    return await this.#prisma.restaurant.findUnique({ where: { partnerId } });
   }
 
   async findRestaurantById(id) {
@@ -81,10 +77,19 @@ class PartnerRestaurantRepository {
     });
 
     if (!restaurant) {
-      throw new Error(MESSAGES.RESTAURANTS.COMMON.NOT_FOUND);
+      throw new CustomError(HTTP_STATUS.NOT_FOUND, MESSAGES.RESTAURANTS.COMMON.NOT_FOUND);
     }
     return restaurant;
   }
-}
 
-export default new PartnerRestaurantRepository(prisma);
+  // 메뉴 목록 조회(사장님)
+  restaurantIdMenu = async (restaurantId) => {
+    const data = await this.#prisma.menu.findMany({
+      where: {
+        restaurantId,
+      },
+    });
+
+    return data;
+  };
+}

@@ -12,11 +12,11 @@ model User {
   name        String
   email       String   @unique
   password    String
-  phoneNumber String?
   interest    String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  cash        Int      @default(1000000) // 디폴트 값 100만
+  cash        Int      @default(1000000)
+  phoneNumber String?
   Order       Order[]
 
   @@map("User")
@@ -31,8 +31,8 @@ model Partner {
   updatedAt   DateTime    @updatedAt
   cash        Int         @default(10000)
   phoneNumber String?
-  Restaurant  Restaurant?
   Comment     Comment[]
+  Restaurant  Restaurant?
 
   @@map("Partner")
 }
@@ -42,15 +42,17 @@ model Restaurant {
   partnerId      Int      @unique
   restaurantName String   @unique
   keyword        String?
-  starRating     Int?
+  starRating     Int      @default(0)
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
   businessNumber String?  @unique
   number         String?
-  Cart           Cart[]
-  Menu           Menu[]
-  Review         Review[]
-  Partner        Partner  @relation(fields: [partnerId], references: [id])
+  sales          Int      @default(0)
+
+  Cart    Cart[]
+  Menu    Menu[]
+  Partner Partner  @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+  Review  Review[]
 
   @@map("Restaurant")
 }
@@ -61,7 +63,7 @@ model Menu {
   name         String
   price        Int
   spicyLevel   Int?
-  Restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  Restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
   MenuCart     MenuCart[]
 
   @@index([restaurantId], map: "Menu_restaurantId_fkey")
@@ -74,26 +76,24 @@ model Cart {
   restaurantId Int
   createdAt    DateTime   @default(now())
   menuInfo     Json
-  Restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  Restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
   MenuCart     MenuCart[]
-  Order        Order?
 
   @@index([restaurantId], map: "Cart_restaurantId_fkey")
   @@map("Cart")
 }
 
 model Order {
-  id        Int      @id @default(autoincrement())
-  userId    Int
-  cartId    Int      @unique
-  priceSum  Int
-  status    String
-  menuName  Json
-  createdAt DateTime @default(now())
-  Cart      Cart     @relation(fields: [cartId], references: [id])
-  User      User     @relation(fields: [userId], references: [id])
-  Payment   Payment?
-  Review    Review?
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  restaurantId Int
+  priceSum     Int
+  status       String
+  menuName     Json
+  createdAt    DateTime @default(now())
+  User         User     @relation(fields: [userId], references: [id])
+  Payment      Payment?
+  Review       Review?
 
   @@index([userId], map: "Order_userId_fkey")
   @@map("Order")
@@ -118,11 +118,11 @@ model Review {
   content      String?
   starRating   Int
   createdAt    DateTime   @default(now())
+  Comment      Comment?
   Order        Order      @relation(fields: [orderId], references: [id])
-  Restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
-  Comment      Comment[]
+  Restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
 
-  @@unique([userId, restaurantId])
+  @@index([restaurantId], map: "Review_restaurantId_fkey")
   @@map("Review")
 }
 
@@ -132,9 +132,10 @@ model Comment {
   reviewId  Int      @unique
   comment   String
   createdAt DateTime @default(now())
-  Partner   Partner  @relation(fields: [partnerId], references: [id])
-  Review    Review   @relation(fields: [reviewId], references: [id])
+  Partner   Partner  @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+  Review    Review   @relation(fields: [reviewId], references: [id], onDelete: Cascade)
 
+  @@index([partnerId], map: "Comment_partnerId_fkey")
   @@map("Comment")
 }
 
@@ -142,7 +143,7 @@ model MenuCart {
   id     Int  @id @default(autoincrement())
   menuId Int
   cartId Int
-  Cart   Cart @relation(fields: [cartId], references: [id])
+  Cart   Cart @relation(fields: [cartId], references: [id], onDelete: Cascade)
   Menu   Menu @relation(fields: [menuId], references: [id])
 
   @@index([cartId], map: "MenuCart_cartId_fkey")
