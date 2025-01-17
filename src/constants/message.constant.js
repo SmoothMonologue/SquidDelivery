@@ -149,20 +149,24 @@ export const MESSAGES = {
     COMMON: {
       SUCCEED: '메뉴 조회에 성공했습니다.',
       NOT_FOUND: '메뉴를 찾을 수 없습니다.',
-      NOT_AUTHORIZED: '자신의 가게 매뉴만 접근할 수 있습니다.',
+      NOT_RESTAURANT_ID: '내 가게의 레스토랑아이디가 아닙니다.',
     },
     CREATE: {
       SUCCEED: '메뉴를 추가했습니다.',
       NOT_MY_RESTAURANTS: '내 가게의 레스토랑아이디가 아닙니다.',
-      MISSING_INFO: '이름, 가격, 레스토랑아이디중 누락된 정보가 있습니다.',
+      MISSING_INFO: '이름, 가격중 누락된 정보가 있습니다.',
     },
     UPDATE: {
       SUCCEED: '메뉴를 수정하였습니다.',
       FAILED: '메뉴 추가에 실패했습니다.',
+      NOT_FOUND: '메뉴를 찾을 수 없습니다.',
+      NOT_RESTAURANT_ID: '내 가게의 레스토랑아이디가 아닙니다.',
     },
     DELETE: {
       SUCCEED: '메뉴를 삭제했습니다.',
       FAILED: '장바구니 삭제에 실패했습니다.',
+      NOT_FOUND: '메뉴를 찾을 수 없습니다.',
+      NOT_RESTAURANT_ID: '내 가게의 레스토랑아이디가 아닙니다.',
     },
   },
   CARTS: {
