@@ -31,11 +31,8 @@ const io = new Server(server, {
 // 정적 파일 제공
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-console.log('__filename', __filename);
-console.log('__dirname', __dirname);
-app.use('/public', express.static(path.join(__dirname, '../public')));
+app.use('/public', express.static(path.join(__dirname, '../public'))); // public 폴더 내의 정적 파일을 제공
 
-//app.use('/public', express.static('public')); // public 폴더 내의 정적 파일을 제공
 app.use(cors()); // CORS 미들웨어 추가 >>  다른 도메인에서의 요청을 허용
 app.use(express.json());
 app.use('/api', routes);
