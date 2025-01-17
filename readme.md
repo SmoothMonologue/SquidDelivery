@@ -24,6 +24,9 @@ $ npm i express
 - Git
 - Github
 - insomnia
+- winScp
+- putty
+- aws/acm(ssl인증서발급)/ec2/로드밸런서/router53
 
 ### 팀 규칙
 
@@ -35,11 +38,15 @@ $ npm i express
 
 ##### 예시 > 주문 성공 메시지 추가시 constants/message.constant.js 파일에 객체를 추가하기
 
-## 3. 프로그래머 정보
+## 3. 노션 링크
+
+[노션](https://www.notion.so/teamsparta/16e2dc3ef51480a8bbaccaac600b75ea)
+
+## 4. 프로그래머 정보
 
 [@김호진](https://github.com/SmoothMonologue?tab=repositories) [@강나연](https://github.com/nayeon0206) [@유재은](https://github.com/jaeeun0238) [@오혜성](https://github.com/ohhyeseong) [@박양선](https://github.com/didtjs123?tab=repositories) [@이경민](https://github.com/lgm-7) [@윤형근](https://github.com/heung-geun)
 
-## 4. 와이어 프레임
+## 5. 와이어 프레임
 
 ![와이어프레임](https://www.figma.com/design/ocDWQMgMObjbKby8aGXzV1/Untitled?node-id=0-1&p=f&t=cVUHZkeYrJpo4GNx-0)
 
@@ -47,7 +54,7 @@ $ npm i express
 
 ![ERD DIAGRAM](https://drawsql.app/teams/-2551/diagrams/-3)
 
-## 5. 디텍토리 구조
+## 6. 디텍토리 구조
 
 ```plaintext
 SquidDelivery
