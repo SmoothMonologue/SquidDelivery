@@ -32,7 +32,8 @@ export class UserRestaurantService {
     // 클라이언트를 위한 조회 결과 재배치
     const newData = data.map((restaurant) => ({
       restaurantId: restaurant.id,
-      restaurantName: restaurant.name,
+      restaurantName: restaurant.restaurantName,
+      starRating: restaurant.starRating,
     }));
     return newData;
   };

@@ -7,7 +7,7 @@ export class Menurepository {
   createMenu = async (data) => {
     const menu = await this.#orm.menu.create({
       data: {
-        ...data,
+        name: data.name,
         price: Number(data.price),
         spicyLevel: Number(data.spicyLevel),
         restaurantId: Number(data.restaurantId),
@@ -19,36 +19,42 @@ export class Menurepository {
   restaurantIdMenu = async ({ restaurantId }) => {
     const restaurantIdMenu = await this.#orm.menu.findMany({
       where: {
-        restaurantId: { equals: Number(restaurantId) },
+        restaurantId: Number(restaurantId),
       },
     });
     return restaurantIdMenu;
   };
 
+  getMenu = async (data) => {
+    const Menu = await this.#orm.menu.findUniqe({
+      where: {
+        id: Number(data.menuId),
+      },
+    });
+    return Menu;
+  };
+
   // 메뉴 수정(사장님용)
-  updateMenu = async ({ menuId, data }) => {
+  updateMenu = async (data) => {
     const updateMenu = await this.#orm.menu.update({
       where: {
-        id: Number(menuId),
+        id: Number(data.menuId),
       },
       data: {
         name: data.name,
         price: Number(data.price),
         spicyLevel: Number(data.spicyLevel),
-        restaurantId: Number(data.restaurantId),
       },
     });
     return updateMenu;
   };
   // 메뉴 삭제(사장님용)
-  deleteMenu = async ({ menuId }) => {
-    // console.log('메뉴아이디', menuId);
-    const deleteMenu = await this.#orm.menu.delete({
+  deleteMenu = async (data) => {
+    await this.#orm.menu.delete({
       where: {
-        id: Number(menuId),
+        id: Number(data.menuId),
       },
     });
-    // console.log('메뉴아이디', menuId);
-    return deleteMenu;
+    return;
   };
 }
