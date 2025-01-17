@@ -10,8 +10,7 @@ export class AuthController {
   userSignUp = async (req, res, next) => {
     try {
       const { email, password, name, interest, phoneNumber } = req.body;
-      const user = await this.#service.createUser({ email, password, name, interest, phoneNumber });
-      console.log('user : ', user);
+      await this.#service.createUser({ email, password, name, interest, phoneNumber });
       return res.status(HTTP_STATUS.CREATED).json(MESSAGES.AUTH.SIGN_UP.SUCCEED);
     } catch (error) {
       next(error);
@@ -38,9 +37,6 @@ export class AuthController {
         res.setHeader('Authorization', `Bearer ${accessToken}`);
         console.log('사장님 로그인 성공!');
       }
-      if (partner.status) {
-        return res.status(partner.status).json(partner.message);
-      }
       return res.status(HTTP_STATUS.OK).json(partner.data);
     } else {
       const user = await this.#service.signInUser({ email, password });
@@ -48,9 +44,6 @@ export class AuthController {
       if (accessToken) {
         res.setHeader('authorization', `Bearer ${accessToken}`);
         console.log('사용자 로그인 성공!');
-      }
-      if (user.status) {
-        return res.status(user.status).json(user.message);
       }
       return res.status(HTTP_STATUS.CREATED).json(user.data);
     }

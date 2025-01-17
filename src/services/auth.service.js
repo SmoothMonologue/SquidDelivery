@@ -4,6 +4,7 @@ import { HASH_SALT_ROUNDS, ACCESS_TOKEN_EXPIRES_IN } from '../constants/auth.con
 import { ACCESS_TOKEN_SECRET } from '../constants/env.constant.js';
 import { MESSAGES } from '../constants/message.constant.js';
 import { HTTP_STATUS } from '../constants/http-status.constant.js';
+import { CustomError } from '../middlewares/error-handler.middleware.js';
 
 export class AuthService {
   #userRepository;
@@ -40,18 +41,12 @@ export class AuthService {
   signInPartner = async (partnerData) => {
     const partner = await this.#partnerRepository.signInPartner({ email: partnerData.email });
     if (!partner) {
-      return {
-        status: HTTP_STATUS.UNAUTHORIZED,
-        message: MESSAGES.AUTH.COMMON.UNAUTHORIZED,
-      };
+      throw new CustomError(HTTP_STATUS.BAD_REQUEST, MESSAGES.AUTH.COMMON.UNAUTHORIZED);
     }
 
     const isPasswordMatched = bcrypt.compareSync(partnerData.password, partner.password);
     if (!isPasswordMatched) {
-      return {
-        status: HTTP_STATUS.UNAUTHORIZED,
-        message: MESSAGES.AUTH.COMMON.UNAUTHORIZED,
-      };
+      throw new CustomError(HTTP_STATUS.BAD_REQUEST, MESSAGES.AUTH.SIGN_IN.NO_MACHTED);
     }
 
     const payload = { id: partner.id };
@@ -64,16 +59,14 @@ export class AuthService {
 
   signInUser = async (userData) => {
     const user = await this.#userRepository.signInUser({ email: userData.email });
-    if (user.status) {
-      return user;
+    if (!user) {
+      throw new CustomError(HTTP_STATUS.BAD_REQUEST, MESSAGES.AUTH.SIGN_IN.NOT_FOUND);
     }
+
     const isPasswordMatched = bcrypt.compareSync(userData.password, user.password);
 
     if (!isPasswordMatched) {
-      return {
-        status: HTTP_STATUS.UNAUTHORIZED,
-        message: MESSAGES.AUTH.COMMON.UNAUTHORIZED,
-      };
+      throw new CustomError(HTTP_STATUS.UNAUTHORIZED, MESSAGES.AUTH.COMMON.UNAUTHORIZED);
     }
 
     const payload = { id: user.id };
@@ -86,18 +79,12 @@ export class AuthService {
 
   signOut = async (authorization) => {
     if (!authorization.authorization) {
-      return {
-        status: HTTP_STATUS.UNAUTHORIZED,
-        message: MESSAGES.AUTH.COMMON.JWT.NO_TOKEN,
-      };
+      throw new CustomError(HTTP_STATUS.UNAUTHORIZED, MESSAGES.AUTH.COMMON.JWT.NO_TOKEN);
     }
     const [tokenType, token] = authorization.authorization.split(' ');
 
     if (!token || tokenType !== 'Bearer') {
-      return {
-        status: HTTP_STATUS.UNAUTHORIZED,
-        message: MESSAGES.AUTH.COMMON.JWT.INVALID,
-      };
+      throw new CustomError(HTTP_STATUS.UNAUTHORIZED, MESSAGES.AUTH.COMMON.JWT.INVALID);
     }
 
     jwt.verify(token, ACCESS_TOKEN_SECRET);
