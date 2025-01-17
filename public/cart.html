@@ -138,20 +138,18 @@
                 return;
             }
 
-            // 장바구니 UI 생성
             container.innerHTML = cart.map((item, index) => `
-                <div class="cart-item">
-                    <div>
-                        <h2>${item.name}</h2>
-                        <p>가격: ${item.price}원</p>
-                        <p>수량: ${item.quantity}개</p>
-                        <p>합계: ${item.price * item.quantity}원</p>
-                    </div>
-                    <button onclick="removeFromCart(${index})">제거</button>
-                </div>
-            `).join('');
+        <div class="cart-item">
+            <div>
+                <h2>${item.name}</h2>
+                <p>가격: ${item.price}원</p>
+                <p>수량: ${item.quantity}개</p>
+                <p>합계: ${item.price * item.quantity}원</p>
+            </div>
+            <button onclick="removeFromCart(${index})">제거</button>
+        </div>
+    `).join('');
 
-            // 총합 계산
             const totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
             container.innerHTML += `<div class="total">총합: ${totalPrice}원</div>`;
         };
