@@ -8,41 +8,92 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #fef4e8;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
             text-align: center;
-            padding: 20px;
+            margin: 20px 0;
+            color: #333;
         }
 
         .order-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
             display: flex;
             flex-direction: column;
-            align-items: center;
             gap: 20px;
-            margin-top: 20px;
         }
 
         .order-item {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 10px;
-            width: 80%;
-            text-align: left;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
         .order-item h2 {
             margin: 0;
             font-size: 20px;
+            color: #444;
         }
 
         .order-item p {
             margin: 5px 0;
+            font-size: 14px;
             color: #555;
+        }
+
+        .order-item button {
+            align-self: flex-end;
+            padding: 8px 12px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .order-item button:hover {
+            background-color: #45a049;
+        }
+
+        .empty-message {
+            text-align: center;
+            font-size: 16px;
+            color: #777;
+        }
+
+        .back-button {
+            margin: 10px auto;
+            display: block;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #2196f3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .back-button:hover {
+            background-color: #1976d2;
         }
     </style>
 </head>
 
 <body>
     <h1>주문 내역</h1>
+    <button class="back-button" onclick="history.back()">뒤로가기</button>
     <div id="orderHistory" class="order-container">
         <!-- 주문 내역이 동적으로 추가됩니다 -->
     </div>
@@ -55,22 +106,22 @@
                 menuName: "참치 김밥",
                 quantity: 2,
                 totalPrice: 7000,
-                status: "조리 중"
+                status: "조리 중",
             },
             {
                 id: 102,
                 menuName: "매운 떡볶이",
                 quantity: 1,
                 totalPrice: 5000,
-                status: "배달 중"
+                status: "배달 중",
             },
             {
                 id: 103,
                 menuName: "치즈 라면",
                 quantity: 3,
                 totalPrice: 12000,
-                status: "배달 완료"
-            }
+                status: "배달 완료",
+            },
         ];
 
         // 주문 내역 렌더링 함수
@@ -78,19 +129,29 @@
             const container = document.getElementById("orderHistory");
 
             if (orders.length === 0) {
-                container.innerHTML = "<p>주문 내역이 없습니다.</p>";
+                container.innerHTML = "<p class='empty-message'>주문 내역이 없습니다.</p>";
                 return;
             }
 
-            container.innerHTML = orders.map(order => `
+            container.innerHTML = orders
+                .map(
+                    (order) => `
                 <div class="order-item">
                     <h2>주문 ID: ${order.id}</h2>
                     <p><strong>메뉴:</strong> ${order.menuName}</p>
                     <p><strong>수량:</strong> ${order.quantity}</p>
                     <p><strong>가격:</strong> ${order.totalPrice}원</p>
                     <p><strong>상태:</strong> ${order.status}</p>
+                    <button onclick="writeReview(${order.id})">리뷰 작성</button>
                 </div>
-            `).join('');
+            `
+                )
+                .join("");
+        };
+
+        // 리뷰 작성 페이지로 이동
+        const writeReview = (orderId) => {
+            window.location.href = `/public/review.html?orderId=${orderId}`;
         };
 
         // 페이지 로드 시 주문 내역 렌더링

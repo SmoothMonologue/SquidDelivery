@@ -5,41 +5,185 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>레스토랑 상세</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fef4e8;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        h1,
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            display: block;
+            margin: 20px auto;
+        }
+
+        .details p {
+            font-size: 14px;
+            color: #555;
+            margin: 10px 0;
+        }
+
+        .menu-item {
+            background-color: #fff8f5;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .menu-item button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 14px;
+            background-color: #ff8378;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .menu-item button:hover {
+            background-color: #ff9a8d;
+        }
+
+        .review-item {
+            background-color: #f8f8f8;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        #addReviewButton {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #addReviewButton:hover {
+            background-color: #45a049;
+        }
+
+        .back-to-main {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-to-main a {
+            font-size: 14px;
+            color: #555;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .back-to-main a:hover {
+            color: #ff8378;
+        }
+    </style>
 </head>
 
 <body>
-    <h1>레스토랑 상세 정보</h1>
-    <div id="restaurantDetails">
-        <!-- 레스토랑 상세 정보 -->
+    <div class="container">
+        <h1>레스토랑 상세 정보</h1>
+        <div id="restaurantDetails" class="details">
+            <!-- 레스토랑 상세 정보 -->
+        </div>
+        <h2>메뉴</h2>
+        <div id="menuContainer">
+            <!-- 레스토랑 메뉴 -->
+        </div>
+        <h2>리뷰</h2>
+        <div id="reviewContainer">
+            <!-- 리뷰 -->
+        </div>
+        <button id="addReviewButton">리뷰 작성</button>
+        <div class="back-to-main">
+        </div>
     </div>
-    <h2>메뉴</h2>
-    <div id="menuContainer">
-        <!-- 레스토랑 메뉴 -->
-    </div>
-    <h2>리뷰</h2>
-    <div id="reviewContainer">
-        <!-- 리뷰 -->
-    </div>
-    <button id="addReviewButton">리뷰 작성</button>
 
     <script>
+        // 하드코딩된 레스토랑 데이터
         const restaurants = [
             {
                 id: 1,
                 name: "참치 김밥 전문점",
                 address: "서울 강남구",
                 description: "참치 김밥이 맛있는 집",
-                image: "/path/to/image1.jpg",
+                image: "/public/images/kimbap.png",
                 menu: [
-                    { name: "참치 김밥", price: 3500 },
-                    { name: "치즈 김밥", price: 4000 },
+                    { id: 1, name: "참치 김밥", price: 3500 },
+                    { id: 2, name: "치즈 김밥", price: 4000 },
                 ],
             },
-            // 다른 레스토랑들 추가
+            {
+                id: 2,
+                name: "떡볶이 월드",
+                address: "서울 마포구 상수동",
+                description: "매콤달콤한 떡볶이가 일품인 식당",
+                image: "/public/images/tteokbokki.png",
+                menu: [
+                    { id: 3, name: "떡볶이", price: 5000 },
+                    { id: 4, name: "순대", price: 4000 },
+                    { id: 5, name: "튀김 세트", price: 6000 },
+                ],
+            },
+            {
+                id: 3,
+                name: "한우 숯불구이",
+                address: "경기도 성남시 분당구",
+                description: "최고급 한우를 맛볼 수 있는 고급 레스토랑",
+                image: "/public/images/boolgogi.png",
+                menu: [
+                    { name: "한우 꽃등심", price: 15000 },
+                    { name: "한우 갈비살", price: 14000 },
+                ],
+            },
+            {
+                id: 4,
+                name: "바다 회 센터",
+                address: "부산광역시 해운대구",
+                description: "신선한 해산물과 회를 제공하는 인기 맛집",
+                image: "/public/images/fish.png",
+                menu: [
+                    { name: "광어 회", price: 25000 },
+                    { name: "참돔 회", price: 28000 },
+                    { name: "전복구이", price: 30000 },
+                ],
+            },
         ];
 
+        // 로컬스토리지에서 리뷰 및 장바구니 데이터 로드
         const reviews = JSON.parse(localStorage.getItem("reviews")) || [];
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
+        // 상세 정보 렌더링
         const renderDetails = () => {
             const params = new URLSearchParams(window.location.search);
             const restaurantId = parseInt(params.get("id"), 10);
@@ -52,28 +196,44 @@
                 return;
             }
 
-            // 상세 정보 렌더링
-            const details = `
+            document.getElementById("restaurantDetails").innerHTML = `
                 <h2>${restaurant.name}</h2>
                 <img src="${restaurant.image}" alt="${restaurant.name}">
-                <p>${restaurant.address}</p>
-                <p>${restaurant.description}</p>
+                <p><strong>주소:</strong> ${restaurant.address}</p>
+                <p><strong>설명:</strong> ${restaurant.description}</p>
             `;
-            const menu = restaurant.menu.map(item => `<p>${item.name}: ${item.price}원</p>`).join('');
 
-            document.getElementById("restaurantDetails").innerHTML = details;
-            document.getElementById("menuContainer").innerHTML = menu;
+            document.getElementById("menuContainer").innerHTML = restaurant.menu
+                .map(item => `
+                    <div class="menu-item">
+                        <p><strong>${item.name}</strong>: ${item.price}원</p>
+                        <button onclick="addToCart(${item.id}, '${item.name}', ${item.price}, ${restaurant.id})">장바구니 추가</button>
+                    </div>
+                `)
+                .join("");
 
-            // 리뷰 렌더링
             const restaurantReviews = reviews.filter(r => r.restaurantId === restaurantId);
-            const reviewList = restaurantReviews.map(r => `
-                <div class="review-item">
-                    <p><strong>별점:</strong> ${'⭐'.repeat(r.starRating)}</p>
-                    <p><strong>내용:</strong> ${r.content}</p>
-                </div>
-            `).join('');
+            document.getElementById("reviewContainer").innerHTML = restaurantReviews.length
+                ? restaurantReviews
+                    .map(r => `
+                          <div class="review-item">
+                              <p><strong>별점:</strong> ${"⭐".repeat(r.starRating)}</p>
+                              <p><strong>내용:</strong> ${r.content}</p>
+                          </div>
+                      `)
+                    .join("")
+                : "<p>작성된 리뷰가 없습니다.</p>";
+        };
 
-            document.getElementById("reviewContainer").innerHTML = reviewList || "<p>작성된 리뷰가 없습니다.</p>";
+        const addToCart = (menuId, menuName, menuPrice, restaurantId) => {
+            const existingItem = cart.find(item => item.menuId === menuId);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ menuId, menuName, menuPrice, restaurantId, quantity: 1 });
+            }
+            localStorage.setItem("cart", JSON.stringify(cart));
+            alert(`${menuName}이(가) 장바구니에 추가되었습니다!`);
         };
 
         document.getElementById("addReviewButton").onclick = () => {
@@ -88,9 +248,14 @@
             }
         };
 
-        // 초기화
         document.addEventListener("DOMContentLoaded", renderDetails);
     </script>
+
+    <div style="text-align: center; margin-top: 20px;">
+        <button
+            style="padding: 10px 20px; font-size: 16px; background-color: #2196f3; color: white; border: none; border-radius: 5px; cursor: pointer;"
+            onclick="history.back()">뒤로가기</button>
+    </div>
 </body>
 
 </html>

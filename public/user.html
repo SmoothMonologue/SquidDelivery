@@ -5,15 +5,94 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>주문 현황 (고객)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fef4e8;
+            color: #333;
+        }
+
+        header {
+            background-color: #ff8378;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        main {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 1rem;
+        }
+
+        #statusMessage {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background-color: #73d0fc;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin: 5px;
+        }
+
+        button:hover {
+            background-color: #33bbfa;
+        }
+
+        #statusImage img {
+            margin-top: 20px;
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px 0;
+            margin-top: 20px;
+            background-color: #ff8378;
+            color: #333;
+            font-size: 14px;
+            border-top: 1px solid #ff8378;
+        }
+    </style>
 </head>
 
 <body>
-    <h1>주문 현황 (고객)</h1>
-    <div id="statusMessage">잠시 기다려주세요...</div>
-    <div id="statusImage">
-        <!-- 배달 상태 이미지가 여기에 표시됩니다 -->
-    </div>
-    <button id="orderComplete">주문 완료</button>
+    <header>
+        <h1>주문 현황 (고객)</h1>
+    </header>
+    <main>
+        <div id="statusMessage">잠시 기다려주세요...</div>
+        <div id="statusImage">
+            <!-- 배달 상태 이미지가 여기에 표시됩니다 -->
+        </div>
+        <button id="orderComplete">주문 완료</button>
+        <button id="goBack">뒤로가기</button>
+    </main>
+    <footer>
+        &copy; 맛있는 오징어제육볶음!
+    </footer>
 
     <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"
         integrity="sha384-mkQ3/7FUtcGyoppY6bz/PORYoGqOl7/aSUMn2ymDOJcapfS6PHqxhRTMh1RR0Q6+"
@@ -55,24 +134,33 @@
                     alert('주문이 완료되었습니다!');
                 };
 
+                document.getElementById('goBack').onclick = () => {
+                    window.history.back();
+                };
+
                 socket.on('status_update', (data) => {
                     const statusMessage = document.getElementById('statusMessage');
                     const statusImage = document.getElementById('statusImage');
 
                     if (data.status === '조리중') {
-                        statusMessage.innerText = '조리 중입니다.';
+                        statusMessage.innerText = '오징어 요리사가 맛있게 요리하는 중 입니다!';
                         statusImage.innerHTML = `
-                            <img src="/public/images/cook_squid.png" alt="조리 중" style="width:150px; height:auto;" />
+                            <img src="/public/images/cook_squid.png" alt="조리 중" />
                         `;
                     } else if (data.status === '배달중') {
-                        statusMessage.innerText = '배달이 진행 중입니다.';
+                        statusMessage.innerText = '오징어 배달원이 배달 중 입니다! 조금만 기다리시면 맛있는 음식이 옵니다!';
                         statusImage.innerHTML = `
-                            <img src="/public/images/delivery_squid.png" alt="배달 중" style="width:150px; height:auto;" />
+                            <img src="/public/images/delivery_squid.png" alt="배달 중" />
                         `;
                     } else if (data.status === '배달완료') {
-                        statusMessage.innerText = '배달이 완료되었습니다!';
+                        statusMessage.innerText = '오징어 배달원의 배달이 완료되었습니다! 맛있게 드세요~!';
                         statusImage.innerHTML = `
-                            <img src="/public/images/delivery_complete.png" alt="배달 완료" style="width:150px; height:auto;" />
+                            <img src="/public/images/delivery_complete.png" alt="배달 완료" />
+                        `;
+                    } else if (data.status === '주문취소') {
+                        statusMessage.innerText = '오징어 요리사가 배달이 밀려 주문을 취소할 수 밖에 없었어요..';
+                        statusImage.innerHTML = `
+                            <img src="/public/images/cry_squid.png" alt="주문 취소" />
                         `;
                     } else {
                         statusMessage.innerText = '';

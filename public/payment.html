@@ -5,13 +5,100 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>결제</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fef4e8;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            max-width: 500px;
+            width: 100%;
+            background-color: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        #orderSummary {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .order-item {
+            background-color: #fff8f5;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .order-item h2 {
+            margin: 0 0 5px;
+            font-size: 18px;
+            color: #444;
+        }
+
+        .order-item p {
+            margin: 0;
+            font-size: 14px;
+            color: #666;
+        }
+
+        #totalPrice {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 25px;
+            background-color: #ff8378;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #ff9a8d;
+            transform: translateY(-2px);
+        }
+
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
 </head>
 
 <body>
-    <h1>결제</h1>
-    <div id="orderSummary"></div>
-    <p id="totalPrice"></p>
-    <button id="completePaymentButton">결제 완료</button>
+    <div class="container">
+        <h1>결제</h1>
+        <div id="orderSummary">
+            <!-- 주문 요약이 동적으로 추가됩니다 -->
+        </div>
+        <p id="totalPrice"></p>
+        <button id="completePaymentButton">결제 완료</button>
+    </div>
 
     <script>
         const loadOrderSummary = () => {
@@ -24,14 +111,19 @@
                 return;
             }
 
-            container.innerHTML = cart.map(item => `
-                <div>
+            container.innerHTML = cart
+                .map(
+                    (item) => `
+                <div class="order-item">
                     <h2>${item.name}</h2>
                     <p>가격: ${item.price}원</p>
+                    <p>수량: ${item.quantity || 1}개</p>
                 </div>
-            `).join('');
+            `
+                )
+                .join("");
 
-            const totalPrice = cart.reduce((total, item) => total + item.price, 0);
+            const totalPrice = cart.reduce((total, item) => total + item.price * (item.quantity || 1), 0);
             document.getElementById("totalPrice").innerText = `총 금액: ${totalPrice}원`;
         };
 
@@ -42,20 +134,35 @@
                 return;
             }
 
-            // 임시 하드코딩된 주문 ID 생성
-            const orderId = Date.now(); // 간단한 고유 ID 생성 (현재 시간 사용)
+            // 주문 데이터 생성
+            const orderData = {
+                orderId: Date.now(), // 간단한 고유 주문 ID
+                items: cart,
+                totalPrice: cart.reduce((total, item) => total + item.price * (item.quantity || 1), 0),
+                status: "결제 완료",
+            };
 
-            // 리뷰 작성 페이지로 이동하며 주문 ID 전달
+            // 주문 데이터를 주문 내역에 저장
+            const orderHistory = JSON.parse(localStorage.getItem("orderHistory")) || [];
+            orderHistory.push(orderData);
+            localStorage.setItem("orderHistory", JSON.stringify(orderHistory));
+
+            // 장바구니 비우기
+            localStorage.removeItem("cart");
+
             alert("결제가 완료되었습니다!");
-            localStorage.setItem("reviewOrderId", orderId); // 주문 ID 저장
-            localStorage.setItem("cart", JSON.stringify(cart)); // 리뷰 작성을 위해 장바구니 데이터 유지
-            localStorage.removeItem("cart"); // 결제 후 장바구니 비우기
-            window.location.href = "/public/review.html";
+            window.location.href = "/public/orderHistory.html";
         };
 
         document.getElementById("completePaymentButton").onclick = completePayment;
         loadOrderSummary();
     </script>
+
+    <div style="text-align: center; margin-top: 20px;">
+        <button
+            style="padding: 10px 20px; font-size: 16px; background-color: #2196f3; color: white; border: none; border-radius: 5px; cursor: pointer;"
+            onclick="history.back()">뒤로가기</button>
+    </div>
 </body>
 
 </html>
