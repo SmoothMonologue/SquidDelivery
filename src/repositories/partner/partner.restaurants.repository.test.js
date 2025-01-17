@@ -38,14 +38,14 @@ describe('PartnerRestaurantRepository', () => {
         keyword: '테스트,맛집',
         starRating: 4.5,
         businessNumber: '123-45-67890',
-        number: '02-1234-5678'
+        number: '02-1234-5678',
       };
       const partnerId = 1;
 
       const expectedRestaurant = {
         id: 1,
         partnerId,
-        ...mockData
+        ...mockData,
       };
 
       mockPrisma.restaurant.create.mockResolvedValue(expectedRestaurant);
@@ -55,8 +55,8 @@ describe('PartnerRestaurantRepository', () => {
       expect(mockPrisma.restaurant.create).toHaveBeenCalledWith({
         data: {
           partnerId,
-          ...mockData
-        }
+          ...mockData,
+        },
       });
       expect(result).toEqual(expectedRestaurant);
     });
@@ -70,7 +70,7 @@ describe('PartnerRestaurantRepository', () => {
         keyword: '업데이트,맛집',
         starRating: 4.8,
         businessNumber: '123-45-67890',
-        number: '02-1234-5678'
+        number: '02-1234-5678',
       };
 
       mockPrisma.restaurant.findUnique.mockResolvedValue({ id: restaurantId });
@@ -78,10 +78,12 @@ describe('PartnerRestaurantRepository', () => {
 
       const result = await partnerRestaurantRepository.updateRestaurant(restaurantId, updateData);
 
-      expect(mockPrisma.restaurant.findUnique).toHaveBeenCalledWith({ where: { id: restaurantId } });
+      expect(mockPrisma.restaurant.findUnique).toHaveBeenCalledWith({
+        where: { id: restaurantId },
+      });
       expect(mockPrisma.restaurant.update).toHaveBeenCalledWith({
         where: { id: restaurantId },
-        data: updateData
+        data: updateData,
       });
       expect(result).toEqual({ id: restaurantId, ...updateData });
     });
@@ -90,9 +92,9 @@ describe('PartnerRestaurantRepository', () => {
       const restaurantId = 999;
       mockPrisma.restaurant.findUnique.mockResolvedValue(null);
 
-      await expect(
-        partnerRestaurantRepository.updateRestaurant(restaurantId, {})
-      ).rejects.toThrow(MESSAGES.RESTAURANTS.COMMON.NOT_FOUND);
+      await expect(partnerRestaurantRepository.updateRestaurant(restaurantId, {})).rejects.toThrow(
+        MESSAGES.RESTAURANTS.COMMON.NOT_FOUND,
+      );
     });
   });
 
@@ -118,11 +120,11 @@ describe('PartnerRestaurantRepository', () => {
 
     it('삭제 중 에러 발생 시 적절한 에러를 throw해야 합니다', async () => {
       const restaurantId = 1;
-      mockPrisma.$transaction.mockRejectedValue(new Error('DB Error'));
+      mockPrisma.$transaction.mockRejectedValue(new Error('레스토랑 삭제 중 오류가 발생했습니다.'));
 
-      await expect(
-        partnerRestaurantRepository.deleteRestaurant(restaurantId)
-      ).rejects.toThrow(MESSAGES.RESTAURANTS.DELETE.ERROR);
+      await expect(partnerRestaurantRepository.deleteRestaurant(restaurantId)).rejects.toThrow(
+        MESSAGES.RESTAURANTS.DELETE.ERROR,
+      );
     });
   });
 
@@ -132,7 +134,7 @@ describe('PartnerRestaurantRepository', () => {
       const mockRestaurant = {
         id: 1,
         partnerId,
-        restaurantName: '테스트 레스토랑'
+        restaurantName: '테스트 레스토랑',
       };
 
       mockPrisma.restaurant.findUnique.mockResolvedValue(mockRestaurant);
@@ -156,7 +158,7 @@ describe('PartnerRestaurantRepository', () => {
         createdAt: new Date(),
         updatedAt: new Date(),
         businessNumber: '123-45-67890',
-        number: '02-1234-5678'
+        number: '02-1234-5678',
       };
 
       mockPrisma.restaurant.findUnique.mockResolvedValue(mockRestaurant);
@@ -165,7 +167,7 @@ describe('PartnerRestaurantRepository', () => {
 
       expect(mockPrisma.restaurant.findUnique).toHaveBeenCalledWith({
         where: { id: restaurantId },
-        select: expect.any(Object)
+        select: expect.any(Object),
       });
       expect(result).toEqual(mockRestaurant);
     });
@@ -174,9 +176,9 @@ describe('PartnerRestaurantRepository', () => {
       const restaurantId = 999;
       mockPrisma.restaurant.findUnique.mockResolvedValue(null);
 
-      await expect(
-        partnerRestaurantRepository.findRestaurantById(restaurantId)
-      ).rejects.toThrow(MESSAGES.RESTAURANTS.COMMON.NOT_FOUND);
+      await expect(partnerRestaurantRepository.findRestaurantById(restaurantId)).rejects.toThrow(
+        MESSAGES.RESTAURANTS.COMMON.NOT_FOUND,
+      );
     });
   });
-}); 
+});
