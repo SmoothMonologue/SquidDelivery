@@ -16,7 +16,6 @@
 
         header {
             background-color: #ff8378;
-            /* 부드러운 연녹색 */
             color: white;
             text-align: center;
             padding: 1rem;
@@ -49,16 +48,15 @@
             font-size: 16px;
             color: white;
             background-color: #73d0fc;
-            /* 부드러운 연파랑색 */
             border: none;
             border-radius: 8px;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            margin: 5px;
         }
 
         button:hover {
             background-color: #33bbfa;
-            /* 밝은 연파랑색 */
         }
 
         #statusImage img {
@@ -73,7 +71,6 @@
             padding: 10px 0;
             margin-top: 20px;
             background-color: #ff8378;
-            /* 부드러운 연주황색 */
             color: #333;
             font-size: 14px;
             border-top: 1px solid #ff8378;
@@ -91,6 +88,7 @@
             <!-- 배달 상태 이미지가 여기에 표시됩니다 -->
         </div>
         <button id="orderComplete">주문 완료</button>
+        <button id="goBack">뒤로가기</button>
     </main>
     <footer>
         &copy; 맛있는 오징어제육볶음!
@@ -134,6 +132,10 @@
                     };
                     socket.emit('order_complete', orderDetails);
                     alert('주문이 완료되었습니다!');
+                };
+
+                document.getElementById('goBack').onclick = () => {
+                    window.history.back();
                 };
 
                 socket.on('status_update', (data) => {
