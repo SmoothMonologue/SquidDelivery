@@ -132,14 +132,15 @@
             }
 
             try {
+                console.log('Signup data:', { name, email, password, passwordConfirm, phoneNumber });
                 const response = await fetch(API_BASE_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name, email, password, phoneNumber }),
+                    body: JSON.stringify({ name, email, password, passwordConfirm, phoneNumber }),
                 });
 
                 if (!response.ok) {
-                    const errorData = await response.json();
+                    const errorData = await response.json().catch(() => ({ message: '알 수 없는 에러' }));
                     alert(errorData.message || '회원가입 실패');
                     return;
                 }
