@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">88.57% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>30/30</span>
+                <span class='fraction'>31/35</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">66.66% </span>
+                <span class="strong">41.66% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>4/6</span>
+                <span class='fraction'>5/12</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">88.57% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>30/30</span>
+                <span class='fraction'>31/35</span>
             </div>
         
             
@@ -119,7 +119,12 @@
 <a name='L54'></a><a href='#L54'>54</a>
 <a name='L55'></a><a href='#L55'>55</a>
 <a name='L56'></a><a href='#L56'>56</a>
-<a name='L57'></a><a href='#L57'>57</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L57'></a><a href='#L57'>57</a>
+<a name='L58'></a><a href='#L58'>58</a>
+<a name='L59'></a><a href='#L59'>59</a>
+<a name='L60'></a><a href='#L60'>60</a>
+<a name='L61'></a><a href='#L61'>61</a>
+<a name='L62'></a><a href='#L62'>62</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -132,12 +137,18 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
@@ -146,7 +157,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -155,7 +165,6 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -173,6 +182,7 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { HTTP_STATUS } from '../constants/http-status.constant.js';
@@ -184,16 +194,22 @@ export class AuthController {
   constructor(service) {
     this.#service = service;
   }
-  userSignUp = async (req, res) =&gt; {
+  userSignUp = async (req, res, next) =&gt; {
     const { email, password, name, interest, phoneNumber } = req.body;
-    await this.#service.createUser({ email, password, name, interest, phoneNumber });
-    res.status(HTTP_STATUS.CREATED).json(MESSAGES.AUTH.SIGN_UP.SUCCEED);
+    const user = await this.#service.createUser({ email, password, name, interest, phoneNumber });
+    if (user.status) {
+<span class="cstat-no" title="statement not covered" >      return res.status(user.status).json(user.message);</span>
+    }
+<span class="cstat-no" title="statement not covered" >    return res.status(HTTP_STATUS.CREATED).json(MESSAGES.AUTH.SIGN_UP.SUCCEED);</span>
   };
 &nbsp;
   partnerSignUp = async (req, res) =&gt; {
     const { email, password, name, phoneNumber } = req.body;
-    await this.#service.createPartner({ email, password, name, phoneNumber });
-    res.status(HTTP_STATUS.CREATED).json(MESSAGES.AUTH.SIGN_UP.SUCCEED);
+    const partnet = await this.#service.createPartner({ email, password, name, phoneNumber });
+    if (partnet.status) {
+<span class="cstat-no" title="statement not covered" >      return res.status(partnet.status).json(partnet.message);</span>
+    }
+<span class="cstat-no" title="statement not covered" >    return res.status(HTTP_STATUS.CREATED).json(MESSAGES.AUTH.SIGN_UP.SUCCEED);</span>
   };
 &nbsp;
   signIn = async (req, res, next) =&gt; {
@@ -202,22 +218,20 @@ export class AuthController {
 &nbsp;
       if (catchBox) {
         const partner = await this.#service.signInPartner({ email, password });
-        // console.log(partner)
         const { accessToken } = partner.data;
         <span class="missing-if-branch" title="else path not taken" >E</span>if (accessToken) {
           res.setHeader('Authorization', `Bearer ${accessToken}`);
           console.log('사장님 로그인 성공!');
         }
-        res.status(HTTP_STATUS.OK).json(partner.data);
+        return res.status(HTTP_STATUS.OK).json(partner.data);
       } else {
         const user = await this.#service.signInUser({ email, password });
-        // console.log(user);
         const { accessToken } = user.data;
         <span class="missing-if-branch" title="else path not taken" >E</span>if (accessToken) {
           res.setHeader('authorization', `Bearer ${accessToken}`);
           console.log('사용자 로그인 성공!');
         }
-        res.status(HTTP_STATUS.CREATED).json(user.data);
+        return res.status(HTTP_STATUS.CREATED).json(user.data);
       }
     } catch (error) {
       next(error);
@@ -227,10 +241,11 @@ export class AuthController {
   signOut = async (req, res) =&gt; {
     const { authorization } = req.headers;
     const user = await this.#service.signOut({ authorization });
-    res.status(user.status).json(user.message);
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (user.status) {
+    }
+    return res.status(user.status).json(user.message);
   };
 }
-&nbsp;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -238,7 +253,7 @@ export class AuthController {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-01-16T13:00:29.759Z
+                at 2025-01-16T15:35:15.126Z
             </div>
         <script src="../prettify.js"></script>
         <script>

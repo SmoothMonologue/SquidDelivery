@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>메뉴 등록</title>
+</head>
+
+<body>
+    <h1>메뉴 등록</h1>
+    <form id="menuForm">
+        <label for="name">메뉴 이름:</label>
+        <input type="text" id="name" name="name" required /><br /><br />
+
+        <label for="price">가격:</label>
+        <input type="number" id="price" name="price" required /><br /><br />
+
+        <label for="spicyLevel">매운 정도 (0-10):</label>
+        <input type="number" id="spicyLevel" name="spicyLevel" min="0" max="10" required /><br /><br />
+
+        <label for="restaurantId">레스토랑 ID:</label>
+        <input type="text" id="restaurantId" name="restaurantId" required /><br /><br />
+
+        <button type="submit">등록</button>
+    </form>
+
+    <script>
+        document.getElementById('menuForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // 폼 데이터 수집
+            const name = document.getElementById('name').value;
+            const price = document.getElementById('price').value;
+            const spicyLevel = document.getElementById('spicyLevel').value;
+            const restaurantId = document.getElementById('restaurantId').value;
+
+            // JSON 데이터 생성
+            const menuData = {
+                name,
+                price,
+                spicyLevel,
+                restaurantId,
+            };
+
+            try {
+                // 서버로 요청 전송
+                const response = await fetch('/api/partners/menu', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(menuData),
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    alert('메뉴 등록 성공!');
+                    console.log('등록된 메뉴:', result);
+                } else {
+                    alert(`등록 실패: ${result.error}`);
+                }
+            } catch (error) {
+                console.error('메뉴 등록 중 오류 발생:', error.message);
+            }
+        });
+    </script>
+</body>
+
+</html>
