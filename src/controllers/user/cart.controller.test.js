@@ -40,7 +40,7 @@ describe('장바구니 컨트롤러 테스트', () => {
       };
       mockService.createCart.mockResolvedValue(mockCart);
       await cartController.createCart(req, res);
-      expect(res.status).toHaveBeenCalledWith(HTTP_STATUS.CREATED);
+      expect(res.status).toHaveBeenCalledWith(201);
       expect(res.json).toHaveBeenCalledWith({
         message: MESSAGES.CARTS.CREATE.SUCCEED,
         data: mockCart,
