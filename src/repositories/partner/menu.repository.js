@@ -4,13 +4,13 @@ export class Menurepository {
     this.#orm = prisma;
   }
   // 메뉴 등록(사장님용)
-  createMenu = async ({ name, price, spicyLevel, restaurantId }) => {
+  createMenu = async (data) => {
     const menu = await this.#orm.menu.create({
       data: {
-        name,
-        price: Number(price),
-        spicyLevel: Number(spicyLevel),
-        restaurantId: Number(restaurantId),
+        ...data,
+        price: Number(data.price),
+        spicyLevel: Number(data.spicyLevel),
+        restaurantId: Number(data.restaurantId),
       },
     });
     return menu;

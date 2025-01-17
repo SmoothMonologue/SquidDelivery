@@ -5,22 +5,133 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>메뉴 등록</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fef4e8;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1,
+        h2 {
+            text-align: center;
+            margin: 20px 0;
+            color: #333;
+        }
+
+        form {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px 20px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #menuList {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        .menu-item {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
+
+        .menu-item h3 {
+            margin: 0 0 10px;
+            color: #333;
+        }
+
+        .menu-item p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .menu-item img {
+            max-width: 150px;
+            height: auto;
+            margin-top: 10px;
+        }
+
+        .menu-item button {
+            padding: 5px 10px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .menu-item button:hover {
+            background-color: #e53935;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #eee;
+        }
+    </style>
 </head>
 
 <body>
     <h1>메뉴 등록</h1>
     <form id="menuRegisterForm">
         <label for="name">메뉴 이름:</label>
-        <input type="text" id="name" name="name" required><br>
+        <input type="text" id="name" name="name" placeholder="메뉴 이름을 입력하세요" required>
 
         <label for="price">가격:</label>
-        <input type="number" id="price" name="price" required><br>
+        <input type="number" id="price" name="price" placeholder="가격을 입력하세요" required>
 
         <label for="spicyLevel">매운 정도 (0-10):</label>
-        <input type="number" id="spicyLevel" name="spicyLevel" min="0" max="10" required /><br /><br />
+        <input type="number" id="spicyLevel" name="spicyLevel" min="0" max="10" placeholder="매운 정도를 입력하세요" required>
 
         <label for="image">이미지 업로드:</label>
-        <input type="file" id="image" name="image" accept="image/*"><br>
+        <input type="file" id="image" name="image" accept="image/*">
 
         <button type="submit">등록</button>
     </form>
@@ -29,50 +140,54 @@
     <div id="menuList"></div>
 
     <script>
-        // 메뉴 데이터 저장소
         const menus = JSON.parse(localStorage.getItem("menus")) || [];
 
-        // 메뉴 리스트 렌더링
         const renderMenuList = () => {
             const menuList = document.getElementById("menuList");
             if (menus.length === 0) {
-                menuList.innerHTML = "<p>등록된 메뉴가 없습니다.</p>";
+                menuList.innerHTML = "<p style='text-align: center;'>등록된 메뉴가 없습니다.</p>";
                 return;
             }
 
             menuList.innerHTML = menus.map((menu, index) => `
-                <div>
+                <div class="menu-item">
                     <h3>${menu.name}</h3>
                     <p>가격: ${menu.price}원</p>
                     <p>매운 정도: ${menu.spicyLevel}</p>
-                    ${menu.image ? `<img src="${menu.image}" alt="${menu.name}" style="max-width: 150px; height: auto;" />` : ""}
+                    ${menu.image ? `<img src="${menu.image}" alt="${menu.name}" />` : ""}
                     <button onclick="deleteMenu(${index})">삭제</button>
                 </div>
-                <hr>
             `).join('');
         };
 
-        // 메뉴 삭제
         const deleteMenu = (index) => {
             menus.splice(index, 1);
             localStorage.setItem("menus", JSON.stringify(menus));
             renderMenuList();
         };
 
-        // 메뉴 등록
         document.getElementById("menuRegisterForm").onsubmit = (e) => {
             e.preventDefault();
 
-            const name = document.getElementById("name").value;
-            const price = document.getElementById("price").value;
-            const spicyLevel = document.getElementById("spicyLevel").value;
+            const name = document.getElementById("name").value.trim();
+            const price = parseFloat(document.getElementById("price").value);
+            const spicyLevel = parseInt(document.getElementById("spicyLevel").value, 10);
             const imageFile = document.getElementById("image").files[0];
 
-            let imageUrl = null;
+            if (!name || isNaN(price) || isNaN(spicyLevel)) {
+                alert("모든 필드를 올바르게 입력해주세요.");
+                return;
+            }
+
+            if (spicyLevel < 0 || spicyLevel > 10) {
+                alert("매운 정도는 0에서 10 사이의 값이어야 합니다.");
+                return;
+            }
+
             if (imageFile) {
                 const reader = new FileReader();
                 reader.onload = () => {
-                    imageUrl = reader.result;
+                    const imageUrl = reader.result;
                     saveMenu(name, price, spicyLevel, imageUrl);
                 };
                 reader.readAsDataURL(imageFile);
@@ -86,11 +201,18 @@
             localStorage.setItem("menus", JSON.stringify(menus));
             alert("메뉴가 등록되었습니다!");
             renderMenuList();
+            document.getElementById("menuRegisterForm").reset();
         };
 
-        // 초기 렌더링
         renderMenuList();
     </script>
+
+
+    <div style="text-align: center; margin-top: 20px;">
+        <button
+            style="padding: 10px 20px; font-size: 16px; background-color: #2196f3; color: white; border: none; border-radius: 5px; cursor: pointer;"
+            onclick="history.back()">뒤로가기</button>
+    </div>
 </body>
 
 </html>
